@@ -15,8 +15,7 @@ export function Index() {
             src="../images/profile.png"
             alt="johnnydev"
             placeholder="none"
-            quality={100}
-            draggable={false}
+            imgStyle={{ borderRadius: "50%" }}
           />
         </div>
         <div className="description">
@@ -82,6 +81,7 @@ const StyledProfile = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 
     img {
       width: 8rem;
