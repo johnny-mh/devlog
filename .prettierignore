@@ -2,3 +2,7 @@
 
 /dist
 /coverage
+
+/apps/johnnydev/node_modules
+/apps/johnnydev/public
+/apps/johnnydev/.cache

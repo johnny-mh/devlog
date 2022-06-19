@@ -37,3 +37,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+/apps/johnnydev/node_modules
+/apps/johnnydev/public
+/apps/johnnydev/.cache

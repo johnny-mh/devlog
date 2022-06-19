@@ -1,0 +1,45 @@
+*,
+:after,
+:before,
+html {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.2em;
+}
+
+h2 {
+  font-size: 1.8rem;
+  line-height: 1.2em;
+}
+
+h3 {
+  font-size: 1.6rem;
+  line-height: 1.1em;
+}
+
+h4 {
+  font-size: 1.4rem;
+  line-height: 1.1em;
+}
+
+h5 {
+  font-size: 1.2rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
