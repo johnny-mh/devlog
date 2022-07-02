@@ -1,4 +1,6 @@
 .markdown-content {
+  line-height: 1.8rem;
+
   li p {
     margin: 0;
   }
@@ -64,7 +66,7 @@
   li::before {
     position: absolute;
     left: 0px;
-    content: "\2022";
+    content: '\2022';
     color: #666;
     font-size: 1rem;
     padding-right: 0.5rem;

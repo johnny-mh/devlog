@@ -1,14 +1,33 @@
-import { useLocation } from "@reach/router"
-import { graphql, useStaticQuery } from "gatsby"
-import PropTypes from "prop-types"
-import React from "react"
-import { Helmet } from "react-helmet"
+import Facebook from './facebook'
+import Twitter from './twitter'
+import { useLocation } from '@reach/router'
+import { graphql, useStaticQuery } from 'gatsby'
+import React from 'react'
+import { Helmet } from 'react-helmet'
 
-import Facebook from "./facebook"
-import Twitter from "./twitter"
+export interface SEOProps {
+  title?: string
+  desc?: string
+  banner?: string
+  pathname?: null | string
+  article?: boolean
+  node?: {
+    first_publication_date: string
+    last_publication_date: string
+  }
+  keywords?: string[]
+  image?: string
+}
 
-// Complete tutorial: https://www.gatsbyjs.org/docs/add-seo-component/
-const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
+export function SEO({
+  title,
+  desc,
+  banner,
+  article,
+  node,
+  keywords,
+  image,
+}: SEOProps) {
   const { pathname } = useLocation()
   const { site } = useStaticQuery(graphql`
     {
@@ -50,15 +69,15 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
     title: title || defaultTitle,
     description: desc || defaultDescription,
     image: `${siteUrl}${image || banner || defaultBanner}`,
-    url: `${siteUrl}${pathname || ""}`,
+    url: `${siteUrl}${pathname || ''}`,
   }
 
   // schema.org in JSONLD format
   // https://developers.google.com/search/docs/guides/intro-structured-data
   // You can fill out the 'author', 'creator' with more data or another type (e.g. 'Organization')
   const schemaOrgWebPage = {
-    "@context": "http://schema.org",
-    "@type": "WebPage",
+    '@context': 'http://schema.org',
+    '@type': 'WebPage',
     url: siteUrl,
     headline,
     inLanguage: siteLanguage,
@@ -66,26 +85,26 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
     description: defaultDescription,
     name: defaultTitle,
     author: {
-      "@type": "Person",
+      '@type': 'Person',
       name: author,
     },
     copyrightHolder: {
-      "@type": "Person",
+      '@type': 'Person',
       name: author,
     },
-    copyrightYear: "2019",
+    copyrightYear: '2019',
     creator: {
-      "@type": "Person",
+      '@type': 'Person',
       name: author,
     },
     publisher: {
-      "@type": "Person",
+      '@type': 'Person',
       name: author,
     },
-    datePublished: "2019-01-18T10:30:00+01:00",
+    datePublished: '2019-01-18T10:30:00+01:00',
     dateModified: buildTime,
     image: {
-      "@type": "ImageObject",
+      '@type': 'ImageObject',
       url: `${siteUrl}${defaultBanner}`,
     },
   }
@@ -93,10 +112,10 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
   // Initial breadcrumb list
   const itemListElement = [
     {
-      "@type": "ListItem",
+      '@type': 'ListItem',
       item: {
-        "@id": siteUrl,
-        name: "Homepage",
+        '@id': siteUrl,
+        name: 'Homepage',
       },
       position: 1,
     },
@@ -106,26 +125,26 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
 
   if (article) {
     schemaArticle = {
-      "@context": "http://schema.org",
-      "@type": "Article",
+      '@context': 'http://schema.org',
+      '@type': 'Article',
       author: {
-        "@type": "Person",
+        '@type': 'Person',
         name: author,
       },
       copyrightHolder: {
-        "@type": "Person",
+        '@type': 'Person',
         name: author,
       },
-      copyrightYear: "2019",
+      copyrightYear: '2019',
       creator: {
-        "@type": "Person",
+        '@type': 'Person',
         name: author,
       },
       publisher: {
-        "@type": "Organization",
+        '@type': 'Organization',
         name: author,
         logo: {
-          "@type": "ImageObject",
+          '@type': 'ImageObject',
           url: `${siteUrl}${defaultBanner}`,
         },
       },
@@ -137,16 +156,16 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
       url: seo.url,
       name: seo.title,
       image: {
-        "@type": "ImageObject",
+        '@type': 'ImageObject',
         url: seo.image,
       },
       mainEntityOfPage: seo.url,
     }
     // Push current blogpost into breadcrumb list
     itemListElement.push({
-      "@type": "ListItem",
+      '@type': 'ListItem',
       item: {
-        "@id": seo.url,
+        '@id': seo.url,
         name: seo.title,
       },
       position: 2,
@@ -154,10 +173,10 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
   }
 
   const breadcrumb = {
-    "@context": "http://schema.org",
-    "@type": "BreadcrumbList",
-    description: "Breadcrumbs list",
-    name: "Breadcrumbs",
+    '@context': 'http://schema.org',
+    '@type': 'BreadcrumbList',
+    description: 'Breadcrumbs list',
+    name: 'Breadcrumbs',
     itemListElement,
   }
 
@@ -169,7 +188,7 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
         <meta name="image" content={seo.image} />
         <meta name="gatsby-starter" content="Gatsby Starter Prismic" />
         {keywords && keywords.length > 0 ? (
-          <meta name="keyworkds" content={keywords.join(",")} />
+          <meta name="keyworkds" content={keywords.join(',')} />
         ) : null}
         {/**
          * Insert schema.org data conditionally (webpage/article) + everytime (breadcrumbs)
@@ -190,7 +209,7 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
         desc={seo.description}
         image={seo.image}
         title={seo.title}
-        type={article ? "article" : "website"}
+        type={article ? 'article' : 'website'}
         url={seo.url}
         locale={ogLanguage}
         name={facebook}
@@ -206,24 +225,3 @@ const SEO = ({ title, desc, banner, article, node, keywords, image }) => {
 }
 
 export default SEO
-
-SEO.propTypes = {
-  title: PropTypes.string,
-  desc: PropTypes.string,
-  banner: PropTypes.string,
-  pathname: PropTypes.string,
-  article: PropTypes.bool,
-  node: PropTypes.object,
-  keywords: PropTypes.arrayOf(PropTypes.string),
-  image: PropTypes.string,
-}
-
-SEO.defaultProps = {
-  title: null,
-  desc: null,
-  banner: null,
-  pathname: null,
-  article: false,
-  node: null,
-  image: null,
-}

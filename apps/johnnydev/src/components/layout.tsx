@@ -1,13 +1,13 @@
-import React from "react"
-import styled from "styled-components"
-import Footer from "./footer"
-import Header from "./header"
+import Footer from './footer'
+import Header from './header'
+import { ReactNode } from 'react'
+import styled from 'styled-components'
 
 export interface LayoutProps {
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
-export function Layout({ children }) {
+export function Layout({ children }: LayoutProps) {
   return (
     <>
       <Header />

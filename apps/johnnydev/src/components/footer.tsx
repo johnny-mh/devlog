@@ -1,12 +1,8 @@
-import styled from "styled-components"
+import { ReactComponent as GithubIcon } from '../images/github.svg'
+import { ReactComponent as MailIcon } from '../images/mail.svg'
+import styled from 'styled-components'
 
-import { ReactComponent as GithubIcon } from "../images/github.svg"
-import { ReactComponent as MailIcon } from "../images/mail.svg"
-
-/* eslint-disable-next-line */
-export interface FooterProps {}
-
-export function Footer(props: FooterProps) {
+export function Footer() {
   return (
     <StyledFooter className="container">
       <div>

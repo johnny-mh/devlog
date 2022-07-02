@@ -1,53 +1,32 @@
-import { Link, graphql, useStaticQuery } from "gatsby"
-import dayjs from "dayjs"
-import PropTypes from "prop-types"
-import React from "react"
-import styled from "styled-components"
+import { ReactComponent as TimeIcon } from '../images/time.svg'
+import { PostProps } from '../templates/post'
+import dayjs from 'dayjs'
+import { Link } from 'gatsby'
+import styled from 'styled-components'
 
-import { ReactComponent as TimeIcon } from "../images/time.svg"
+export interface PostListProps {
+  posts: PostProps[]
+}
 
-export function PostList() {
-  const data = useStaticQuery(graphql`
-    query PostList {
-      allMarkdownRemark(
-        filter: { fields: { type: { eq: "post" } } }
-        sort: { fields: fields___date, order: DESC }
-        limit: 5
-      ) {
-        nodes {
-          id
-          timeToRead
-          fields {
-            slug
-            type
-            date
-          }
-          frontmatter {
-            title
-          }
-        }
-      }
-    }
-  `)
-
+export function PostList({ posts }: PostListProps) {
   return (
     <StyledPostList>
       <h3>최근 포스트</h3>
       <ul>
-        {data.allMarkdownRemark.nodes.map(post => (
+        {posts.map(post => (
           <li key={post.id}>
             <article>
               <h4 itemProp="headline">
                 <Link to={post.fields.slug}>{post.frontmatter.title}</Link>
               </h4>
               <div className="meta">
-                <span>{dayjs(post.fields.date).format("LL")}</span>
+                <span>{dayjs(post.fields.date).format('LL')}</span>
                 <span>
                   <TimeIcon /> {post.timeToRead}분 소요
                 </span>
                 {post.frontmatter.updatedAt ? (
                   <span className="updated">
-                    ※ {dayjs(post.frontmatter.updatedAt).format("M/d")} 업데이트
+                    ※ {dayjs(post.frontmatter.updatedAt).format('M/d')} 업데이트
                   </span>
                 ) : null}
               </div>
@@ -57,10 +36,6 @@ export function PostList() {
       </ul>
     </StyledPostList>
   )
-}
-
-PostList.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.shape({ node: PropTypes.any })),
 }
 
 export default PostList
@@ -97,7 +72,7 @@ const StyledPostList = styled.section`
           }
 
           :before {
-            content: "";
+            content: '';
             position: absolute;
             left: 0;
             top: 0;

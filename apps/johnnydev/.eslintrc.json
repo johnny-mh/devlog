@@ -15,6 +15,7 @@
     {
       "files": ["*.js", "*.jsx"],
       "rules": {}
-    }
+    },
+    { "files": ["*.d.ts"], "rules": { "@typescript-eslint/no-unused-vars": 0 } }
   ]
 }

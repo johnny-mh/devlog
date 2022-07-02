@@ -1,27 +1,54 @@
-import { StaticImage } from "gatsby-plugin-image"
-import React from "react"
-import styled from "styled-components"
-import Layout from "../components/layout"
-import PostList from "../components/post-list"
-
-import { ReactComponent as RxjsIcon } from "../images/rxjs.svg"
+import SEO from '../components/SEO'
+import Layout from '../components/layout'
+import PostList from '../components/post-list'
+import { ReactComponent as RxjsIcon } from '../images/rxjs.svg'
+import { graphql, useStaticQuery } from 'gatsby'
+import { StaticImage } from 'gatsby-plugin-image'
+import React from 'react'
+import styled from 'styled-components'
 
 export function Index() {
+  const {
+    allMarkdownRemark: { nodes },
+  } = useStaticQuery(graphql`
+    query PostList {
+      allMarkdownRemark(
+        filter: { fields: { type: { eq: "post" } } }
+        sort: { fields: fields___date, order: DESC }
+        limit: 5
+      ) {
+        nodes {
+          id
+          timeToRead
+          fields {
+            slug
+            type
+            date
+          }
+          frontmatter {
+            title
+          }
+        }
+      }
+    }
+  `)
+
   return (
     <Layout>
+      <SEO />
       <StyledProfile>
         <div className="profile">
           <StaticImage
             src="../images/profile.png"
             alt="johnnydev"
             placeholder="none"
-            imgStyle={{ borderRadius: "50%" }}
+            imgStyle={{ borderRadius: '50%' }}
           />
         </div>
         <div className="description">
           <h1>안녕하세요! FE개발자 김민형입니다</h1>
           <div className="tags">
-            {["JavaScript", "Angular", "React", "NodeJS"].map(str => (
+            {['JavaScript', 'Angular', 'React', 'NodeJS'].map(str => (
               <span key={str}>{str}</span>
             ))}
           </div>
@@ -30,7 +57,7 @@ export function Index() {
           </div>
         </div>
       </StyledProfile>
-      <PostList />
+      <PostList posts={nodes} />
       <StyledOpensource>
         <h3>오픈소스 프로젝트</h3>
         <ul className="opensources">
@@ -151,7 +178,7 @@ const StyledOpensource = styled.section`
           }
 
           :before {
-            content: "";
+            content: '';
             position: absolute;
             left: 0;
             top: 0;

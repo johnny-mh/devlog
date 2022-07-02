@@ -1,23 +1,20 @@
-import { Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
-import { useEffect, useState } from "react"
-import styled from "styled-components"
+import { Link } from 'gatsby'
+import { StaticImage } from 'gatsby-plugin-image'
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-/* eslint-disable-next-line */
-export interface HeaderProps {}
-
-export function Header(props: HeaderProps) {
+export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const onScroll = () => setScrolled(window.scrollY > 20)
 
   useEffect(() => {
-    window.addEventListener("scroll", onScroll)
+    window.addEventListener('scroll', onScroll)
 
-    return () => window.removeEventListener("scroll", onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
   })
 
   return (
-    <StyledHeader className={scrolled ? "scroll" : ""}>
+    <StyledHeader className={scrolled ? 'scroll' : ''}>
       <div className="container">
         <div className="brand">
           <Link to="/">
