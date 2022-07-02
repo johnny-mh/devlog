@@ -135,6 +135,7 @@ const StyledToc = styled.div`
     left: 100%;
 
     .content {
+      position: absolute;
       width: 240px;
       margin: 0 0 0 5rem;
 

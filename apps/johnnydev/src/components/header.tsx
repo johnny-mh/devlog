@@ -1,6 +1,14 @@
+import { AppContext } from '../context/app'
+import { ReactComponent as SearchIcon } from '../images/search.svg'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
-import { useEffect, useState } from 'react'
+import {
+  ReactEventHandler,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import styled from 'styled-components'
 
 export function Header() {
@@ -13,6 +21,13 @@ export function Header() {
     setScrolled(window.scrollY > 20)
 
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const { setSearch } = useContext(AppContext)
+
+  const onClickSearch = useCallback<ReactEventHandler<HTMLAnchorElement>>(e => {
+    e.preventDefault()
+    setSearch(true)
   }, [])
 
   return (
@@ -30,6 +45,9 @@ export function Header() {
         <div className="links">
           <Link to="/about">About</Link>
           <Link to="/archives">Archives</Link>
+          <a href="#search" onClick={onClickSearch}>
+            <SearchIcon width={15} height={13} />
+          </a>
         </div>
       </div>
     </StyledHeader>
@@ -91,5 +109,9 @@ const StyledHeader = styled.div`
         color: #000;
       }
     }
+  }
+
+  svg {
+    fill: #333;
   }
 `
