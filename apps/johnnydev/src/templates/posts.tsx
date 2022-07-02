@@ -1,9 +1,9 @@
 import SEO from '../components/SEO'
 import Layout from '../components/layout'
 import Pager from '../components/pager'
+import { PostProps } from '../components/post'
 import PostList from '../components/post-list'
 import { graphql } from 'gatsby'
-import PropTypes from 'prop-types'
 import React from 'react'
 
 export const pageQuery = graphql`
@@ -15,46 +15,30 @@ export const pageQuery = graphql`
       limit: $limit
     ) {
       nodes {
-        id
-        html
-        frontmatter {
-          categories
-          tags
-          title
-          featuredImage {
-            publicURL
-          }
-        }
-        fields {
-          slug
-          date
-        }
-        timeToRead
+        ...Post
       }
     }
   }
 `
 
-const PostsTemplate = ({
+interface PostsTemplateProps {
+  data: { allMarkdownRemark: { nodes: PostProps[] } }
+  pageContext: any
+}
+
+export function PostsTemplate({
   data: {
-    allMarkdownRemark: { edges: posts },
+    allMarkdownRemark: { nodes: posts },
   },
   pageContext,
-}) => (
-  <Layout>
-    <SEO title="post" />
-    <PostList posts={posts} />
-    <Pager {...pageContext} />
-  </Layout>
-)
-
-PostsTemplate.propTypes = {
-  data: PropTypes.shape({
-    allMarkdownRemark: PropTypes.shape({
-      edges: PropTypes.array,
-    }),
-  }),
-  pageContext: PropTypes.any,
+}: PostsTemplateProps) {
+  return (
+    <Layout>
+      <SEO title="post" />
+      <PostList title={pageContext.title || '최근 포스트'} posts={posts} />
+      <Pager {...pageContext} />
+    </Layout>
+  )
 }
 
 export default PostsTemplate

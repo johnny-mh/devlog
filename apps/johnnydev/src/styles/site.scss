@@ -9,6 +9,30 @@ html {
   box-sizing: border-box;
 }
 
+body,
+button,
+input,
+select,
+td,
+textarea,
+th {
+  font-family: var(--sans-serif);
+}
+
+a {
+  color: #5596ff;
+  text-decoration: none;
+
+  &:visited {
+    color: #bb6dff;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+}
+
 h1,
 h2,
 h3,
@@ -17,7 +41,7 @@ h5,
 h6 {
   margin-top: 0;
   margin-bottom: 2rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 h1 {
@@ -46,4 +70,10 @@ h5 {
 
 h6 {
   font-size: 1rem;
+}
+
+:root {
+  --sans-serif: HelveticaNeue, AppleSDGothicNeo-Regular, tahoma, Malgun Gothic,
+    '맑은 고딕', dotum, 돋움, sans-serif;
+  --monospace: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }

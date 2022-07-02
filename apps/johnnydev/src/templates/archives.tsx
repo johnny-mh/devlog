@@ -2,11 +2,37 @@ import SEO from '../components/SEO'
 import Layout from '../components/layout'
 import dayjs from 'dayjs'
 import { Link } from 'gatsby'
-import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-const Archives = ({ pageContext: { tags, categories, groups } }) => {
+interface ArchivesProps {
+  pageContext: {
+    tags: {
+      id: number
+      name: string
+      totalCount: number
+    }[]
+    categories: {
+      id: number
+      name: string
+      totalCount: number
+    }[]
+    groups: {
+      year: string
+      groupName: string
+      list: {
+        id: string
+        date: string
+        title: string
+        path: string
+      }[]
+    }[]
+  }
+}
+
+export function Archives({
+  pageContext: { tags, categories, groups },
+}: ArchivesProps) {
   return (
     <Layout>
       <SEO title="archives" />
@@ -88,37 +114,6 @@ const Archives = ({ pageContext: { tags, categories, groups } }) => {
   )
 }
 
-Archives.propTypes = {
-  pageContext: PropTypes.shape({
-    tags: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-        totalCount: PropTypes.number,
-      })
-    ),
-    categories: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-        totalCount: PropTypes.number,
-      })
-    ),
-    groups: PropTypes.arrayOf(
-      PropTypes.shape({
-        year: PropTypes.string,
-        groupName: PropTypes.string,
-        list: PropTypes.arrayOf(
-          PropTypes.shape({
-            id: PropTypes.string,
-            date: PropTypes.string,
-            title: PropTypes.string,
-            path: PropTypes.string,
-          })
-        ),
-      })
-    ),
-  }),
-}
-
 export default Archives
 
 const StyledArchives = styled.div`
@@ -131,7 +126,6 @@ const StyledArchives = styled.div`
   }
 
   h2 {
-    font-family: Montserrat, sans-serif;
     font-weight: 700;
     margin: 0;
   }
@@ -171,7 +165,6 @@ const StyledArchives = styled.div`
     .group-name {
       font-size: 1.4em;
       line-height: 1.4em;
-      font-family: Montserrat, sans-serif;
       display: block;
     }
 

@@ -1,17 +1,18 @@
 import { ReactComponent as TimeIcon } from '../images/time.svg'
-import { PostProps } from '../templates/post'
+import { PostProps } from './post'
 import dayjs from 'dayjs'
 import { Link } from 'gatsby'
 import styled from 'styled-components'
 
 export interface PostListProps {
+  title?: string
   posts: PostProps[]
 }
 
-export function PostList({ posts }: PostListProps) {
+export function PostList({ title = '최근 포스트', posts }: PostListProps) {
   return (
     <StyledPostList>
-      <h3>최근 포스트</h3>
+      <h3>{title}</h3>
       <ul>
         {posts.map(post => (
           <li key={post.id}>
@@ -85,7 +86,6 @@ const StyledPostList = styled.section`
       .meta {
         font-size: 0.8rem;
         color: #a8a8a8;
-        font-weight: 700;
 
         svg {
           width: 11px;

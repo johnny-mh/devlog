@@ -1,7 +1,7 @@
 import SEO from '../components/SEO'
 import Layout from '../components/layout'
 import Pager from '../components/pager'
-import Post from '../components/post'
+import Post, { PostProps } from '../components/post'
 import { graphql } from 'gatsby'
 import React from 'react'
 
@@ -12,7 +12,18 @@ export const pageQuery = graphql`
     }
   }
 `
-const PostTemplate = ({ data: { post }, pageContext }) => {
+
+interface PostTemplateProps {
+  data: {
+    post: PostProps
+  }
+  pageContext: any
+}
+
+export function PostTemplate({
+  data: { post },
+  pageContext,
+}: PostTemplateProps) {
   return (
     <Layout>
       <SEO keywords={post.frontmatter.tags} desc={post.frontmatter.title} />

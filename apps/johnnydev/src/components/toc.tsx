@@ -2,13 +2,12 @@ import { graphql } from 'gatsby'
 import { slug } from 'github-slugger'
 import { findIndex, head, last, throttle } from 'lodash'
 import React, {
-  MouseEventHandler,
   ReactEventHandler,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
-// import scrollToElement from 'scroll-to-element'
 import styled from 'styled-components'
 
 export const query = graphql`
@@ -28,7 +27,36 @@ export interface TOCProps {
 }
 
 export function TOC({ headings }: TOCProps) {
+  const headers = useMemo(
+    () =>
+      headings
+        .filter(({ depth }) => depth < 3)
+        .map(h => ({ ...h, slug: slug(h.value) })),
+    [headings]
+  )
   const calcSticky = useCallback(() => window.scrollY >= 100, [])
+  const calcActive = useCallback(() => {
+    const offsets = headers.map(({ slug }) =>
+      Math.max(0, document.getElementById(slug).offsetTop - 300)
+    )
+    const maxIndex = offsets.length - 1
+
+    const { scrollY } = window
+
+    let index = 0
+
+    if (scrollY === 0 || scrollY <= head(offsets)) {
+      index = 0
+    } else if (
+      window.innerHeight + scrollY >= document.body.offsetHeight - 30 ||
+      scrollY >= last(offsets)
+    ) {
+      index = maxIndex
+    } else {
+      index = findIndex(offsets, offset => offset > scrollY) - 1
+    }
+    return index
+  }, [headers])
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [sticky, setSticky] = useState(calcSticky())
@@ -56,35 +84,11 @@ export function TOC({ headings }: TOCProps) {
     })
   }, [])
 
-  const headers = headings
-    .filter(({ depth }) => depth < 3)
-    .map(h => ({ ...h, slug: slug(h.value) }))
-
   useEffect(() => {
-    const offsets = headers.map(({ slug }) =>
-      Math.max(0, document.getElementById(slug).offsetTop - 300)
-    )
-    const maxIndex = offsets.length - 1
+    setSticky(calcSticky())
+    setCurrentIndex(calcActive())
 
-    const onScrollForActive = throttle(() => {
-      const { scrollY } = window
-
-      let index = 0
-
-      if (scrollY === 0 || scrollY <= head(offsets)) {
-        index = 0
-      } else if (
-        window.innerHeight + scrollY >= document.body.offsetHeight - 30 ||
-        scrollY >= last(offsets)
-      ) {
-        index = maxIndex
-      } else {
-        index = findIndex(offsets, offset => offset > scrollY) - 1
-      }
-
-      setCurrentIndex(index)
-    }, 300)
-
+    const onScrollForActive = throttle(() => setCurrentIndex(calcActive()), 300)
     const onScrollForSticky = throttle(() => setSticky(calcSticky()), 10)
 
     window.addEventListener('scroll', onScrollForActive)
@@ -94,7 +98,7 @@ export function TOC({ headings }: TOCProps) {
       window.removeEventListener('scroll', onScrollForActive)
       window.removeEventListener('scroll', onScrollForSticky)
     }
-  })
+  }, [calcSticky, calcActive])
 
   return (
     <StyledToc>

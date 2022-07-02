@@ -158,6 +158,7 @@ const createEachPostAndPagedPosts = async ({
           : `/post/category/${categoryName}/page`,
       component: resolve('./src/templates/posts.tsx'),
       context: {
+        title: `Category: ${categoryName}`,
         ids: _.map(nodes, 'id'),
       },
     })
@@ -191,6 +192,7 @@ const createEachPostAndPagedPosts = async ({
         pageNumber === 0 ? `/post/tag/${name}` : `/post/tag/${name}/page`,
       component: resolve('./src/templates/posts.tsx'),
       context: {
+        title: `Tag: ${name}`,
         ids: _.map(nodes, 'id'),
       },
     })

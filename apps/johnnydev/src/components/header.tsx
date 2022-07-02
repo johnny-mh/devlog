@@ -10,8 +10,10 @@ export function Header() {
   useEffect(() => {
     window.addEventListener('scroll', onScroll)
 
+    setScrolled(window.scrollY > 20)
+
     return () => window.removeEventListener('scroll', onScroll)
-  })
+  }, [])
 
   return (
     <StyledHeader className={scrolled ? 'scroll' : ''}>

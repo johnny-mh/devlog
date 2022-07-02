@@ -1,7 +1,6 @@
 import SEO from '../components/SEO'
 import Layout from '../components/layout'
 import { graphql } from 'gatsby'
-import PropTypes from 'prop-types'
 import React from 'react'
 
 export const pageQuery = graphql`
@@ -15,14 +14,26 @@ export const pageQuery = graphql`
   }
 `
 
-const AboutTemplate = ({
+interface AboutTemplateProps {
+  data: {
+    markdownRemark: {
+      html: string
+      frontmatter: {
+        title: string
+      }
+    }
+  }
+  pageContext: any
+}
+
+export function AboutTemplate({
   data: {
     markdownRemark: {
       html,
       frontmatter: { title },
     },
   },
-}) => {
+}: AboutTemplateProps) {
   return (
     <Layout>
       <SEO title={title} />
@@ -32,18 +43,6 @@ const AboutTemplate = ({
       ></div>
     </Layout>
   )
-}
-
-AboutTemplate.propTypes = {
-  data: PropTypes.shape({
-    markdownRemark: PropTypes.shape({
-      html: PropTypes.string,
-      frontmatter: PropTypes.shape({
-        title: PropTypes.string,
-      }),
-    }),
-  }),
-  pageContext: PropTypes.any,
 }
 
 export default AboutTemplate

@@ -1,6 +1,5 @@
 code[class*='language-'] {
-  font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas,
-    'Liberation Mono', 'Courier New', monospace;
+  font-family: var(--monospace);
 }
 
 .gatsby-highlight pre[class*='language-'] {
@@ -11,8 +10,7 @@ code[class*='language-'] {
 .gatsby-highlight pre[class*='language-']:before {
   color: #232129;
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas,
-    'Liberation Mono', 'Courier New', monospace;
+  font-family: var(--monospace);
   letter-spacing: 0.075em;
   line-height: 1;
   position: absolute;
