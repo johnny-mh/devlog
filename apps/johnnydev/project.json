@@ -3,6 +3,14 @@
   "sourceRoot": "apps/johnnydev/src",
   "projectType": "application",
   "targets": {
+    "publish": {
+      "executor": "nx:run-commands",
+      "dependsOn": [{ "target": "build", "projects": "self" }],
+      "options": {
+        "cwd": "apps/johnnydev",
+        "command": "gh-pages -f -d public -b master -r https://github.com/johnny-mh/johnny-mh.github.io.git"
+      }
+    },
     "prebuild": {
       "executor": "nx:run-commands",
       "options": {
@@ -12,12 +20,7 @@
     },
     "build": {
       "executor": "@nrwl/gatsby:build",
-      "dependsOn": [
-        {
-          "target": "prebuild",
-          "projects": "self"
-        }
-      ],
+      "dependsOn": [{ "target": "prebuild", "projects": "self" }],
       "options": {
         "outputPath": "apps/johnnydev/public",
         "uglify": true,
