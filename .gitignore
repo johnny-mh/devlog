@@ -41,3 +41,6 @@ Thumbs.db
 /apps/johnnydev/node_modules
 /apps/johnnydev/public
 /apps/johnnydev/.cache
+/apps/johnnydev/plugins
+
+dist/

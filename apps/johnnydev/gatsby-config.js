@@ -30,10 +30,8 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet`,
-
     `gatsby-plugin-sass`,
     'gatsby-plugin-styled-components',
-
     {
       resolve: 'gatsby-plugin-svgr',
       options: {
@@ -76,6 +74,10 @@ module.exports = {
             resolve: 'gatsby-remark-images',
             options: { maxWidth: 1366, showCaptions: ['alt'], quality: 85 },
           },
+          {
+            resolve: 'gatsby-remark-external-links',
+            options: { target: '_blank', rel: 'nofollow' },
+          },
         ],
       },
     },
@@ -87,6 +89,35 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: { name: 'page', path: `${__dirname}/content/pages` },
+    },
+    {
+      resolve: `gatsby-plugin-fusejs`,
+      options: {
+        query: `
+          {
+            allMarkdownRemark(filter: {fields: {type: {eq: "post"}}}) {
+              nodes {
+                id
+                rawMarkdownBody
+                fields {
+                  slug
+                }
+                frontmatter {
+                  title
+                }
+              }
+            }
+          }
+        `,
+        keys: ['title', 'body'],
+        normalizer: ({ data }) =>
+          data.allMarkdownRemark.nodes.map(node => ({
+            id: node.id,
+            path: node.fields.slug,
+            title: node.frontmatter.title,
+            body: node.rawMarkdownBody,
+          })),
+      },
     },
   ],
 }

@@ -3,8 +3,21 @@
   "sourceRoot": "apps/johnnydev/src",
   "projectType": "application",
   "targets": {
+    "prebuild": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nx run gatsby-plugin-fusejs:build",
+        "outputPath": "apps/johnnydev/plugins/gatsby-plugin-fusejs"
+      }
+    },
     "build": {
       "executor": "@nrwl/gatsby:build",
+      "dependsOn": [
+        {
+          "target": "prebuild",
+          "projects": "self"
+        }
+      ],
       "options": {
         "outputPath": "apps/johnnydev/public",
         "uglify": true,
@@ -17,6 +30,12 @@
     },
     "serve": {
       "executor": "@nrwl/gatsby:server",
+      "dependsOn": [
+        {
+          "target": "prebuild",
+          "projects": "self"
+        }
+      ],
       "options": {
         "port": 8080,
         "host": "0.0.0.0",
@@ -43,10 +62,11 @@
         "passWithNoTests": true
       }
     },
-    "version": {
-      "executor": "@jscutlery/semver:version",
+    "clean": {
+      "executor": "nx:run-commands",
       "options": {
-        "preset": "conventional"
+        "cwd": "apps/johnnydev",
+        "command": "gatsby clean"
       }
     }
   },

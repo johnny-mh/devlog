@@ -1,5 +1,6 @@
 import { AppContext } from '../context/app'
 import { ReactComponent as SearchIcon } from '../images/search.svg'
+import { isBrowser } from '../util'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
 import {
@@ -13,17 +14,19 @@ import styled from 'styled-components'
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
-  const onScroll = () => setScrolled(window.scrollY > 20)
+  const onScroll = () => isBrowser && setScrolled(window.scrollY > 20)
 
   useEffect(() => {
-    window.addEventListener('scroll', onScroll)
+    if (isBrowser) {
+      window.addEventListener('scroll', onScroll)
 
-    setScrolled(window.scrollY > 20)
+      setScrolled(window.scrollY > 20)
 
-    return () => window.removeEventListener('scroll', onScroll)
+      return () => window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
-  const { setSearch } = useContext(AppContext)
+  const { setShowSearch: setSearch } = useContext(AppContext)
 
   const onClickSearch = useCallback<ReactEventHandler<HTMLAnchorElement>>(e => {
     e.preventDefault()

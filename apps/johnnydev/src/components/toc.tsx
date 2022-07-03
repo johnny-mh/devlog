@@ -1,3 +1,4 @@
+import { isBrowser } from '../util'
 import { graphql } from 'gatsby'
 import { slug } from 'github-slugger'
 import { findIndex, head, last, throttle } from 'lodash'
@@ -34,8 +35,18 @@ export function TOC({ headings }: TOCProps) {
         .map(h => ({ ...h, slug: slug(h.value) })),
     [headings]
   )
-  const calcSticky = useCallback(() => window.scrollY >= 100, [])
+  const calcSticky = useCallback(() => {
+    if (!isBrowser) {
+      return false
+    }
+
+    return window.scrollY >= 100
+  }, [])
   const calcActive = useCallback(() => {
+    if (!isBrowser) {
+      return 0
+    }
+
     const offsets = headers.map(({ slug }) =>
       Math.max(0, document.getElementById(slug).offsetTop - 300)
     )
@@ -85,18 +96,23 @@ export function TOC({ headings }: TOCProps) {
   }, [])
 
   useEffect(() => {
-    setSticky(calcSticky())
-    setCurrentIndex(calcActive())
+    if (isBrowser) {
+      setSticky(calcSticky())
+      setCurrentIndex(calcActive())
 
-    const onScrollForActive = throttle(() => setCurrentIndex(calcActive()), 300)
-    const onScrollForSticky = throttle(() => setSticky(calcSticky()), 10)
+      const onScrollForActive = throttle(
+        () => setCurrentIndex(calcActive()),
+        300
+      )
+      const onScrollForSticky = throttle(() => setSticky(calcSticky()), 10)
 
-    window.addEventListener('scroll', onScrollForActive)
-    window.addEventListener('scroll', onScrollForSticky)
+      window.addEventListener('scroll', onScrollForActive)
+      window.addEventListener('scroll', onScrollForSticky)
 
-    return () => {
-      window.removeEventListener('scroll', onScrollForActive)
-      window.removeEventListener('scroll', onScrollForSticky)
+      return () => {
+        window.removeEventListener('scroll', onScrollForActive)
+        window.removeEventListener('scroll', onScrollForSticky)
+      }
     }
   }, [calcSticky, calcActive])
 

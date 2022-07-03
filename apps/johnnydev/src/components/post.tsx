@@ -144,7 +144,7 @@ const StyledPost = styled.article`
       color: #a8a8a8;
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 7px;
 
       a {
         color: #a8a8a8;

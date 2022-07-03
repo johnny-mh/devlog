@@ -1,8 +1,11 @@
 import { AppContext } from '../context/app'
 import { ReactComponent as CloseIcon } from '../images/close.svg'
+import Spinner from './spinner'
+import { navigate } from 'gatsby'
 import { graphql, useStaticQuery } from 'gatsby'
 import { shuffle } from 'lodash'
 import React, {
+  MouseEvent,
   ReactEventHandler,
   useCallback,
   useContext,
@@ -11,13 +14,30 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import useFusejs from 'react-use-fusejs'
 import styled from 'styled-components'
+
+interface SearchStaticQuery {
+  fusejs: { publicUrl: string }
+  allMarkdownRemark: any
+}
+
+interface SearchItem {
+  id: string
+  path: string
+  title: string
+  body: string
+}
 
 export function Search() {
   const {
+    fusejs: { publicUrl },
     allMarkdownRemark: { group },
-  } = useStaticQuery(graphql`
+  } = useStaticQuery<SearchStaticQuery>(graphql`
     {
+      fusejs {
+        publicUrl
+      }
       allMarkdownRemark {
         group(field: frontmatter___tags) {
           name: fieldValue
@@ -27,29 +47,42 @@ export function Search() {
     }
   `)
 
-  const { setSearch } = useContext(AppContext)
+  const { setShowSearch, fuseData, setFuseData } = useContext(AppContext)
   const [reveal, setReveal] = useState('')
-  const [searchText, setSearchText] = useState('')
+  const [query, setQuery] = useState('')
+  const results = useFusejs<SearchItem>(query, fuseData)
+
   const inpRef = useRef<HTMLInputElement>()
   const list = useMemo(() => shuffle(group).slice(0, 5), [group])
+
+  const [isFething, setIsFetching] = useState(false)
 
   const close = useCallback(() => {
     setReveal('')
     inpRef.current.blur()
-    setTimeout(() => setSearch(false), 1000)
-  }, [setSearch, setReveal])
+    setTimeout(() => setShowSearch(false), 1000)
+  }, [setShowSearch, setReveal])
 
   const onSubmit = useCallback<ReactEventHandler<HTMLFormElement>>(e => {
     e.preventDefault()
   }, [])
 
   const onInput = useCallback<ReactEventHandler<HTMLInputElement>>(
-    e => setSearchText((e.target as HTMLInputElement).value),
+    e => setQuery((e.target as HTMLInputElement).value),
     []
   )
 
-  const onClickTag = useCallback<(searchText: string) => void>(
-    name => setSearchText(name),
+  const onClickTag = useCallback<(searchText: string) => void>(name => {
+    inpRef.current.value = name
+    setQuery(name)
+  }, [])
+
+  const onClickLink = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>, path: string) => {
+      e.preventDefault()
+      setShowSearch(false)
+      navigate(path)
+    },
     []
   )
 
@@ -68,7 +101,22 @@ export function Search() {
     return () => {
       document.removeEventListener('keyup', onKeyUp)
     }
-  }, [])
+  }, [close])
+
+  const fetchingStore = useRef(false)
+
+  useEffect(() => {
+    if (!fetchingStore.current && !fuseData && query) {
+      fetchingStore.current = true
+
+      setIsFetching(true)
+
+      fetch(publicUrl)
+        .then(res => res.json())
+        .then(data => setFuseData(data))
+        .finally(() => setIsFetching(false))
+    }
+  }, [fuseData, query, publicUrl, setFuseData])
 
   return (
     <StyledSearch className={reveal}>
@@ -83,7 +131,6 @@ export function Search() {
               autoComplete="off"
               autoCorrect="off"
               ref={inpRef}
-              value={searchText}
               onInput={onInput}
             />
           </form>
@@ -98,6 +145,23 @@ export function Search() {
             </button>
           ))}
         </div>
+        <div className="list">
+          {isFething && <Spinner className="spinner" />}
+
+          {!isFething && query && !results.length ? (
+            <p>검색 결과가 없습니다</p>
+          ) : (
+            <ul className="searchResult">
+              {results.map(({ item }) => (
+                <li key={item.id}>
+                  <a href={item.path} onClick={e => onClickLink(e, item.path)}>
+                    {item.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </StyledSearch>
   )
@@ -110,6 +174,8 @@ const StyledSearch = styled.div`
   z-index: 20;
   inset: 0;
   background-color: #f8f8f8;
+  overflow-y: scroll;
+  overscroll-behavior: none;
   clip-path: circle(0% at 100% 0px);
   transition-property: clip-path;
   transition-duration: 1s;
@@ -133,6 +199,12 @@ const StyledSearch = styled.div`
     justify-content: space-between;
     align-items: center;
     margin: 0 0 1.5rem;
+
+    form {
+      display: flex;
+      flex-grow: 1;
+      position: relative;
+    }
   }
 
   .tags {
@@ -161,13 +233,36 @@ const StyledSearch = styled.div`
 
   &.reveal {
     clip-path: circle(300% at 100% 0px);
-    transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   .inp {
+    flex-grow: 1;
     font-size: 3rem;
     border: none;
     outline: none;
     background-color: transparent;
+  }
+
+  .list {
+    position: relative;
+    padding-top: 20px;
+
+    ul {
+      margin: 0 0 0 0.5rem;
+
+      li {
+        position: relative;
+        margin-bottom: 1.5rem;
+
+        a {
+          color: #333;
+        }
+      }
+    }
+  }
+
+  .spinner {
+    position: absolute;
+    top: -10px;
   }
 `
