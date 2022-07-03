@@ -1,7 +1,7 @@
 {
   "name": "johnnydev",
-  "description": "johnnydev blog",
   "version": "1.0.0",
+  "description": "johnnydev blog",
   "license": "MIT",
   "dependencies": {
     "gatsby": "*",

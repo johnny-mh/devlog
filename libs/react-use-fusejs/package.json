@@ -1,4 +1,33 @@
 {
   "name": "react-use-fusejs",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "description": "React hook to search a Fuse.js index",
+  "keywords": [
+    "react",
+    "search",
+    "fuse.js"
+  ],
+  "homepage": "https://github.com/johnny-mh/blog2/tree/main/libs/react-use-fusejs#readme",
+  "bugs": {
+    "url": "https://github.com/johnny-mh/blog2/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnny-mh/blog2.git",
+    "directory": "libs/react-use-fusejs"
+  },
+  "license": "MIT",
+  "author": "johnny-mh <romz1212@gmail.com>",
+  "type": "commonjs",
+  "dependencies": {
+    "fuse.js": "^6.0.0",
+    "react": "^18.0.0"
+  },
+  "peerDependencies": {
+    "fuse.js": ">=6.0.0",
+    "react": ">=17.0.0"
+  },
+  "publishConfig": {
+    "directory": "./dist"
+  }
 }

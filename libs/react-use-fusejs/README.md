@@ -1,7 +1,9 @@
 # react-use-fusejs
 
-This library was generated with [Nx](https://nx.dev).
+React hook to search a [Fuse.js](https://fusejs.io/) index
 
-## Running unit tests
+## Install
 
-Run `nx test react-use-fusejs` to execute the unit tests via [Jest](https://jestjs.io).
+```sh
+npm install --save react-use-fusejs
+```

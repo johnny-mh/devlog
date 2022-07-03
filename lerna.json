@@ -1,0 +1,10 @@
+{
+  "packages": ["libs/*"],
+  "useNx": false,
+  "version": "independent",
+  "command": {
+    "publish": {
+      "conventionalCommits": true
+    }
+  }
+}
