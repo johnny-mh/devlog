@@ -17,6 +17,7 @@ td,
 textarea,
 th {
   font-family: var(--sans-serif);
+  line-height: 1.1rem;
 }
 
 a {
@@ -76,4 +77,34 @@ h6 {
   --sans-serif: HelveticaNeue, AppleSDGothicNeo-Regular, tahoma, Malgun Gothic,
     '맑은 고딕', dotum, 돋움, sans-serif;
   --monospace: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+@media (max-width: 414px) {
+  h1 {
+    font-size: 1.5rem;
+    line-height: 1.2em;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    line-height: 1.2em;
+  }
+
+  h3 {
+    font-size: 1rem;
+    line-height: 1em;
+  }
+
+  h4 {
+    font-size: 1rem;
+    line-height: 1em;
+  }
+
+  h5 {
+    font-size: 1rem;
+  }
+
+  h6 {
+    font-size: 1rem;
+  }
 }

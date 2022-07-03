@@ -1,9 +1,8 @@
 import { AppContext } from '../context/app'
 import { ReactComponent as LogoIcon } from '../images/johnnydev.svg'
 import { ReactComponent as SearchIcon } from '../images/search.svg'
-import { isBrowser } from '../util'
+import { devices, isBrowser } from '../util'
 import { Link } from 'gatsby'
-import { StaticImage } from 'gatsby-plugin-image'
 import {
   ReactEventHandler,
   useCallback,
@@ -106,6 +105,7 @@ const StyledHeader = styled.div`
   }
 
   .links {
+    flex-grow: 1;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -128,6 +128,31 @@ const StyledHeader = styled.div`
 
     svg {
       fill: #333;
+    }
+  }
+
+  @media ${devices.mobile} {
+    &.scroll {
+      height: 3rem;
+
+      .container {
+        height: 3rem;
+      }
+    }
+
+    .container {
+      padding: 0;
+      height: 4rem;
+
+      .brand {
+        svg {
+          width: 140px;
+        }
+      }
+
+      .links {
+        justify-content: end;
+      }
     }
   }
 `

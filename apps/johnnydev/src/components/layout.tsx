@@ -1,4 +1,5 @@
 import { AppContext } from '../context/app'
+import { devices } from '../util'
 import Footer from './footer'
 import Header from './header'
 import Search from './search'
@@ -28,4 +29,9 @@ const StyledLayout = styled.main`
   max-width: 800px;
   margin: 9rem auto 0 auto;
   min-height: calc(100vh - 23rem);
+
+  @media ${devices.mobile} {
+    margin: 4rem auto 0 auto;
+    padding: 2rem 0.5rem;
+  }
 `

@@ -1,5 +1,6 @@
 import { AppContext } from '../context/app'
 import { ReactComponent as CloseIcon } from '../images/close.svg'
+import { devices } from '../util'
 import Spinner from './spinner'
 import { navigate } from 'gatsby'
 import { graphql, useStaticQuery } from 'gatsby'
@@ -236,11 +237,12 @@ const StyledSearch = styled.div`
   }
 
   .inp {
-    flex-grow: 1;
+    width: 100%;
     font-size: 3rem;
     border: none;
     outline: none;
     background-color: transparent;
+    padding: 0;
   }
 
   .list {
@@ -264,5 +266,30 @@ const StyledSearch = styled.div`
   .spinner {
     position: absolute;
     top: -10px;
+  }
+
+  @media ${devices.mobile} {
+    padding: 0.5rem;
+
+    .content {
+      padding: 0;
+      margin: 2rem 0 0 0;
+
+      .header {
+        input {
+          font-size: 2rem;
+        }
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .tags {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+    }
   }
 `

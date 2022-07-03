@@ -184,6 +184,10 @@ export function SEO({
     <>
       <Helmet title={seo.title}>
         <html lang={siteLanguage} />
+        <meta
+          name="viewport"
+          content="initial-scale=1, maximum-scale=5, width=device-width, viewport-fit=cover"
+        />
         <meta name="description" content={seo.description} />
         <meta name="image" content={seo.image} />
         <meta name="gatsby-starter" content="Gatsby Starter Prismic" />

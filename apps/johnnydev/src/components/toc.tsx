@@ -189,4 +189,8 @@ const StyledToc = styled.div`
       }
     }
   }
+
+  @media (max-width: 1388px) {
+    display: none;
+  }
 `
