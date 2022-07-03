@@ -11,6 +11,10 @@ export default function HTML(props) {
           name="viewport"
           content="initial-scale=1, maximum-scale=5, width=device-width, viewport-fit=cover"
         />
+        <meta
+          name="naver-site-verification"
+          content="aef0a8e4429c4f7c5f7e3b52074dc2d968716069"
+        />
         {props.headComponents}
       </head>
       <body {...props.bodyAttributes}>
