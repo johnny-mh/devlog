@@ -1,4 +1,5 @@
 import { AppContext } from '../context/app'
+import { ReactComponent as LogoIcon } from '../images/johnnydev.svg'
 import { ReactComponent as SearchIcon } from '../images/search.svg'
 import { isBrowser } from '../util'
 import { Link } from 'gatsby'
@@ -38,11 +39,7 @@ export function Header() {
       <div className="container">
         <div className="brand">
           <Link to="/">
-            <StaticImage
-              src="../images/black.png"
-              className="logo"
-              alt="JOHNNY DEV"
-            />
+            <LogoIcon width={230} />
           </Link>
         </div>
         <div className="links">
@@ -75,6 +72,27 @@ const StyledHeader = styled.div`
     }
   }
 
+  .brand {
+    a {
+      display: block;
+      padding: 0.5rem 1rem;
+      transition: background-color 0.2s ease-in-out;
+
+      svg {
+        fill: #333;
+        transition: fill 0.2s ease-in-out;
+      }
+
+      &:hover {
+        background-color: #333;
+
+        svg {
+          fill: #fff;
+        }
+      }
+    }
+  }
+
   .container {
     display: flex;
     justify-content: space-between;
@@ -85,11 +103,6 @@ const StyledHeader = styled.div`
     max-width: 800px;
     padding: 0 2rem;
     margin: 0 auto;
-  }
-
-  .logo img {
-    width: 80px;
-    height: 80px;
   }
 
   .links {
@@ -112,9 +125,9 @@ const StyledHeader = styled.div`
         color: #000;
       }
     }
-  }
 
-  svg {
-    fill: #333;
+    svg {
+      fill: #333;
+    }
   }
 `
