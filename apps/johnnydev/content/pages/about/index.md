@@ -11,9 +11,38 @@ title: about
 
 <section>
 
+## 카카오
+
+### 대외활동
+
+- ifkakao 2021 - [Angular의 Dependency Injection 왜 필요한가요?](https://if.kakao.com/session/105)
+
+### FE개발5셀 (2021-9 ~ 현재까지)
+
+<ul>
+  <li>
+    <details>
+      <summary>커머스 공통 UI라이브러리 개발 및 관리</summary>
+      <ul>
+        <li>공통모듈 빌드배포 nx 검토 및 도입</li>
+      </ul>
+    </details>
+  </li>
+  <li>angular 기반 백엔드 API호출 및 응답 타입 자동 생성 CLI 도구 개발</li>
+  <li>팀 내 angular 코딩 컨벤션 협의, 작성</li>
+</ul>
+</section>
+
+<section>
+
 ## 카카오커머스
 
-### FE개발파트 (2018-12 ~ 현재까지)
+### 대외활동
+
+- 밋업 발표 (2020-12) - [SPA 뒤로가기 스크롤 및 상태복원 구현하기](https://tech.kakao.com/2020/12/23/frontend-growth-04/)
+- 컨퍼런스 발표 (2019-11) - [카카오커머스를 지탱하는 Angular](https://tech.kakao.com/2019/11/27/kakao-commerce-frontend-angular/)
+
+### FE개발파트 (2018-12 ~ 2021-9) - 10개월
 
 <ul>
   <li>구매 기록 추적 라이브러리 개발</li>
@@ -50,11 +79,6 @@ title: about
   <li>신입사원 교육</li>
   <li>2020 카카오 여름인턴 코딩테스트 검수</li>
 </ul>
-
-### 대외활동
-
-- 밋업 발표 (2020-12) - [SPA 뒤로가기 스크롤 및 상태복원 구현하기](https://tech.kakao.com/2020/12/23/frontend-growth-04/)
-- 컨퍼런스 발표 (2019-11) - [카카오커머스를 지탱하는 Angular](https://tech.kakao.com/2019/11/27/kakao-commerce-frontend-angular/)
 
 </section>
 
