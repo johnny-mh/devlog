@@ -9,12 +9,12 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-        env:
-          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - uses: nrwl/nx-set-shas@v2
       - run: npm ci
-      - run: git remote set-url origin https://git:${SECRET_TOKEN}@github.com/johnny-mh/johnny-mh.github.io.git
+      - run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/johnny-mh/johnny-mh.github.io.git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npx nx affected --target=publish --parallel=3
