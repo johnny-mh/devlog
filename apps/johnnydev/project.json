@@ -8,7 +8,7 @@
       "dependsOn": [{ "target": "build", "projects": "self" }],
       "options": {
         "cwd": "apps/johnnydev",
-        "command": "gh-pages -f -d public -b master -u 'johnny-mh <romz1212@gmail.com>'"
+        "command": "gh-pages -f -d public -b master"
       }
     },
     "prebuild": {
