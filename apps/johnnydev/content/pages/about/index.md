@@ -6,7 +6,10 @@ title: about
 
 ## 개인 프로젝트
 
-- nodejs의 `child_process`를 rxjs로 래핑한 [rxjs-shell](https://www.npmjs.com/package/rxjs-shell) 운영
+- nodejs의 `child_process`를 rxjs로 래핑한 [rxjs-shell](https://www.npmjs.com/package/rxjs-shell) 개발
+- gatsby 데이터 노드를 [Fuse.js](https://fusejs.io/) 의 index로 변환해주는 플러그인 [gatsby-plugin-fusejs](https://www.npmjs.com/package/gatsby-plugin-fusejs) 개발
+- [Fuse.js](https://fusejs.io/) 를 활용하여 React에서 Fuzzy Search를 구현한 Hook [react-use-fusejs](https://www.npmjs.com/package/react-use-fusejs) 개발
+
 </section>
 
 <section>

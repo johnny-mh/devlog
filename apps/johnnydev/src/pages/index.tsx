@@ -2,6 +2,8 @@ import SEO from '../components/SEO'
 import Layout from '../components/layout'
 import PostList from '../components/post-list'
 import Profile from '../components/profile'
+import { ReactComponent as GatsbyIcon } from '../images/gatsby.svg'
+import { ReactComponent as ReactIcon } from '../images/react.svg'
 import { ReactComponent as RxjsIcon } from '../images/rxjs.svg'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
@@ -67,6 +69,59 @@ export function Index() {
               </div>
             </div>
           </li>
+          <li>
+            <div className="icon">
+              <ReactIcon />
+            </div>
+            <div className="desc">
+              <h4>
+                <a
+                  href="https://github.com/johnny-mh/blog2/tree/main/libs/react-use-fusejs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  react-use-fusejs
+                </a>
+              </h4>
+              <div>
+                <a
+                  href="https://fusejs.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Fuse.js
+                </a>
+                를 활용하여 React에서 Fuzzy Search를 구현한 Hook
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="icon">
+              <GatsbyIcon />
+            </div>
+            <div className="desc">
+              <h4>
+                <a
+                  href="https://github.com/johnny-mh/blog2/tree/main/libs/gatsby-plugin-fusejs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  gatsby-plugin-fusejs
+                </a>
+              </h4>
+              <div>
+                gatsby 데이터 노드를{' '}
+                <a
+                  href="https://fusejs.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Fuse.js
+                </a>
+                의 index로 변환해주는 플러그인
+              </div>
+            </div>
+          </li>
         </ul>
       </StyledOpensource>
     </Layout>
@@ -83,6 +138,7 @@ const StyledOpensource = styled.section`
     li {
       display: flex;
       position: relative;
+      margin-bottom: 20px;
 
       h4 {
         margin-bottom: 0.5rem;
