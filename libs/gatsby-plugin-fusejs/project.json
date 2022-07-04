@@ -10,7 +10,10 @@
         "outputPath": "apps/johnnydev/plugins/gatsby-plugin-fusejs",
         "main": "libs/gatsby-plugin-fusejs/src/index.ts",
         "tsConfig": "libs/gatsby-plugin-fusejs/tsconfig.lib.json",
-        "assets": ["libs/gatsby-plugin-fusejs/gatsby-node.js"]
+        "assets": [
+          "libs/gatsby-plugin-fusejs/gatsby-node.js",
+          "libs/gatsby-plugin-fusejs/README.md"
+        ]
       }
     },
     "lint": {
