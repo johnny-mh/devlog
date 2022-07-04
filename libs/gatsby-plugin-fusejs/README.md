@@ -24,12 +24,11 @@ module.exports = {
       options: {
         query: `
           {
-            allMarkdownRemark(filter: {fields: {type: {eq: "post"}}}) {
+            allMarkdownRemark {
               nodes {
                 id
                 rawMarkdownBody
                 frontmatter {
-                  path
                   title
                 }
               }
@@ -40,7 +39,6 @@ module.exports = {
         normalizer: ({ data }) =>
           data.allMarkdownRemark.nodes.map((node) => ({
             id: node.id,
-            path: node.frontmatter.path,
             title: node.frontmatter.title,
             body: node.rawMarkdownBody,
           })),
@@ -61,6 +59,8 @@ module.exports = {
 The search data is stored in the `fusejs` node.
 
 ```jsx
+import { useStaticQuery, graphql } from 'gatsby';
+import * as React from 'react';
 import { useGatsbyPluginFusejs } from 'react-use-fusejs';
 
 export function Search() {
@@ -73,7 +73,7 @@ export function Search() {
     }
   `);
 
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = React.useState('');
   const result = useGatsbyPluginFusejs(query, data.fusejs);
 
   return (
@@ -84,15 +84,15 @@ export function Search() {
         onChange={(e) => setQuery(e.target.value)}
       />
       <ul>
-        {result.map((item) => (
-          <li key={item.id}>
-            <Link to={item.path}>{item.title}</Link>
-          </li>
+        {result.map(({ item }) => (
+          <li key={item.id}>{item.title}</li>
         ))}
       </ul>
     </div>
   );
 }
+
+export default Search;
 ```
 
 #### Lazy-loading the search data
@@ -100,6 +100,8 @@ export function Search() {
 The `fusejs` node also have url for the search data. You can use this url to lazy-load the search data.
 
 ```jsx
+import { useStaticQuery, graphql } from 'gatsby';
+import * as React from 'react';
 import { useGatsbyPluginFusejs } from 'react-use-fusejs';
 
 export function Search() {
@@ -111,15 +113,16 @@ export function Search() {
     }
   `);
 
-  const [query, setQuery] = useState('');
-  const [fusejs, setFusejs] = useState(null);
-  const result = useGatsbyPluginFusejs(query, fusejs);
+  const [query, setQuery] = React.useState('');
+  const [fusejs, setFusejs] = React.useState(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch(data.fusejs.publicUrl)
       .then((res) => res.json())
       .then((json) => setFusejs(json));
-  }, []);
+  }, [data]);
+
+  const result = useGatsbyPluginFusejs(query, fusejs);
 
   return (
     <div>
@@ -129,13 +132,13 @@ export function Search() {
         onChange={(e) => setQuery(e.target.value)}
       />
       <ul>
-        {result.map((item) => (
-          <li key={item.id}>
-            <Link to={item.path}>{item.title}</Link>
-          </li>
+        {result.map(({ item }) => (
+          <li key={item.id}>{item.title}</li>
         ))}
       </ul>
     </div>
   );
 }
+
+export default Search;
 ```
