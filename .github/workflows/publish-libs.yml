@@ -7,19 +7,36 @@ on:
 
 jobs:
   main:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v2
+
+      - name: Use nrwl/nx-set-shas
+        uses: nrwl/nx-set-shas@v2
+
       - name: Cache node modules
         id: cache
         uses: actions/cache@v2
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: 'Setup npm'
+        run: |
+          npm set "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - run: echo "hello world"
+
+      - name: Build libraries
+        run: npx nx run-many --target=build --projects=gatsby-plugin-fusejs,react-use-fusejs
+
+      - name: Publish libraries
+        run: lerna publish --yes --message 'chore: release new versions'

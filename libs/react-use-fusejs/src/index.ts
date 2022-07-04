@@ -1,37 +1,67 @@
 import Fuse from 'fuse.js';
 import { useEffect, useMemo, useState } from 'react';
 
-export const useFusejs = <T = any>(
+export function useFusejs<T>(
   query: string,
-  data: { index: string; data: T[] },
+  data: T[],
+  index: Fuse.FuseIndex<T>,
   fuseOpts?: Fuse.IFuseOptions<T>,
   parseOpts?: Fuse.FuseIndexOptions<T>,
   searchOpts?: Fuse.FuseSearchOptions
-) => {
-  const [fuseInst, setFuseInst] = useState<null | Fuse<T>>(null);
+) {
+  const [instance, setInstance] = useState<null | Fuse<T>>(null);
 
   useEffect(() => {
-    if (!data?.index) {
-      setFuseInst(null);
+    if (!data || !index) {
+      setInstance(null);
       return;
     }
 
-    const inst = new Fuse(
-      data.data,
-      fuseOpts,
-      Fuse.parseIndex(JSON.parse(data.index), parseOpts)
-    );
+    const inst = new Fuse<T>(data, fuseOpts, Fuse.parseIndex(index, parseOpts));
 
-    setFuseInst(inst);
-  }, [data, parseOpts]);
+    setInstance(inst);
+  }, [data, index]);
 
   return useMemo(() => {
-    if (!query || !data) {
+    if (!query || !instance) {
       return [];
     }
 
-    return fuseInst?.search(query, searchOpts) || [];
-  }, [query, data, fuseInst]);
-};
+    return instance?.search(query, searchOpts) || [];
+  }, [query, instance]);
+}
+
+export function useGatsbyPluginFusejs<T>(
+  query: string,
+  fusejs: { data: T[]; index: string },
+  fuseOpts?: Fuse.IFuseOptions<T>,
+  parseOpts?: Fuse.FuseIndexOptions<T>,
+  searchOpts?: Fuse.FuseSearchOptions
+) {
+  const [instance, setInstance] = useState<null | Fuse<T>>(null);
+
+  useEffect(() => {
+    if (!fusejs?.data || !fusejs?.index) {
+      setInstance(null);
+      return;
+    }
+
+    const inst = new Fuse<T>(
+      fusejs.data,
+      fuseOpts,
+      Fuse.parseIndex(JSON.parse(fusejs.index), parseOpts)
+    );
+
+    setInstance(inst);
+  }, [fusejs]);
+
+  return useMemo(() => {
+    if (!query || !instance) {
+      return [];
+    }
+
+    return instance?.search(query, searchOpts) || [];
+  }, [query, instance]);
+}
 
 export default useFusejs;

@@ -61,7 +61,7 @@ module.exports = {
 The search data is stored in the `fusejs` node.
 
 ```jsx
-import useFusejs from 'react-use-fusejs';
+import { useGatsbyPluginFusejs } from 'react-use-fusejs';
 
 export function Search() {
   const data = useStaticQuery(graphql`
@@ -74,7 +74,7 @@ export function Search() {
   `);
 
   const [query, setQuery] = useState('');
-  const result = useFusejs(query, data.fusejs);
+  const result = useGatsbyPluginFusejs(query, data.fusejs);
 
   return (
     <div>
@@ -100,7 +100,7 @@ export function Search() {
 The `fusejs` node also have url for the search data. You can use this url to lazy-load the search data.
 
 ```jsx
-import useFusejs from 'react-use-fusejs';
+import { useGatsbyPluginFusejs } from 'react-use-fusejs';
 
 export function Search() {
   const data = useStaticQuery(graphql`
@@ -113,7 +113,7 @@ export function Search() {
 
   const [query, setQuery] = useState('');
   const [fusejs, setFusejs] = useState(null);
-  const result = useFusejs(query, fusejs);
+  const result = useGatsbyPluginFusejs(query, fusejs);
 
   useEffect(() => {
     fetch(data.fusejs.publicUrl)
@@ -138,8 +138,4 @@ export function Search() {
     </div>
   );
 }
-```
-
-```
-
 ```

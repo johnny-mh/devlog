@@ -63,7 +63,7 @@ export const createPages = async (
 
 interface FuseNodeInput extends NodeInput {
   index: string;
-  data: any;
+  data: unknown;
 }
 
 export const createSchemaCustomization = async (
@@ -78,7 +78,8 @@ export const createSchemaCustomization = async (
       fields: {
         index: {
           type: 'String!',
-          description: 'The search index created using the fusejs.',
+          description:
+            'The JSON serialized search index string created using the fusejs.',
         },
         data: {
           type: 'JSON!',

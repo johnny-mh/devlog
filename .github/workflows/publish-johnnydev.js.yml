@@ -9,20 +9,28 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v2
+
+      - name: Use nrwl/nx-set-shas
+        uses: nrwl/nx-set-shas@v2
+
       - name: Cache node modules
         id: cache
         uses: actions/cache@v2
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
+
       - run: git remote set-url origin https://git:${SECRET_TOKEN}@github.com/johnny-mh/johnny-mh.github.io.git
         env:
           SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
-      - run: npx nx affected --target=publish --parallel=3
+
+      - name: Build and publish
+        run: npx nx affected --target=publish --parallel=3

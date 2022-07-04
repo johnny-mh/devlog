@@ -15,12 +15,12 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import useFusejs from 'react-use-fusejs'
+import { useGatsbyPluginFusejs } from 'react-use-fusejs'
 import styled from 'styled-components'
 
 interface SearchStaticQuery {
   fusejs: { publicUrl: string }
-  allMarkdownRemark: any
+  allMarkdownRemark: { group: { name: string; totalCount: number }[] }
 }
 
 interface SearchItem {
@@ -51,7 +51,7 @@ export function Search() {
   const { setShowSearch, fuseData, setFuseData } = useContext(AppContext)
   const [reveal, setReveal] = useState('')
   const [query, setQuery] = useState('')
-  const results = useFusejs<SearchItem>(query, fuseData)
+  const results = useGatsbyPluginFusejs<SearchItem>(query, fuseData)
 
   const inpRef = useRef<HTMLInputElement>()
   const list = useMemo(() => shuffle(group).slice(0, 5), [group])
