@@ -2,6 +2,8 @@
 
 React hook to search a [Fuse.js](https://fusejs.io/) index
 
+> If you have plan to using this with `gatsby-plugin-fusejs`. please see [gatsby-plugin-fusejs](https://github.com/johnny-mh/blog2/tree/main/libs/gatsby-plugin-fusejs#readme)
+
 ## Install
 
 ```sh
@@ -70,4 +72,51 @@ export function Search() {
 
 ### `useGatsbyPluginFusejs`
 
-hook for data from `gatsby-plugin-fusejs`. please see [gatsby-plugin-fusejs](https://www.gatsbyjs.org/packages/gatsby-plugin-fusejs/)
+React hook for index data from `gatsby-plugin-fusejs`
+
+> Please see [gatsby-plugin-fusejs](https://github.com/johnny-mh/blog2/tree/main/libs/gatsby-plugin-fusejs#readme) to read more details
+
+```jsx
+import { useStaticQuery, graphql } from 'gatsby';
+import * as React from 'react';
+import { useGatsbyPluginFusejs } from 'react-use-fusejs';
+
+export function Search() {
+  const data = useStaticQuery(graphql`
+    {
+      fusejs {
+        index
+        data
+      }
+    }
+  `);
+
+  const [query, setQuery] = React.useState('');
+  const result = useGatsbyPluginFusejs(query, data.fusejs);
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <ul>
+        {result.map(({ item }) => (
+          <li key={item.id}>{item.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default Search;
+```
+
+#### Arguments
+
+- `query`: The search query
+- `data`: A object from `gatsby-plugin-fusejs` plugin (You don't need processing that. just pass to this hook)
+- `fuseOpts`: A object of Fuse.js options. see [Fuse.js options](https://fusejs.io/api/options.html)
+- `parseOpts`: A object of Fuse.parseIndex. see [Fuse.parseIndex](https://fusejs.io/api/parsing.html#fuse-parseindex)
+- `searchOpts`: A object of Fuse.search

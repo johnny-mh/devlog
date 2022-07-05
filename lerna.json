@@ -2,6 +2,8 @@
   "packages": ["libs/*"],
   "useNx": false,
   "version": "independent",
+  "changelogPreset": "angular",
+  "stream": true,
   "command": {
     "publish": {
       "conventionalCommits": true
