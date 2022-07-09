@@ -87,7 +87,6 @@
     "gh-pages": "^4.0.0",
     "husky": "^8.0.0",
     "jest": "27.5.1",
-    "lerna": "^5.1.6",
     "nx": "14.3.6",
     "prettier": "^2.6.2",
     "react-test-renderer": "18.2.0",
