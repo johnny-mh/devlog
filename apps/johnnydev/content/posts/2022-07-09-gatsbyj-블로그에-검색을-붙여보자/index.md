@@ -205,14 +205,14 @@ export function Search() {
   const fetching = React.useRef(false)
 
   React.useEffect(() => {
-    if (!fetching.current && query) {
+    if (!fetching.current && !fusejs && query) {
       fetching.current = true
 
       fetch(data.fusejs.publicUrl)
         .then(res => res.json())
         .then(json => setFusejs(json))
     }
-  }, [data, query])
+  }, [fusejs, query])
 
   return (
     <div>
@@ -238,7 +238,7 @@ export default Search
 위의 예제에서 다운로드 받아 만든 fuse.js 데이터는 컴포넌트가 제거되면 함께 사라진다. 따라서 데이터를 컨텍스트에 담아 재사용하도록 한다.
 
 ```jsx
-// context/app.jsx
+// src/context/app.jsx
 import { createContext, useState } from 'react'
 
 export const AppContext = createContext({
@@ -289,14 +289,14 @@ export function Search() {
   const fetching = React.useRef(false)
 
   React.useEffect(() => {
-    if (!fetching.current && query) {
+    if (!fetching.current && !fusejs && query) {
       fetching.current = true
 
       fetch(data.fusejs.publicUrl)
         .then(res => res.json())
-        .then(json => setFusejs(json))
+        .then(json => setFusejs(json));
     }
-  }, [data, query])
+  }, [fusejs, query])
 
   return (
     <div>
