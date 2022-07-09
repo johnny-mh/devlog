@@ -22,6 +22,12 @@
       "options": {
         "lintFilePatterns": ["libs/gatsby-plugin-fusejs/**/*.ts"]
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
+      }
     }
   },
   "tags": []
