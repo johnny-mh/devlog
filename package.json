@@ -5,15 +5,11 @@
   "license": "MIT",
   "scripts": {
     "build": "nx build",
+    "commit": "commit",
     "prepare": "husky install",
     "sort-deps": "npx sort-package-json \"package.json\" \"libs/*/package.json\" \"apps/*/package.json\"",
     "start": "nx serve",
     "test": "nx test"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -50,8 +46,9 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.0.0",
-    "@commitlint/config-conventional": "^17.0.0",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@commitlint/prompt-cli": "^17.0.3",
     "@jscutlery/semver": "^2.25.2",
     "@nrwl/cli": "14.3.6",
     "@nrwl/eslint-plugin-nx": "14.3.6",
@@ -87,6 +84,7 @@
     "gh-pages": "^4.0.0",
     "husky": "^8.0.0",
     "jest": "27.5.1",
+    "lerna": "^5.1.8",
     "nx": "14.3.6",
     "prettier": "^2.6.2",
     "react-test-renderer": "18.2.0",
