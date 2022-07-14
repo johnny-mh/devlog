@@ -1,4 +1,5 @@
 import SEO from '../components/SEO'
+import Comments from '../components/comments'
 import Layout from '../components/layout'
 import Pager from '../components/pager'
 import Post, { PostProps } from '../components/post'
@@ -26,9 +27,15 @@ export function PostTemplate({
 }: PostTemplateProps) {
   return (
     <Layout>
-      <SEO keywords={post.frontmatter.tags} desc={post.frontmatter.title} />
+      <SEO
+        keywords={post.frontmatter.tags}
+        title={post.frontmatter.title}
+        desc={post.frontmatter.description}
+        image={post.frontmatter.featuredImage?.publicURL}
+      />
       <Post post={post} />
       <Pager {...pageContext} />
+      <Comments />
     </Layout>
   )
 }

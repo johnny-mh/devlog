@@ -2,6 +2,7 @@
 title: Amplify에서 S3 CloudFront로 전환하기
 categories: [development]
 tags: [AWS, Amplify, S3, CloudFront]
+description: 블로그를 Amplify에서 S3와 CloudFront로 전환했던 경험을 설명합니다
 ---
 
 # Amplify의 불편한 점

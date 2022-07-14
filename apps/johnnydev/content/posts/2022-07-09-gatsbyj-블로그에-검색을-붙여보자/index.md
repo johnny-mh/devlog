@@ -2,6 +2,7 @@
 title: gatsby 블로그에 검색을 붙여보자
 categories: [development]
 tags: [gatsby, search]
+description: gatsby블로그에 fusejs를 이용하여 로컬 검색을 구현했던 방법에 대해 설명합니다
 ---
 
 # gatsby에 검색을 추가하는 방법
@@ -317,6 +318,6 @@ export function Search() {
 export default Search
 ```
 
-# 주석
-
-<a name="footnote_1">1.</a> lunr의 한글 검색 이슈는 [Jekyll에 lunr.js 붙이기 \(+ 한국어 검색 문제 해결\)](https://cjeon.com/2016/05/29/Jekyll-lunr.html) 에서 볼 수 있고. flexsearch의 한글 검색 이슈는 [gatsby를 이용한 Github blog 개발후기](https://jaeseokim.dev/React/gatsby-blog-%EA%B0%9C%EB%B0%9C-%ED%9B%84%EA%B8%B0/#%EB%91%90-%EB%B2%88%EC%A7%B8-%EA%B3%A0%EB%AF%BC---%EA%B2%80%EC%83%89-%EA%B8%B0%EB%8A%A5)에서 볼 수 있으며. [공식 문서](https://github.com/nextapps-de/flexsearch#cjk-word-break-chinese-japanese-korean)를 따라해도 동작하지 않는다.
+> # 주석
+>
+> <a name="footnote_1">1.</a> lunr의 한글 검색 이슈는 [Jekyll에 lunr.js 붙이기 \(+ 한국어 검색 문제 해결\)](https://cjeon.com/2016/05/29/Jekyll-lunr.html) 에서 볼 수 있고. flexsearch의 한글 검색 이슈는 [gatsby를 이용한 Github blog 개발후기](https://jaeseokim.dev/React/gatsby-blog-%EA%B0%9C%EB%B0%9C-%ED%9B%84%EA%B8%B0/#%EB%91%90-%EB%B2%88%EC%A7%B8-%EA%B3%A0%EB%AF%BC---%EA%B2%80%EC%83%89-%EA%B8%B0%EB%8A%A5)에서 볼 수 있으며. [공식 문서](https://github.com/nextapps-de/flexsearch#cjk-word-break-chinese-japanese-korean)를 따라해도 동작하지 않는다.

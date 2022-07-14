@@ -2,6 +2,7 @@
 title: 앱과 라이브러리 관리에 Monorepo?
 categories: [development]
 tags: [monorepo, submodule, subtree, lerna, yarn]
+description: 실무에서 사용하며 느꼈던 monorepo의 장점과 결국 도입할 수 없었던 이유에 대해 설명합니다
 ---
 
 # 공유하는 코드를 어떻게 관리하지?

@@ -2,6 +2,7 @@
 title: 블로그들 Gatsby로 전환 후기
 categories: [development]
 tags: [Gatsby, React]
+description: squarespace에서 gatsby로 블로그를 전환했던 경험을 공유합니다
 ---
 
 # 전환 배경

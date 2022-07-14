@@ -18,6 +18,7 @@ export const query = graphql`
       featuredImage {
         publicURL
       }
+      description
     }
     fields {
       slug
@@ -35,10 +36,9 @@ export interface PostProps {
     title: string
     categories: string[]
     tags: string[]
-    featuredImage: {
-      publicURL: string
-    }
+    featuredImage: null | { publicURL: string }
     updatedAt: string
+    description: string | null
   }
   fields: {
     slug: string
@@ -64,16 +64,9 @@ export function Post(props: { post: PostProps }) {
     })
   }
 
-  let featuredImage = null
-
-  if (frontmatter.featuredImage && frontmatter.featuredImage.publicURL) {
-    featuredImage = frontmatter.featuredImage.publicURL
-  }
-
   return (
     <StyledPost>
       <TOC headings={post.headings} />
-      {featuredImage ? <SEO image={featuredImage} /> : null}
       <header>
         <h1>{post.frontmatter.title}</h1>
         <div className="post-meta">

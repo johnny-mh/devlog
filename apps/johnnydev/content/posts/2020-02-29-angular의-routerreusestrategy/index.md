@@ -3,6 +3,7 @@ title: Angular의 RouteReuseStrategy
 categories: [development, angular]
 tags: [angular, routereusestrategy]
 updatedAt: 2020-05-14
+description: Angular의 라우팅 동작을 커스터마이징 할 수 있는 RouteReuseStrategy를 설명합니다
 ---
 
 # 🚀 RouteReuseStrategy
@@ -129,8 +130,8 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
     future: ActivatedRouteSnapshot,
     curr: ActivatedRouteSnapshot
   ) {
-    const [futureUrl, currUrl] = [future, curr].map((o) =>
-      o.url.map((seg) => seg.path).join('/')
+    const [futureUrl, currUrl] = [future, curr].map(o =>
+      o.url.map(seg => seg.path).join('/')
     )
 
     /**

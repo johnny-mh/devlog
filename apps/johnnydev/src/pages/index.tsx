@@ -138,7 +138,7 @@ const StyledOpensource = styled.section`
     li {
       display: flex;
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
 
       h4 {
         margin-bottom: 0.5rem;

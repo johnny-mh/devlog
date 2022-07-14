@@ -2,6 +2,7 @@
 title: standard-version을 이용한 배포, 롤백 전략
 categories: [development]
 tags: [standard-version, deploy strategy]
+description: standard-version을 사용하여 서비스에 자동 버저닝, 배포, 롤백 시스템을 적용하는 방법에 대해 설명합니다
 ---
 
 # standard-version 소개
