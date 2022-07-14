@@ -25,6 +25,7 @@ const siteMetadata = {
 
 module.exports = {
   siteMetadata,
+  trailingSlash: 'always',
   plugins: [
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,

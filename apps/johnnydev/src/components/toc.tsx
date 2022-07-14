@@ -47,9 +47,18 @@ export function TOC({ headings }: TOCProps) {
       return 0
     }
 
-    const offsets = headers.map(({ slug }) =>
-      Math.max(0, document.getElementById(slug).offsetTop - 300)
-    )
+    const offsets: number[] = []
+
+    for (const { slug } of headers) {
+      const el = document.getElementById(slug)
+
+      if (!el) {
+        return
+      }
+
+      offsets.push(el.offsetTop - 300)
+    }
+
     const maxIndex = offsets.length - 1
 
     const { scrollY } = window
@@ -110,6 +119,9 @@ export function TOC({ headings }: TOCProps) {
       window.addEventListener('scroll', onScrollForSticky)
 
       return () => {
+        onScrollForActive.cancel()
+        onScrollForSticky.cancel()
+
         window.removeEventListener('scroll', onScrollForActive)
         window.removeEventListener('scroll', onScrollForSticky)
       }
