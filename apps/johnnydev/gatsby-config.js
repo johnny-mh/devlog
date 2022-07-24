@@ -72,9 +72,15 @@ module.exports = {
         plugins: [
           'gatsby-remark-prismjs',
           'gatsby-remark-autolink-headers',
+          `gatsby-remark-images-medium-zoom`,
           {
             resolve: 'gatsby-remark-images',
-            options: { maxWidth: 1366, showCaptions: ['alt'], quality: 85 },
+            options: {
+              maxWidth: 1366,
+              showCaptions: ['alt'],
+              quality: 85,
+              linkImagesToOriginal: false,
+            },
           },
           {
             resolve: 'gatsby-remark-external-links',
@@ -185,7 +191,18 @@ module.exports = {
       options: {
         host: siteMetadata.siteUrl,
         sitemap: `${siteMetadata.siteUrl}/sitemap.xml`,
-        policy: [{ userAgent: '*', allow: '/' }],
+        policy: [
+          {
+            userAgent: '*',
+            allow: '/',
+            disallow: [
+              '/about/',
+              '/archives/',
+              '/post/category/',
+              '/post/tag/',
+            ],
+          },
+        ],
       },
     },
     {

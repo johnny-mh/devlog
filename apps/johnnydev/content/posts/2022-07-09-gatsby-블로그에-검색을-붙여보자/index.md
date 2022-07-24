@@ -1,8 +1,8 @@
 ---
 title: gatsby 블로그에 검색을 붙여보자
 categories: [development]
-tags: [gatsby, search]
-description: gatsby블로그에 fusejs를 이용하여 로컬 검색을 구현했던 방법에 대해 설명합니다
+tags: [gatsby, search, fusejs, 검색]
+description: gatsby블로그에 fusejs를 이용하여 로컬 검색을 구현하는 방법에 대해 설명합니다
 ---
 
 # gatsby에 검색을 추가하는 방법

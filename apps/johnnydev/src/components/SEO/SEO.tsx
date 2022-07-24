@@ -66,7 +66,7 @@ export function SEO({
   } = site
 
   const seo = {
-    title: title || defaultTitle,
+    title: title ? `${title} - ${defaultTitle}` : defaultTitle,
     description: desc || defaultDescription,
     image: `${siteUrl}${image || banner || defaultBanner}`,
     url: `${siteUrl}${pathname || ''}`,
