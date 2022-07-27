@@ -204,7 +204,7 @@ pre[class*='language-'] > code[class*='language-'] {
 }
 
 .gatsby-highlight-code-line {
-  background-color: #484848;
+  background-color: #333;
   display: block;
   margin-right: -1em;
   margin-left: -1em;
@@ -213,6 +213,6 @@ pre[class*='language-'] > code[class*='language-'] {
   border-left: 0.25em solid #f99;
 
   .token {
-    background-color: #484848;
+    background-color: #333;
   }
 }
