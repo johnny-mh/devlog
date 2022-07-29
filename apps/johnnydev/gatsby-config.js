@@ -18,7 +18,7 @@ const siteMetadata = {
 
   twitter: '', // Twitter Username
   facebook: '', // Facebook Site Name
-  googleAnalyticsID: 'UA-153662393-1',
+  googleAnalyticsID: 'G-R9PQNBWGC9',
 
   skipNavId: 'reach-skip-nav', // ID for the "Skip to content" a11y feature
 }
@@ -206,10 +206,9 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-google-analytics',
+      resolve: 'gatsby-plugin-google-gtag',
       options: {
-        trackingId: siteMetadata.googleAnalyticsID,
-        head: true,
+        trackingIds: [siteMetadata.googleAnalyticsID],
       },
     },
   ],
