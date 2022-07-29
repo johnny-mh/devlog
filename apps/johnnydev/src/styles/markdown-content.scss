@@ -54,6 +54,15 @@
     font-size: 0.8rem;
     vertical-align: super;
   }
+
+  hr {
+    border-top: 1px solid #999;
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+    width: 50%;
+    margin: 3rem auto;
+  }
 }
 
 .markdown-content.about {
