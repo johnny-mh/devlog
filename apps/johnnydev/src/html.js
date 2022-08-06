@@ -12,6 +12,10 @@ export default function HTML(props) {
           content="initial-scale=1, maximum-scale=5, width=device-width, viewport-fit=cover"
         />
         <meta
+          name="google-site-verification"
+          content="er9zvCmECxtt0KP_BjDZ4WplZsNT5ApeDBK4wYD7aI0"
+        />
+        <meta
           name="naver-site-verification"
           content="aef0a8e4429c4f7c5f7e3b52074dc2d968716069"
         />
