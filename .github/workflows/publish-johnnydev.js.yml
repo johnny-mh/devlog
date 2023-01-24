@@ -49,4 +49,4 @@ jobs:
         run: pnpm build
 
       - name: Publish
-        run: gh-pages -f -d apps/johnnydev/public -b master -u 'github-actions-bot <support+actions@github.com>'
+        run: pnpm gh-pages -f -d apps/johnnydev/public -b master -u 'github-actions-bot <support+actions@github.com>'

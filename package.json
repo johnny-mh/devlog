@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
+    "gh-pages": "^5.0.0",
     "prettier": "latest",
     "turbo": "latest"
   },
