@@ -1,7 +1,7 @@
 import { isBrowser } from '../util'
 import { graphql } from 'gatsby'
 import { slug } from 'github-slugger'
-import { findIndex, head, last, throttle } from 'lodash'
+import { findIndex, head, last, throttle } from 'lodash-es'
 import React, {
   ReactEventHandler,
   useCallback,
@@ -9,7 +9,7 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 export const query = graphql`
   fragment TOC on MarkdownRemark {
@@ -32,7 +32,7 @@ export function TOC({ headings }: TOCProps) {
     () =>
       headings
         .filter(({ depth }) => depth < 3)
-        .map(h => ({ ...h, slug: slug(h.value) })),
+        .map((h) => ({ ...h, slug: slug(h.value) })),
     [headings]
   )
   const calcSticky = useCallback(() => {
@@ -73,7 +73,7 @@ export function TOC({ headings }: TOCProps) {
     ) {
       index = maxIndex
     } else {
-      index = findIndex(offsets, offset => offset > scrollY) - 1
+      index = findIndex(offsets, (offset) => offset > scrollY) - 1
     }
     return index
   }, [headers])
@@ -81,7 +81,7 @@ export function TOC({ headings }: TOCProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [sticky, setSticky] = useState(calcSticky())
 
-  const onClick = useCallback<ReactEventHandler<HTMLDivElement>>(e => {
+  const onClick = useCallback<ReactEventHandler<HTMLDivElement>>((e) => {
     e.preventDefault()
 
     const target = e.target as HTMLDivElement

@@ -30,7 +30,7 @@ export function PostTemplate({
       <SEO
         keywords={post.frontmatter.tags}
         title={post.frontmatter.title}
-        desc={post.frontmatter.description}
+        desc={post.frontmatter.description ?? undefined}
         image={post.frontmatter.featuredImage?.publicURL}
       />
       <Post post={post} />

@@ -1,6 +1,7 @@
 import { devices } from '../util'
 import { StaticImage } from 'gatsby-plugin-image'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
+import React from 'react'
 
 export function Profile() {
   return (
@@ -16,7 +17,7 @@ export function Profile() {
       <div className="description">
         <h1>안녕하세요! FE개발자 김민형입니다</h1>
         <div className="tags">
-          {['JavaScript', 'Angular', 'React', 'NodeJS'].map(str => (
+          {['JavaScript', 'Angular', 'React', 'NodeJS'].map((str) => (
             <span key={str}>{str}</span>
           ))}
         </div>

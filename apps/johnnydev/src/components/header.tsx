@@ -3,14 +3,14 @@ import { ReactComponent as LogoIcon } from '../images/johnnydev.svg'
 import { ReactComponent as SearchIcon } from '../images/search.svg'
 import { devices, isBrowser } from '../util'
 import { Link } from 'gatsby'
-import {
+import React, {
   ReactEventHandler,
   useCallback,
   useContext,
   useEffect,
   useState,
 } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -28,10 +28,13 @@ export function Header() {
 
   const { setShowSearch: setSearch } = useContext(AppContext)
 
-  const onClickSearch = useCallback<ReactEventHandler<HTMLAnchorElement>>(e => {
-    e.preventDefault()
-    setSearch(true)
-  }, [])
+  const onClickSearch = useCallback<ReactEventHandler<HTMLAnchorElement>>(
+    (e) => {
+      e.preventDefault()
+      setSearch(true)
+    },
+    []
+  )
 
   return (
     <StyledHeader className={scrolled ? 'scroll' : ''}>

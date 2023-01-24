@@ -1,11 +1,10 @@
 import { ReactComponent as TagIcon } from '../images/tag.svg'
-import SEO from './SEO'
 import TOC from './toc'
 import dayjs from 'dayjs'
 import { Link, graphql } from 'gatsby'
 import { isEmpty } from 'lodash'
 import React from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 export const query = graphql`
   fragment Post on MarkdownRemark {
@@ -77,7 +76,7 @@ export function Post(props: { post: PostProps }) {
           </span>
           <span className="categories">
             in{' '}
-            {post.frontmatter.categories.map(cat => (
+            {post.frontmatter.categories.map((cat) => (
               <Link to={'/post/category/' + cat} rel="tag" key={cat}>
                 {cat}
               </Link>
@@ -86,7 +85,7 @@ export function Post(props: { post: PostProps }) {
         </div>
         <div className="tags">
           <TagIcon className="icon-tag" />
-          {post.frontmatter.tags.map(tag => (
+          {post.frontmatter.tags.map((tag) => (
             <Link to={`/post/tag/${tag}`} rel="tag" key={tag}>
               {tag}
             </Link>

@@ -11,7 +11,7 @@ export interface TwitterProps {
 
 export function Twitter({
   type = 'summary_large_image',
-  username = null,
+  username,
   title,
   desc,
   image,

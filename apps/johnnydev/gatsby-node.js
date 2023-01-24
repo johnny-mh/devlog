@@ -1,10 +1,3 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
-
-// You can delete this file if you're not using it
 const _ = require('lodash')
 const dayjs = require('dayjs')
 const { resolve } = require('path')
@@ -50,7 +43,7 @@ const getTags = async ({ graphql }) => {
   } = await graphql(`
     {
       allMarkdownRemark {
-        group(field: frontmatter___tags) {
+        group(field: { frontmatter: { tags: SELECT } }) {
           name: fieldValue
           totalCount
         }
@@ -85,7 +78,7 @@ const createEachPostAndPagedPosts = async ({
     {
       allMarkdownRemark(
         filter: { fields: { type: { eq: "post" } } }
-        sort: { fields: fields___date, order: DESC }
+        sort: { fields: { date: DESC } }
       ) {
         nodes {
           id
@@ -124,7 +117,7 @@ const createEachPostAndPagedPosts = async ({
   } = await graphql(`
     {
       allMarkdownRemark {
-        group(field: frontmatter___categories) {
+        group(field: { frontmatter: { categories: SELECT } }) {
           name: fieldValue
         }
       }
@@ -139,8 +132,8 @@ const createEachPostAndPagedPosts = async ({
     } = await graphql(`
       {
         allMarkdownRemark(
-          filter: {frontmatter: {categories: {in: "${categoryName}"}}},
-          sort: {fields: fields___date, order: DESC}
+          filter: {frontmatter: {categories: {in: "${categoryName}"}}}
+          sort: { fields: {date: DESC} }
         ) {
           nodes {
             id
@@ -175,8 +168,8 @@ const createEachPostAndPagedPosts = async ({
     } = await graphql(`
       {
         allMarkdownRemark(
-          filter: {frontmatter: {tags: {in: "${name}"}}},
-          sort: {fields: fields___date, order: DESC}
+          filter: {frontmatter: {tags: {in: "${name}"}}}
+          sort: { fields: {date: DESC} }
         ) {
           nodes {
             id
@@ -223,7 +216,7 @@ const createPages = async ({ graphql, actions: { createPage } }) => {
     }
   `)
 
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     const path = node.fields.slug.replace(/^\/pages/, '')
 
     createPage({
@@ -242,7 +235,7 @@ const createArchives = async ({ graphql, actions: { createPage } }) => {
   let result = await graphql(`
     {
       allMarkdownRemark {
-        group(field: frontmatter___categories) {
+        group(field: { frontmatter: { categories: SELECT } }) {
           name: fieldValue
           totalCount
         }
@@ -260,7 +253,7 @@ const createArchives = async ({ graphql, actions: { createPage } }) => {
     {
       allMarkdownRemark(
         filter: { fields: { type: { eq: "post" } } }
-        sort: { order: DESC, fields: fields___date }
+        sort: { fields: { date: DESC } }
       ) {
         nodes {
           id
@@ -277,13 +270,13 @@ const createArchives = async ({ graphql, actions: { createPage } }) => {
   `)
 
   const groups = _.chain(result.data.allMarkdownRemark.nodes)
-    .map(o => ({
+    .map((o) => ({
       id: o.id,
       date: o.fields.date,
       title: o.frontmatter.title,
       path: o.fields.slug,
     }))
-    .groupBy(o => dayjs(o.date).year())
+    .groupBy((o) => dayjs(o.date).year())
     .entries()
     .orderBy([0], 'desc')
     .reduce(
@@ -304,7 +297,7 @@ const createArchives = async ({ graphql, actions: { createPage } }) => {
   })
 }
 
-exports.createPages = async args => {
+exports.createPages = async (args) => {
   await createEachPostAndPagedPosts(args)
   await createPages(args)
   await createArchives(args)

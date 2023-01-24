@@ -16,7 +16,7 @@ import React, {
   useState,
 } from 'react'
 import { useGatsbyPluginFusejs } from 'react-use-fusejs'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 interface SearchStaticQuery {
   fusejs: { publicUrl: string }
@@ -40,7 +40,7 @@ export function Search() {
         publicUrl
       }
       allMarkdownRemark {
-        group(field: frontmatter___tags) {
+        group(field: { frontmatter: { tags: SELECT } }) {
           name: fieldValue
           totalCount
         }
@@ -53,28 +53,28 @@ export function Search() {
   const [query, setQuery] = useState('')
   const results = useGatsbyPluginFusejs<SearchItem>(query, fuseData)
 
-  const inpRef = useRef<HTMLInputElement>()
+  const inpRef = useRef<HTMLInputElement>(null)
   const list = useMemo(() => shuffle(group).slice(0, 5), [group])
 
   const [isFething, setIsFetching] = useState(false)
 
   const close = useCallback(() => {
     setReveal('')
-    inpRef.current.blur()
+    inpRef.current?.blur()
     setTimeout(() => setShowSearch(false), 1000)
   }, [setShowSearch, setReveal])
 
-  const onSubmit = useCallback<ReactEventHandler<HTMLFormElement>>(e => {
+  const onSubmit = useCallback<ReactEventHandler<HTMLFormElement>>((e) => {
     e.preventDefault()
   }, [])
 
   const onInput = useCallback<ReactEventHandler<HTMLInputElement>>(
-    e => setQuery((e.target as HTMLInputElement).value),
+    (e) => setQuery((e.target as HTMLInputElement).value),
     []
   )
 
-  const onClickTag = useCallback<(searchText: string) => void>(name => {
-    inpRef.current.value = name
+  const onClickTag = useCallback<(searchText: string) => void>((name) => {
+    inpRef.current && (inpRef.current.value = name)
     setQuery(name)
   }, [])
 
@@ -89,7 +89,7 @@ export function Search() {
 
   useEffect(() => {
     setReveal('reveal')
-    inpRef.current.focus()
+    inpRef.current?.focus()
 
     const onKeyUp = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -113,8 +113,8 @@ export function Search() {
       setIsFetching(true)
 
       fetch(publicUrl)
-        .then(res => res.json())
-        .then(data => setFuseData(data))
+        .then((res) => res.json())
+        .then((data) => setFuseData(data))
         .finally(() => setIsFetching(false))
     }
   }, [fuseData, query, publicUrl, setFuseData])
@@ -155,7 +155,10 @@ export function Search() {
             <ul className="searchResult">
               {results.map(({ item }) => (
                 <li key={item.id}>
-                  <a href={item.path} onClick={e => onClickLink(e, item.path)}>
+                  <a
+                    href={item.path}
+                    onClick={(e) => onClickLink(e, item.path)}
+                  >
                     {item.title}
                   </a>
                 </li>

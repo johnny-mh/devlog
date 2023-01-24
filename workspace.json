@@ -1,9 +1,0 @@
-{
-  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
-  "version": 2,
-  "projects": {
-    "gatsby-plugin-fusejs": "libs/gatsby-plugin-fusejs",
-    "johnnydev": "apps/johnnydev",
-    "react-use-fusejs": "libs/react-use-fusejs"
-  }
-}

@@ -3,7 +3,7 @@ import Layout from '../components/layout'
 import dayjs from 'dayjs'
 import { Link } from 'gatsby'
 import React from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 interface ArchivesProps {
   pageContext: {
@@ -42,7 +42,7 @@ export function Archives({
         </div>
         <div className="block">
           <ul className="tagcloud">
-            {categories.map(category => (
+            {categories.map((category) => (
               <li
                 key={category.id}
                 style={{
@@ -69,7 +69,7 @@ export function Archives({
         </div>
         <div className="block">
           <ul className="tagcloud">
-            {tags.map(tag => (
+            {tags.map((tag) => (
               <li
                 key={tag.id}
                 style={{
@@ -94,11 +94,11 @@ export function Archives({
         </div>
         <div className="block">
           <ul id="archives">
-            {groups.map(group => (
+            {groups.map((group) => (
               <li className="archive-list" key={group.year}>
                 <span className="group-name">{group.groupName}</span>
                 <ul className="archive-list-items">
-                  {group.list.map(item => (
+                  {group.list.map((item) => (
                     <li key={item.id}>
                       <Link to={item.path}>{item.title}</Link>
                       <span>{dayjs(item.date).format('LL')}</span>

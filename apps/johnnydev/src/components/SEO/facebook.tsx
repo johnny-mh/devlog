@@ -13,7 +13,7 @@ interface FacebookProps {
 
 export function Facebook({
   url,
-  name = null,
+  name,
   type = 'website',
   title,
   desc,

@@ -7,7 +7,7 @@ import { ReactComponent as ReactIcon } from '../images/react.svg'
 import { ReactComponent as RxjsIcon } from '../images/rxjs.svg'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 export function Index() {
   const {
@@ -16,7 +16,7 @@ export function Index() {
     query PostList {
       allMarkdownRemark(
         filter: { fields: { type: { eq: "post" } } }
-        sort: { fields: fields___date, order: DESC }
+        sort: { fields: { date: DESC } }
         limit: 5
       ) {
         nodes {

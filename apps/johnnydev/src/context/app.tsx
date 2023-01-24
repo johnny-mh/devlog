@@ -1,10 +1,18 @@
-import { createContext, useState } from 'react'
+import React, { createContext, SetStateAction, useState } from 'react'
+import { Dispatch } from 'react'
 
-export const AppContext = createContext({
+interface AppContext {
+  showSearch: boolean
+  setShowSearch: Dispatch<SetStateAction<boolean>>
+  fuseData: any
+  setFuseData: Dispatch<SetStateAction<any>>
+}
+
+export const AppContext = createContext<AppContext>({
   showSearch: false,
-  setShowSearch: (_: boolean) => {},
+  setShowSearch: () => {},
   fuseData: null,
-  setFuseData: (_: any) => {},
+  setFuseData: () => {},
 })
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {

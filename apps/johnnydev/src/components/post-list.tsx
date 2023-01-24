@@ -1,8 +1,9 @@
 import { ReactComponent as TimeIcon } from '../images/time.svg'
 import { PostProps } from './post'
+import React from 'react'
 import dayjs from 'dayjs'
 import { Link } from 'gatsby'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 export interface PostListProps {
   title?: string
@@ -14,7 +15,7 @@ export function PostList({ title = '최근 포스트', posts }: PostListProps) {
     <StyledPostList>
       <h3>{title}</h3>
       <ul>
-        {posts.map(post => (
+        {posts.map((post) => (
           <li key={post.id}>
             <article>
               <h4 itemProp="headline">

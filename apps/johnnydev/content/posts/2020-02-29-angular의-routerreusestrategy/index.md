@@ -130,8 +130,8 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
     future: ActivatedRouteSnapshot,
     curr: ActivatedRouteSnapshot
   ) {
-    const [futureUrl, currUrl] = [future, curr].map(o =>
-      o.url.map(seg => seg.path).join('/')
+    const [futureUrl, currUrl] = [future, curr].map((o) =>
+      o.url.map((seg) => seg.path).join('/')
     )
 
     /**

@@ -1,38 +1,17 @@
-const siteMetadata = {
-  pathPrefix: './', // Prefix for all links. If you deploy your site to example.com/portfolio your pathPrefix should be "portfolio"
-  title: 'JOHNNY DEV', // Navigation and Site Title
-  titleAlt: 'JOHNNY DEV', // Title for JSONLD
-  description: 'Developer who want to write good codes',
-  headline: 'Developer who want to write good codes', // Headline for schema.org JSONLD
-  siteUrl: 'https://johnny-mh.github.io', // Domain of your site. No trailing slash!
-  siteLanguage: 'kr', // Language Tag on <html> element
-  banner: '/logo.png', // Used for SEO
-  ogLanguage: 'ko_KR', // Facebook Language
-
-  // JSONLD / Manifest
-  favicon: 'src/images/favicon.png', // Used for manifest favicon generation
-  shortName: 'JOHNNY DEV', // shortname for manifest. MUST be shorter than 12 characters
-  author: 'johnny.kim', // Author for schemaORGJSONLD
-  themeColor: '#FFFFFF',
-  backgroundColor: '#FFFFFF',
-
-  twitter: '', // Twitter Username
-  facebook: '', // Facebook Site Name
-  googleAnalyticsID: 'G-R9PQNBWGC9',
-
-  skipNavId: 'reach-skip-nav', // ID for the "Skip to content" a11y feature
-}
+const siteMetadata = require('./site-metadata')
 
 module.exports = {
   siteMetadata,
+  graphqlTypegen: true,
   trailingSlash: 'always',
   plugins: [
+    'gatsby-plugin-pnpm',
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sass`,
-    'gatsby-plugin-styled-components',
+    'gatsby-plugin-emotion',
     `gatsby-plugin-sitemap`,
     {
       resolve: 'gatsby-plugin-svgr',
@@ -46,12 +25,6 @@ module.exports = {
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
-      },
-    },
-    {
-      resolve: require.resolve(`@nrwl/gatsby/plugins/nx-gatsby-ext-plugin`),
-      options: {
-        path: __dirname,
       },
     },
     {
@@ -119,7 +92,7 @@ module.exports = {
         `,
         keys: ['title', 'body'],
         normalizer: ({ data }) =>
-          data.allMarkdownRemark.nodes.map(node => ({
+          data.allMarkdownRemark.nodes.map((node) => ({
             id: node.id,
             path: node.fields.slug,
             title: node.frontmatter.title,
@@ -146,7 +119,7 @@ module.exports = {
         feeds: [
           {
             serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.nodes.map(node => {
+              return allMarkdownRemark.nodes.map((node) => {
                 return Object.assign({}, node.frontmatter, {
                   description: node.excerpt,
                   date: node.frontmatter.date,
@@ -163,7 +136,7 @@ module.exports = {
             query: `
               {
                 allMarkdownRemark(
-                  sort: {order: DESC, fields: fields___date},
+                  sort: { fields: {date: DESC} }
                   filter: {fields: {type: {eq: "post"}}}
                 ) {
                   nodes {

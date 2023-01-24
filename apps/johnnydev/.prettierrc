@@ -1,7 +1,0 @@
-{
-  "arrowParens": "avoid",
-  "semi": false,
-  "singleQuote": true,
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
-}

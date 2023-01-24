@@ -117,7 +117,7 @@ module.tsports = {
 
         // graphql의 결과물을 단순 객체 배열로 변환하는 함수
         normalizer: ({ data }) =>
-          data.allMarkdownRemark.nodes.map(node => ({
+          data.allMarkdownRemark.nodes.map((node) => ({
             id: node.id,
             title: node.frontmatter.title,
             body: node.rawMarkdownBody,
@@ -163,7 +163,7 @@ export function Search() {
       <input
         type="text"
         value={query}
-        onChange={e => setQuery(e.target.value)}
+        onChange={(e) => setQuery(e.target.value)}
       />
       <ul>
         {result.map(({ item }) => (

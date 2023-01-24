@@ -1,6 +1,7 @@
+import React from 'react'
 import { ReactComponent as GithubIcon } from '../images/github.svg'
 import { ReactComponent as MailIcon } from '../images/mail.svg'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 export function Footer() {
   return (

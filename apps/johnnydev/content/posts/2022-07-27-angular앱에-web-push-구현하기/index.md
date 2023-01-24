@@ -257,7 +257,7 @@ importScripts('ngsw-worker.js')
  * 데이터를 보내는데. 해당 구독 정보와 매칭되는 웹 워커에서 아래 이벤트가 발생함
  * https://developer.mozilla.org/en-US/docs/Web/API/PushEvent
  */
-self.addEventListener('push', e => {
+self.addEventListener('push', (e) => {
   const { title, body, ...data } = e.data.json()
 
   if (!title || !body) {
@@ -270,7 +270,7 @@ self.addEventListener('push', e => {
 /**
  * OS에 뜬 알림을 클릭했을 때 하는 동작. 예제는 url이 있다면 열어주는 코드이다
  */
-self.addEventListener('notificationclick', e => {
+self.addEventListener('notificationclick', (e) => {
   const url = e.notification?.data?.url
 
   if (!url) {

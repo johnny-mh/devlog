@@ -1,0 +1,19 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "public/**"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "serve": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "clean": {},
+    "typecheck": {}
+  }
+}

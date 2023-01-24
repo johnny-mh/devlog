@@ -10,7 +10,7 @@ export const pageQuery = graphql`
   query ($skip: Int!, $limit: Int!, $ids: [String!]) {
     allMarkdownRemark(
       filter: { id: { in: $ids } }
-      sort: { fields: [fields___date], order: DESC }
+      sort: { fields: { date: DESC } }
       skip: $skip
       limit: $limit
     ) {

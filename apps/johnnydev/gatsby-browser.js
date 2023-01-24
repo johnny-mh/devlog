@@ -1,9 +1,3 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
-// You can delete this file if you're not using it
 import { AppProvider } from './src/context/app'
 import './src/styles/highlight.scss'
 import './src/styles/markdown-content.scss'
@@ -19,3 +13,10 @@ dayjs.extend(require('dayjs/plugin/localizedFormat'))
 export const wrapRootElement = ({ element }) => {
   return <AppProvider>{element}</AppProvider>
 }
+
+// export const onRouteUpdate = (loc) => {}
+
+// export const shouldUpdateScroll = ({ routerProps }) => {
+//   const { disableScrollUpdate } = routerProps.location.state
+//   return !disableScrollUpdate
+// }

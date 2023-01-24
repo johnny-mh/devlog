@@ -1,7 +1,8 @@
 import { ReactComponent as LeftIcon } from '../images/left.svg'
 import { ReactComponent as RightIcon } from '../images/right.svg'
 import { Link } from 'gatsby'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
+import React from 'react'
 
 export interface PagerProps {
   previousPagePath: string
@@ -54,7 +55,7 @@ const StyledPager = styled.nav<{ font?: string }>`
     text-align: center;
 
     li {
-      font: ${props => props.font || '600 14px Montserrat, sans-serif'};
+      font: ${(props) => props.font || '600 14px Montserrat, sans-serif'};
       display: inline-block;
       *display: block;
       *zoom: 1;

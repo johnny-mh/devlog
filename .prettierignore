@@ -1,8 +1,0 @@
-# Add files here to ignore them from prettier formatting
-
-/dist
-/coverage
-
-/apps/johnnydev/node_modules
-/apps/johnnydev/public
-/apps/johnnydev/.cache
