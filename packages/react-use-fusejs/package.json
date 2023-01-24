@@ -18,10 +18,11 @@
   },
   "license": "MIT",
   "author": "johnny-mh <romz1212@gmail.com>",
-  "type": "commonjs",
+  "type": "module",
   "files": [
     "dist"
   ],
+  "main": "dist/index.js",
   "scripts": {
     "build": "esbuild src/index.ts --outfile=dist/index.js --bundle --sourcemap --format=esm --external:./node_modules/* && tsc"
   },
@@ -35,9 +36,5 @@
   "peerDependencies": {
     "fuse.js": ">=6.0.0",
     "react": ">=18.0.0"
-  },
-  "publishConfig": {
-    "directory": "./dist",
-    "linkDirectory": true
   }
 }
