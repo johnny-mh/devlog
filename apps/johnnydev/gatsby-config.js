@@ -5,7 +5,6 @@ module.exports = {
   graphqlTypegen: true,
   trailingSlash: 'always',
   plugins: [
-    'gatsby-plugin-pnpm',
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
@@ -13,6 +12,12 @@ module.exports = {
     `gatsby-plugin-sass`,
     'gatsby-plugin-emotion',
     `gatsby-plugin-sitemap`,
+    {
+      resolve: "gatsby-plugin-webpack-bundle-analyser-v2",
+      options: {
+        devMode: true,
+      },
+    },
     {
       resolve: 'gatsby-plugin-svgr',
       options: {
