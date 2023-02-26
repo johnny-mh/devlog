@@ -26,6 +26,6 @@ jobs:
         env:
           SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
-      - run: yarn turbo build
+      - run: NODE_ENV=production yarn turbo build
 
       - run: yarn turbo gh-pages -f -d apps/johnnydev/public -b master -u 'github-actions-bot <support+actions@github.com>'
