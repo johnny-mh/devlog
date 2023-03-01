@@ -5,7 +5,7 @@ tags: [standard-version, deploy strategy]
 description: standard-version을 사용하여 서비스에 자동 버저닝, 배포, 롤백 시스템을 적용하는 방법에 대해 설명합니다
 ---
 
-import { Image, Picture } from '@astrojs/image/components'
+import PostImage from '#/components/PostImage.astro'
 
 # standard-version 소개
 
@@ -25,11 +25,9 @@ lerna말고도 같은 기능을 제공하는 도구가 몇개 있는데. 그 중
 
 하지만 **서비스들의 커밋이 섞여 각 담당자들이 라이브러리 수정 코드만을 보고 사이드 이펙트를 예측할 수 있을 지 확실하지 않다**는 문제로 진행하지 않기로 했고. 서비스는 다른 방법을 찾아야만 했다.
 
-<Image
-  src={import('../../../public/post/20200625/side-effect.png')}
+<PostImage
+  src="#/post/20200625/side-effect.png"
   alt="서비스 사이드이펙트 문제"
-  width={736}
-  aspectRatio="850:400"
 />
 
 그 때 **Conventional Commit** 사이트에 소개된 툴 중에 **standard-version**을 도입하여 현재 문제 없이 운영하고 있다.
@@ -42,12 +40,7 @@ lerna말고도 같은 기능을 제공하는 도구가 몇개 있는데. 그 중
 
 > 먼저 그림으로 보고 각 단계에서 하는 일들을 아래에서 설명한다
 
-<Image
-  src={import('../../../public/post/20200625/deploy-strategy.png')}
-  alt="배포 프로세스"
-  width={736}
-  aspectRatio="950:520"
-/>
+<PostImage src="#/post/20200625/deploy-strategy.png" alt="배포 프로세스" />
 
 ## 1. 기능 개발
 
@@ -95,11 +88,9 @@ npm install -D commitlint husky
 
 Pull Request를 만들어 코드리뷰를 한다면 PR Check 기능을 이용해 커밋 메시지를 검사해 준다. 실수로 잘못된 커밋 메시지의 커밋이 푸시될 수 있기 때문이다. PR Check을 하지 않는다면 이 단계는 건너뛰고 다음 빌드 과정에서 하면 된다.
 
-<Image
-  src={import('../../../public/post/20200625/pr-build.png')}
+<PostImage
+  src="#/post/20200625/pr-build.png"
   alt="대부분의 유명 오픈소스 프로젝트는 모두 PR Check에서 이 검사를 한다"
-  width={736}
-  aspectRatio="1820:832"
 />
 
 ```bash
@@ -207,12 +198,7 @@ git push origin HEAD --follow-tags --no-verify
 
 # 롤백 프로세스
 
-<Image
-  src={import('../../../public/post/20200625/rollback-strategy.png')}
-  alt="롤백 프로세스"
-  width={736}
-  aspectRatio="960:465"
-/>
+<PostImage src="#/post/20200625/rollback-strategy.png" alt="롤백 프로세스" />
 
 real배포를 하면 태그가 쌓일 것이다 아래 명령으로 조회할 수 있다. v1.3.0로 롤백을 원한다고 가정해 보자.
 

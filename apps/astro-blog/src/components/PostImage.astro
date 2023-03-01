@@ -1,0 +1,31 @@
+---
+import { Picture } from '@astrojs/image/components'
+
+export interface Props {
+  src: string
+  alt?: string
+}
+
+const { src, alt, ...attrs } = Astro.props
+const replaced = src.replace(/^#/, '../../../public')
+const img = await import(/* @vite-ignore */ replaced)
+
+const {
+  default: { width, height, format },
+} = img
+---
+
+<figure style="margin-bottom:1rem">
+  <span style={`display:block;aspect-ratio:${width / height};`}>
+    <Picture
+      src={Promise.resolve(img)}
+      widths={[600, 900]}
+      sizes="(min-width: 414px) 900px, 600px"
+      aspectRatio={`${width}:${height}`}
+      format={format}
+      alt={alt ?? ''}
+      {...attrs}
+    />
+  </span>
+  <figcaption>{attrs.alt}</figcaption>
+</figure>

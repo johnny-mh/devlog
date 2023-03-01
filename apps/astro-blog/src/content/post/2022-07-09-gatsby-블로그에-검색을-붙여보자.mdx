@@ -5,17 +5,15 @@ tags: [gatsby, search, fusejs, 검색]
 description: gatsby블로그에 fusejs를 이용하여 로컬 검색을 구현하는 방법에 대해 설명합니다
 ---
 
-import { Image, Picture } from '@astrojs/image/components'
+import PostImage from '#/components/PostImage.astro'
 
 # gatsby에 검색을 추가하는 방법
 
 블로그에 글이 늘어나면 카테고리와 태그만으로는 원하는 내용을 찾기 어려워진다. 지금 블로그가 그 정도까지 내용이 많지는 않지만 학습을 위해 운영하는것도 있어서 검색 기능을 구현해 보았다.
 
-<Image
-  src={import('../../../public/post/20220709/gatsby-search.png')}
+<PostImage
+  src="#/post/20220709/gatsby-search.png"
   alt="구현 완료된 검색 화면 (메뉴바의 검색 버튼을 눌러 사용해볼 수 있다)"
-  width={736}
-  aspectRatio="1143:435"
 />
 
 공식 사이트의 [gatsby 에 검색 기능 추가](https://www.gatsbyjs.com/docs/how-to/adding-common-features/adding-search/) 문서를 보면 검색에 필요한 기본 요소들에 대한 설명과 함께 gatsby에 검색을 구현하는 2가지 방법을 소개하고 있다.
@@ -135,11 +133,9 @@ module.tsports = {
 }
 ```
 
-<Image
-  src={import('../../../public/post/20220709/gatsby-plugin-fusejs.png')}
+<PostImage
+  src="#/post/20220709/gatsby-plugin-fusejs.png"
   alt="옵션으로 만들어진 인덱스를 아래 스크린샷과 같이 활용할 수 있게 되었다"
-  width={736}
-  aspectRatio="1387:559"
 />
 
 # react-use-fusejs

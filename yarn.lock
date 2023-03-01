@@ -5283,6 +5283,7 @@ __metadata:
     "@astrojs/preact": ^2.0.3
     "@jasikpark/astro-svg-loader": ^0.1.0
     astro: ^2.0.15
+    astro-seo: ^0.7.1
     date-fns: ^2.29.3
     mdast-util-to-string: ^3.1.1
     preact: ^10.13.0
@@ -5293,6 +5294,13 @@ __metadata:
     sharp: ^0.31.3
   languageName: unknown
   linkType: soft
+
+"astro-seo@npm:^0.7.1":
+  version: 0.7.1
+  resolution: "astro-seo@npm:0.7.1"
+  checksum: f6f51a401a995637c740c517b980047e5257d73f8f2aead7ec648602be146fcb0c6ccda1f3b6e95636c75e344460f785ea73df7351c60e00dfc30ed3f7db546d
+  languageName: node
+  linkType: hard
 
 "astro@npm:^2.0.15":
   version: 2.0.15

@@ -1,0 +1,54 @@
+---
+import SVG from '@jasikpark/astro-svg-loader'
+---
+
+<footer>
+  <div>
+    <a href="/rss.xml" target="_blank"> RSS</a>
+  </div>
+  <div>
+    <a
+      href="https://github.com/johnny-mh"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <SVG src={import('../images/github.svg?raw')} width={24} height={24} />
+    </a>
+    <a href="mailto://romz1212@gmail.com">
+      <SVG src={import('../images/mail.svg?raw')} width={20} height={20} />
+    </a>
+  </div>
+</footer>
+
+<style lang="scss">
+  footer {
+    margin: 4rem auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 6rem;
+
+    max-width: 800px;
+    padding: 0 2rem;
+
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      a,
+      a:visited {
+        color: #333;
+        text-decoration: none;
+
+        &:hover {
+          color: #000;
+
+          svg path {
+            fill: #000;
+          }
+        }
+      }
+    }
+  }
+</style>

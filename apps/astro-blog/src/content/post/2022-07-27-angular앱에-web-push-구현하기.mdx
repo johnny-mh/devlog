@@ -5,7 +5,7 @@ tags: [angular, web push, push notification]
 description: Angular의 Service Worker에 대한 짧은 소개와 Web Push를 구현하는 방법에 대해 설명합니다
 ---
 
-import { Image, Picture } from '@astrojs/image/components'
+import PostImage from '#/components/PostImage.astro'
 
 # 서론
 
@@ -23,12 +23,7 @@ Angular의 `@angular/service-worker`패키지는 해당 기능을 포함해 App 
 
 # Web Push의 시스템 구조
 
-<Image
-  src={import('../../../public/post/20220727/webpush.png')}
-  alt="good"
-  width={736}
-  aspectRatio="150:59"
-/>
+<PostImage src="#/post/20220727/webpush.png" alt="Web Push 데이터 흐름" />
 
 1. 사용자가 웹 서비스에 접속하면 웹 워커를 설치하게 된다
 2. 알림 버튼을 클릭하면 `SwPush.requestSubscription`메서드를 호출하여 FCP에 등록하고 `PushSubscription`객체를 응답받는다
@@ -312,7 +307,7 @@ self.addEventListener('notificationclick', (e) => {
 export class AppModule {}
 ```
 
-![Web Push 구현 결과](/post/20220727/webpush-demo.png)
+<PostImage src="#/post/20220727/webpush-demo.png" alt="Web Push 구현 결과" />
 
 위처럼 http 에 localhost 에서도 잘 동작하는것을 확인할 수 있다. cu 로고는 OS알림을 띄울 때 추가로 넣을 수 있으니 [showNotification](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification) API를 참고하면 된다.
 

@@ -31,6 +31,20 @@ a {
   }
 }
 
+main {
+  padding: 13rem 2rem 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: calc(100vh - 23rem);
+}
+
+@include mobile {
+  main {
+    margin: 4rem auto 0 auto;
+    padding: 2rem 0.5rem;
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 2rem;

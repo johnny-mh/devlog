@@ -6,7 +6,7 @@ featuredImage: ./cover.jpg
 description: Bloom Filter알고리즘에 대해 알기 쉽게 설명하고. Angular 내부에서 이를 어떻게 활용하고 있는지 소개합니다
 ---
 
-import { Image, Picture } from '@astrojs/image/components'
+import PostImage from '#/components/PostImage.astro'
 
 # Bloom Filter
 
@@ -140,11 +140,9 @@ class HelloComponent {
 
 이 중 **NodeInjector**는 Component들의 계층 구조에서 bootstrap된 최 상위 컴포넌트 까지 마치 DOM트리에서 버블링이 일어나는 것 처럼 각 Component마다의 providers, viewProviders를 살펴본다.
 
-<Image
-  src={import('../../../public/post/20200714/injector-chain.png')}
+<PostImage
+  src="#/post/20200714/injector-chain.png"
   alt="Angular의 Injector Chain"
-  width={736}
-  aspectRatio="760:570"
 />
 
 이 때 Component의 메타데이터에 설정한 배열을 직접 살피는 게 아니라. 각 노드에 있는 Injector 인스턴스에게 특정 타입으로 생성된 인스턴스가 있는지 묻게 된다. 바로 [이 과정](https://github.com/angular/angular/blob/8.2.14/packages/core/src/render3/di.ts#L332)에서 [Bloom Filter를 사용](https://github.com/angular/angular/blob/8.2.14/packages/core/src/render3/di.ts#L588)한다.

@@ -52,7 +52,7 @@ export async function getStaticPaths({ paginate }) {
 const { prev, next, frontmatter, Content, headings } = Astro.props
 ---
 
-<Layout title={`${frontmatter.title} - ${sitemeta.title}`}>
+<Layout frontmatter={frontmatter}>
   <div class="wrapper">
     <div class="content">
       <PostHeader frontmatter={frontmatter} />
