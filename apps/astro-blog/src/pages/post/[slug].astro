@@ -1,0 +1,153 @@
+---
+import '#/styles/markdown-content.scss'
+
+import { posts } from '#/content'
+import Layout from '#/layouts/Layout.astro'
+import { sitemeta } from '#/sitemeta'
+import SVG from '@jasikpark/astro-svg-loader'
+import { TOC } from '#/components/TOC'
+
+export async function getStaticPaths() {
+  const POST_FILENAME_REGEX = /\d{4}-\d{2}-\d{2}-(.+)/
+
+  return await Promise.all(
+    posts.map((post) =>
+      post
+        .render()
+        .then(({ remarkPluginFrontmatter: frontmatter, Content, headings }) => {
+          const [, slug] = POST_FILENAME_REGEX.exec(post.slug) || []
+
+          if (!slug) {
+            throw new Error(`컨텐츠 경로 확인: ${post.id}`)
+          }
+
+          return {
+            params: { slug },
+            props: {
+              frontmatter,
+              Content,
+              headings,
+            },
+          }
+        })
+    )
+  )
+}
+
+const { frontmatter, Content, headings } = Astro.props
+---
+
+<Layout title={`${frontmatter.title} - ${sitemeta.title}`}>
+  <div class="wrapper">
+    <div>
+      <header>
+        <h1>{frontmatter.title}</h1>
+        <div class="post-meta">
+          <span class="date">
+            <time>{frontmatter.createdAt}</time>
+          </span>
+
+          <span class="categories">
+            in {
+              frontmatter.categories.map((cat) => (
+                <a href={`/post/category/${cat}`} rel="tag">
+                  {cat}
+                </a>
+              ))
+            }
+          </span>
+        </div>
+        <div class="tags">
+          <SVG
+            src={import('../../images/tag.svg?raw')}
+            width={11}
+            height={11}
+          />
+          {
+            frontmatter.tags.map((tag) => (
+              <a href={`/post/tag/${tag}`} rel="tag">
+                {tag}
+              </a>
+            ))
+          }
+        </div>
+      </header>
+
+      <div class="markdown-content">
+        <Content />
+      </div>
+    </div>
+
+    <div class="toc">
+      <TOC headings={headings} client:visible />
+    </div>
+  </div>
+</Layout>
+
+<style lang="scss">
+  .wrapper {
+    display: flex;
+    position: relative;
+  }
+
+  header {
+    display: grid;
+    margin-bottom: 35px;
+
+    h1 {
+      margin: 0 0 0.5rem;
+    }
+
+    .post-meta {
+      margin: 0 0 0.5rem;
+
+      * {
+        text-transform: uppercase;
+        line-height: 1.6em;
+        letter-spacing: 1px;
+        font-size: 12px;
+        color: #a8a8a8;
+      }
+
+      span + span {
+        padding-left: 5px;
+      }
+
+      a:hover {
+        color: #333;
+      }
+    }
+
+    .tags {
+      font-size: 0.8em;
+      color: #a8a8a8;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      a {
+        color: #a8a8a8;
+
+        &:hover {
+          color: #333;
+        }
+      }
+
+      .icon-tag {
+        display: inline-block;
+        margin-right: 4px;
+        width: 14px;
+        height: 14px;
+        margin-top: -4px;
+        line-height: inherit;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  @media (max-width: 1388px) {
+    .toc {
+      display: none;
+    }
+  }
+</style>

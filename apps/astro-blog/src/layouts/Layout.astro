@@ -1,0 +1,61 @@
+---
+import '#/styles/highlight.scss'
+import '#/styles/prism-vscodedark.scss'
+import '#/styles/reset.scss'
+import '#/styles/site.scss'
+
+import Header from '#/components/Header.astro'
+import { setDefaultOptions } from 'date-fns'
+import { ko } from 'date-fns/locale/index'
+
+setDefaultOptions({ locale: ko })
+
+export interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=5, width=device-width, viewport-fit=cover"
+    />
+    <meta
+      name="google-site-verification"
+      content="er9zvCmECxtt0KP_BjDZ4WplZsNT5ApeDBK4wYD7aI0"
+    />
+    <meta
+      name="naver-site-verification"
+      content="aef0a8e4429c4f7c5f7e3b52074dc2d968716069"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  main {
+    padding: 13rem 2rem 4rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: calc(100vh - 23rem);
+  }
+
+  @media (max-width: var(--mobile-breakpoint)) {
+    main {
+      margin: 4rem auto 0 auto;
+      padding: 2rem 0.5rem;
+    }
+  }
+</style>

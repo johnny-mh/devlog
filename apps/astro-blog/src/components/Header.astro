@@ -1,0 +1,152 @@
+---
+import SVG from '@jasikpark/astro-svg-loader'
+---
+
+<header>
+  <div class="container">
+    <div class="brand">
+      <a href="/">
+        <SVG src={import('../images/johnnydev.svg?raw')} width={230} />
+      </a>
+    </div>
+    <div class="links">
+      <a href="/about">About</a>
+      <a href="/archives">Archives</a>
+      <a href="#search">
+        <SVG src={import('../images/search.svg?raw')} width={15} height={13} />
+      </a>
+    </div>
+  </div>
+</header>
+
+<style lang="scss">
+  @import '../styles/_mixin';
+
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    background-color: #fff;
+
+    &.scroll {
+      box-shadow: 1px 2px 18px rgba(0, 0, 0, 0.1);
+
+      .container {
+        height: 80px;
+      }
+    }
+  }
+
+  .brand {
+    a {
+      display: block;
+      padding: 0.5rem 1rem;
+      transition: background-color 0.2s ease-in-out;
+
+      svg {
+        fill: #333;
+        transition: fill 0.2s ease-in-out;
+      }
+
+      &:hover {
+        background-color: #333;
+
+        svg {
+          fill: #fff;
+        }
+      }
+    }
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 9rem;
+    transition: height 80ms ease-out;
+
+    max-width: 800px;
+    padding: 0 2rem;
+    margin: 0 auto;
+  }
+
+  .links {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 100%;
+
+    a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem;
+      margin: 0 0.25rem;
+      color: #333;
+      line-height: 1.2rem;
+      text-align: center;
+
+      &:hover {
+        color: #000;
+        text-decoration: none;
+      }
+    }
+
+    svg {
+      fill: #333;
+    }
+  }
+
+  @include mobile {
+    header {
+      &.scroll {
+        height: 3rem;
+
+        .container {
+          height: 3rem;
+        }
+      }
+    }
+
+    .container {
+      padding: 0;
+      height: 4rem;
+
+      .brand {
+        svg {
+          width: 140px;
+        }
+      }
+
+      .links {
+        justify-content: end;
+      }
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector('header')
+  let lastValue = ''
+
+  function onScroll() {
+    window.requestAnimationFrame(() => {
+      if (window.scrollY > 0) {
+        if (lastValue !== 'scroll') {
+          lastValue = 'scroll'
+          header?.classList.add('scroll')
+        }
+        return
+      }
+
+      if (lastValue !== '') {
+        lastValue = ''
+        header?.classList.remove('scroll')
+      }
+    })
+  }
+
+  window.addEventListener('scroll', onScroll)
+</script>

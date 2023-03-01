@@ -1,0 +1,115 @@
+code[class*='language-'] {
+  font-family: var(--monospace);
+}
+
+.markdown-content pre[class*='language-'] {
+  padding-top: 1.5rem;
+  position: relative;
+}
+
+.markdown-content pre[class*='language-']:before {
+  color: #232129;
+  font-size: 0.75rem;
+  font-family: var(--monospace);
+  letter-spacing: 0.075em;
+  line-height: 1;
+  position: absolute;
+  left: 1.5rem;
+  text-align: right;
+  text-transform: uppercase;
+  top: 0px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0.25rem 0.5rem;
+  background: #ffffff;
+  color: black;
+}
+
+.markdown-content {
+  pre[class='language-javascript']:before,
+  pre[class='language-js']:before {
+    content: 'js';
+    background: #f7df1e;
+    color: black;
+  }
+
+  pre[class~='language-jsx']:before {
+    content: 'jsx';
+    background: #61dafb;
+    color: black;
+  }
+
+  pre[class~='language-text']:before {
+    content: 'text';
+  }
+  pre[class~='language-ts']:before {
+    content: 'ts';
+    background: #61dafb;
+    color: black;
+  }
+  pre[class~='language-tsx']:before {
+    content: 'tsx';
+    background: #61dafb;
+    color: black;
+  }
+  pre[class~='language-html']:before {
+    content: 'html';
+    background: #005a9c;
+    color: white;
+  }
+  pre[class~='language-xml']:before {
+    content: 'xml';
+    background: #005a9c;
+    color: white;
+  }
+  pre[class~='language-svg']:before {
+    content: 'svg';
+    background: #005a9c;
+    color: white;
+  }
+  pre[class~='language-graphql']:before {
+    content: 'GraphQL';
+    background: #e10098;
+  }
+  pre[class~='language-css']:before {
+    content: 'css';
+    background: #ff9800;
+    color: black;
+  }
+  pre[class~='language-mdx']:before {
+    content: 'mdx';
+    background: #f9ac00;
+    color: black;
+  }
+  pre[class~='language-text']:before {
+    content: 'text';
+  }
+  pre[class~='language-shell']:before {
+    content: 'shell';
+  }
+  pre[class~='language-sh']:before {
+    content: 'sh';
+  }
+  pre[class~='language-bash']:before {
+    content: 'bash';
+  }
+  pre[class~='language-yaml']:before {
+    content: 'yaml';
+    background: #ffa8df;
+  }
+  pre[class~='language-yml']:before {
+    content: 'yml';
+    background: #ffa8df;
+  }
+  pre[class~='language-markdown']:before {
+    content: 'md';
+  }
+  pre[class~='language-json']:before,
+  pre[class~='language-json5']:before {
+    content: 'json';
+    background: linen;
+  }
+  pre[class~='language-diff']:before {
+    content: 'diff';
+    background: #e6ffed;
+  }
+}
