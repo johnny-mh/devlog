@@ -1,0 +1,102 @@
+---
+import SVG from '@jasikpark/astro-svg-loader'
+
+export interface Props {
+  frontmatter: {
+    title: string
+    createdAt: string
+    categories: string[]
+    tags: string[]
+  }
+}
+
+const {
+  frontmatter: { title, createdAt, categories, tags },
+} = Astro.props
+---
+
+<header>
+  <h1>{title}</h1>
+  <div class="post-meta">
+    <span class="date">
+      <time>{createdAt}</time>
+    </span>
+
+    <span class="categories">
+      in {
+        categories.map((cat) => (
+          <a href={`/post/category/${cat}`} rel="tag">
+            {cat}
+          </a>
+        ))
+      }
+    </span>
+  </div>
+  <div class="tags">
+    <SVG src={import('../images/tag.svg?raw')} width={11} height={11} />
+    {
+      tags.map((tag) => (
+        <a href={`/post/tag/${tag}`} rel="tag">
+          {tag}
+        </a>
+      ))
+    }
+  </div>
+</header>
+
+<style lang="scss">
+  header {
+    display: grid;
+    margin-bottom: 35px;
+
+    h1 {
+      margin: 0 0 0.5rem;
+    }
+
+    .post-meta {
+      margin: 0 0 0.5rem;
+
+      * {
+        text-transform: uppercase;
+        line-height: 1.6em;
+        letter-spacing: 1px;
+        font-size: 12px;
+        color: #a8a8a8;
+      }
+
+      span + span {
+        padding-left: 5px;
+      }
+
+      a:hover {
+        color: #333;
+      }
+    }
+
+    .tags {
+      font-size: 0.8em;
+      color: #a8a8a8;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      a {
+        color: #a8a8a8;
+
+        &:hover {
+          color: #333;
+        }
+      }
+
+      .icon-tag {
+        display: inline-block;
+        margin-right: 4px;
+        width: 14px;
+        height: 14px;
+        margin-top: -4px;
+        line-height: inherit;
+        vertical-align: middle;
+      }
+    }
+  }
+</style>

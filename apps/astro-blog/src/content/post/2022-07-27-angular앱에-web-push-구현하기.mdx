@@ -63,7 +63,7 @@ Private Key:
 
 공개키는 `environment.ts`에 추가하고. `.dotenv`파일에는 둘 다 저장하여 백엔드에서 읽어다 쓸 수 있도록 하면 된다.
 
-```ts{7}
+```ts {7}
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -99,12 +99,10 @@ ng add @angular/pwa --project <project-name>
 
 이제 앱을 빌드하면 결과물에 `ngsw-worker.js`가 추가되고. 이 파일이 `AppModule`의 `ServiceWorkerModule` import에 추가되어 있다. 이 파일이 위 소개자료에 있는 기능들의 Angular 구현체이다.
 
-```ts{4}
+```ts {4}
 @NgModule({
   declarations: [AppComponent, NotiComponent],
-  imports: [
-    ServiceWorkerModule.register('ngsw-worker.js'),
-  ],
+  imports: [ServiceWorkerModule.register('ngsw-worker.js')],
   providers: [WindowService],
   bootstrap: [AppComponent],
 })
@@ -117,7 +115,7 @@ export class AppModule {}
 
 > '22 7/27 기준 web-push는 safari를 지원하지 않는다 [web-push 브라우저 지원 범위](https://github.com/web-push-libs/web-push#browser-support) 참고
 
-```ts
+```ts {13-22}
 import { compare } from 'compare-versions'
 import UAParser from 'ua-parser-js'
 
@@ -146,7 +144,7 @@ export class WindowService {
 
 다음 컴포넌트에서 서비스를 DI받아 버튼 노출을 제어한다. 클릭 시 위에 설명한대로 `SwPush.requestSubscription`메서드를 호출하여 `PushSubscription`객체를 받고. 서버에 전송하여 저장하도록 한다.
 
-```ts
+```ts {24-28}
 import { SwPush } from '@angular/service-worker'
 import { environment } from '../environments/environment'
 
@@ -219,7 +217,7 @@ router.get('/api/subscribe', (req, res) => {
 
 알림을 보내야 할 땐 아래와 같이 저장했던 pushSubscription을 [sendNotification](https://github.com/web-push-libs/web-push#sendnotificationpushsubscription-payload-options)의 인자로 보내면 된다. 두 번째 인자에 메시지를 문자열이나 버퍼로 만들어 넘기면 되는데. [ServiceWorkerRegistration.showNotification](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification)메서드로 OS알림을 출력할 것이므로 json으로 만들어 넣는게 일반적이다.
 
-```ts{4-7}
+```ts {4-7}
 import webpush from 'web-push'
 
 webpush
@@ -227,10 +225,10 @@ webpush
     pushSubscription,
     JSON.stringify({ title: 'hello', body: 'world' })
   )
-  .then(res => {
+  .then((res) => {
     console.log(res)
   })
-  .catch(err => {
+  .catch((err) => {
     console.error(err)
   })
 ```
@@ -302,7 +300,7 @@ self.addEventListener('notificationclick', (e) => {
 }
 ```
 
-```ts{4}
+```ts {4}
 @NgModule({
   declarations: [AppComponent, NotiComponent],
   imports: [

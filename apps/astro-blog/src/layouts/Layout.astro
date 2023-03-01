@@ -1,6 +1,5 @@
 ---
-import '#/styles/highlight.scss'
-import '#/styles/prism-vscodedark.scss'
+import '#/styles/syntax-highlight.scss'
 import '#/styles/reset.scss'
 import '#/styles/site.scss'
 
@@ -34,6 +33,7 @@ const { title } = Astro.props
       name="naver-site-verification"
       content="aef0a8e4429c4f7c5f7e3b52074dc2d968716069"
     />
+    <meta property="og:title" content={title} />
     <title>{title}</title>
   </head>
   <body>

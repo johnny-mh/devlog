@@ -1,0 +1,99 @@
+---
+import SVG from '@jasikpark/astro-svg-loader'
+
+export interface Props {
+  prev?: string
+  next?: string
+}
+
+const { prev, next } = Astro.props
+---
+
+<ul class="pager">
+  <li class="newer">
+    {
+      prev ? (
+        <a href={prev}>
+          <SVG src={import('../images/left.svg?raw')} width={21} height={21} />
+          Newer
+        </a>
+      ) : (
+        <span>
+          <SVG src={import('../images/left.svg?raw')} width={21} height={21} />
+          Newer
+        </span>
+      )
+    }
+  </li>
+  <li class="older">
+    {
+      next ? (
+        <a href={next}>
+          Older
+          <SVG src={import('../images/right.svg?raw')} width={21} height={21} />
+        </a>
+      ) : (
+        <span>
+          Older
+          <SVG src={import('../images/right.svg?raw')} width={21} height={21} />
+        </span>
+      )
+    }
+  </li>
+</ul>
+
+<style lang="scss">
+  .pager {
+    height: 56px;
+    margin-bottom: 30px;
+  }
+
+  ul {
+    text-align: center;
+
+    li {
+      display: inline-block;
+      *display: block;
+      *zoom: 1;
+      height: 56px;
+      line-height: 56px;
+      white-space: nowrap;
+      margin: 0 10px;
+
+      svg {
+        margin-top: -3px;
+        width: 21px;
+        height: 21px;
+        vertical-align: middle;
+      }
+
+      a,
+      a:visited {
+        color: #333;
+        text-decoration: none;
+
+        svg {
+          fill: #333;
+        }
+      }
+
+      a:hover {
+        color: #000;
+        text-decoration: none;
+
+        svg {
+          fill: #000;
+        }
+      }
+
+      span {
+        cursor: not-allowed;
+        color: #888;
+
+        svg {
+          fill: #888;
+        }
+      }
+    }
+  }
+</style>

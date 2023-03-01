@@ -2,8 +2,10 @@ import { defineConfig } from 'astro/config'
 import image from '@astrojs/image'
 import mdx from '@astrojs/mdx'
 import preact from '@astrojs/preact'
+
 import { remarkReadingTime } from './remarks/readingTime.mjs'
 import { remarkCreatedAt } from './remarks/createdAt.mjs'
+import { rehypePrettyCode } from './remarks/rehypePrettyCode.mjs'
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,8 +17,9 @@ export default defineConfig({
     preact(),
   ],
   markdown: {
-    remarkPlugins: [remarkReadingTime, remarkCreatedAt],
+    syntaxHighlight: false,
     extendDefaultPlugins: true,
-    syntaxHighlight: 'prism',
+    remarkPlugins: [remarkReadingTime, remarkCreatedAt],
+    rehypePlugins: [rehypePrettyCode],
   },
 })
