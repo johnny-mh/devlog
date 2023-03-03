@@ -13,14 +13,15 @@ import Footer from '#/components/Footer.astro'
 setDefaultOptions({ locale: ko })
 
 export interface Props {
+  title?: string
   frontmatter?: any
 }
 
-const { frontmatter } = Astro.props
+const { frontmatter, title } = Astro.props
 
 const openGraph = {
   basic: {
-    title: frontmatter?.title ?? 'JOHNN DEV BLOG',
+    title: title ?? frontmatter?.title ?? 'JOHNN DEV BLOG',
     type: frontmatter ? 'article' : 'website',
     image: frontmatter?.featuredImage ?? '/ogImage.webp',
   },

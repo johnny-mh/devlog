@@ -12,7 +12,7 @@ import PostImage from '#/components/PostImage.astro'
 블로그에 글이 늘어나면 카테고리와 태그만으로는 원하는 내용을 찾기 어려워진다. 지금 블로그가 그 정도까지 내용이 많지는 않지만 학습을 위해 운영하는것도 있어서 검색 기능을 구현해 보았다.
 
 <PostImage
-  src="#/post/20220709/gatsby-search.png"
+  src={import('../../assets/postImages//20220709/gatsby-search.png')}
   alt="구현 완료된 검색 화면 (메뉴바의 검색 버튼을 눌러 사용해볼 수 있다)"
 />
 
@@ -134,7 +134,7 @@ module.tsports = {
 ```
 
 <PostImage
-  src="#/post/20220709/gatsby-plugin-fusejs.png"
+  src={import('../../assets/postImages//20220709/gatsby-plugin-fusejs.png')}
   alt="옵션으로 만들어진 인덱스를 아래 스크린샷과 같이 활용할 수 있게 되었다"
 />
 

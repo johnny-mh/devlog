@@ -1,0 +1,48 @@
+---
+import Pager from '#/components/Pager.astro'
+import PostList from '#/components/PostList.astro'
+import { getPosts } from '#/collection'
+import Layout from '#/layouts/Layout.astro'
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getPosts()
+
+  const categories = [
+    ...posts.reduce(
+      (
+        map,
+        {
+          path,
+          readingTime,
+          rendered: { remarkPluginFrontmatter: frontmatter },
+        }
+      ) => {
+        frontmatter.categories?.forEach((cat) => {
+          map.set(cat, [
+            ...(map.get(cat) ?? []),
+            { ...frontmatter, path, readingTime },
+          ])
+        })
+
+        return map
+      },
+      new Map<string, Record<string, any>[]>()
+    ),
+  ]
+
+  return categories.map(([category, list]) => {
+    return paginate(list, {
+      params: { category },
+      pageSize: 10,
+    })
+  })
+}
+
+const { page } = Astro.props
+const { category } = Astro.params
+---
+
+<Layout>
+  <PostList title={`Category: ${category}`} list={page.data} />
+  <Pager prev={page.url.prev} next={page.url.next} />
+</Layout>

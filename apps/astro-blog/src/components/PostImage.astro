@@ -1,22 +1,28 @@
 ---
 import { Picture } from '@astrojs/image/components'
+import { promisify } from 'util'
+import _sizeOf from 'image-size'
+
+const sizeOf = promisify(_sizeOf)
 
 export interface Props {
-  src: string
+  src: any
   alt?: string
 }
 
 const { src, alt, ...attrs } = Astro.props
-const replaced = src.replace(/^#/, '../../../public')
-const img = await import(/* @vite-ignore */ replaced)
+// const img = await import(/* @vite-ignore */ src)
 
+const img = await src
 const {
   default: { width, height, format },
 } = img
+
+const aspectRatio = width / height
 ---
 
 <figure style="margin-bottom:1rem">
-  <span style={`display:block;aspect-ratio:${width / height};`}>
+  <span style={`display:block;aspect-ratio:${aspectRatio};`}>
     <Picture
       src={Promise.resolve(img)}
       widths={[600, 900]}

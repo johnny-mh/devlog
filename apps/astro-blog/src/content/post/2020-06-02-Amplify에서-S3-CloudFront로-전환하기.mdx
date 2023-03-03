@@ -14,7 +14,7 @@ Amplify는 웹 서비스를 개발하고 배포하기 위해 필요한 AWS의 �
 또 **리다이렉트 규칙을 세세히 적용할 수 없었다**. gatsby의 정적 리소스들을 서빙하는 데 문제가 발생했다. 예를 들어 \*.js, \*.css로 끝나는 요청의 경우 해당 파일을 서빙해야 하고. 그 외에는 index.html을 서빙해야 하는데. 해당 기능을 설정하면 이게 기능이 각 서버에 배포 중인지 아닌지에 대한 정보도 표시되지 않고. 스크립트 오류는 계속 발생했다.
 
 <PostImage
-  src="#/post/20200602/aws-amplify-redirect.jpg"
+  src={import('../../assets/postImages//20200602/aws-amplify-redirect.jpg')}
   alt="Amplify Redirect 설정"
 />
 
@@ -30,11 +30,11 @@ S3는 AWS서비스 중 스토리지 관리와 모니터링을 제공하는 기�
 
 먼저 버킷을 만든다. 버킷의 이름은 나중에 다른사람들이 블로그에 방문할 때 쓰는 주소로 한다. 예를 들어 www를 붙이지 않은 mnkim.com을 원하는 경우 이름은 mnkim.com이 되어야 한다. 반대의 경우 www.mnkim.com로 이름을 짓는다.
 
-<PostImage src="#/post/20200602/s3-1.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/s3-1.jpg')} />
 
 생성할 때는 위 화면처럼 퍼블릭 엑세스를 가능하게끔만 설정하면 된다. 생성이 완료되었다면 **개요** 탭에서 `gatsby build`를 통해 생성된 `public/*`의 하위 파일들을 모두 선택해 업로드한다. 다음 **속성** 탭에서 **정적 웹 사이트 호스팅**을 선택하고 아래와 같이 설정한다.
 
-<PostImage src="#/post/20200602/perm.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/perm.jpg')} />
 
 다음으로는 **권한** 탭의 **버킷 정책**에서 '정책 편집기' 타이틀 옆 **ARN**값을 복사해 두고 에디터 아래 **정책 생성기**를 클릭힌다. 그럼 다음곽 같은 화면이 나오는데 위의 스샷처럼 입력한다. Actions는 **GetObject**를 선택하면 된다.
 
@@ -56,7 +56,7 @@ S3는 AWS서비스 중 스토리지 관리와 모니터링을 제공하는 기�
 }
 ```
 
-<PostImage src="#/post/20200602/s3-2.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/s3-2.jpg')} />
 
 **이 버킷을 사용하여 웹 사이트를 호스팅합니다** 체크, 인덱스 문서는 **index.html**, 오류 문서는 **404.html**로 적고 **저장**을 누른다. 그럼 이제부터 상단에 있는 **엔드포인트** 주소로 사이트를 서빙할 수 있게 된다. 다만 이 주소는 기억하기 어려운 형태이고 http이기도 해서 이후 과정에서 별도의 도메인을 연결한다.
 
@@ -64,13 +64,13 @@ S3는 AWS서비스 중 스토리지 관리와 모니터링을 제공하는 기�
 
 먼저 https로 서빙하기 위한 인증서를 만들어야 한다. Certificate Manager에서 **인증서 요청** 을 누르고 이어 **공인 인증서 요청** 선택. 도메인 이름에 **johnny.com**. 아래 **다른 이름 추가** 를 누르고 **\*.johnny.com** (소유한 도메인으로 입력한다)
 
-<PostImage src="#/post/20200602/cm-1.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/cm-1.jpg')} />
 
 이후 과정에서 해당 도메인의 진짜 소유자인지를 검사하는 과정을 거친다. DNS인증을 선택하고 나오는 각 도메인 별 이름과 값을 도메인을 구입한 사이트에서 제공하는 **DNS구성** 기능으로 CNAME으로 등록해야 한다. 드롭다운으로 A인지 CNAME인지 TXT인지 선택하고 이름과 값을 입력하는 UI구성으로 아마 조금 살펴보면 알 수 있을 것이다.
 
 도메인을 AWS Route 53에서 구입했거나. 구입처가 다르지만 Route 53에서 관리하도록 설정한 경우에는 아래 버튼을 누르면 자동으로 그 값들을 등록해준다.
 
-<PostImage src="#/post/20200602/cm-2.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/cm-2.jpg')} />
 
 ## CloudFront 설정하기
 
@@ -78,15 +78,15 @@ CloudFront는 S3버킷에 담긴 파일을 전세계 서버에 캐싱해서 빠�
 
 **Create Distribution**클릭. **Web** 섹션의 **Get Started**클릭. 아래 필드에서 따로 언급하지 않은 것들은 기본값으로 내버려 둔다.
 
-<PostImage src="#/post/20200602/cf-1.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/cf-1.jpg')} />
 
 아래 **Distribution Settings**에서 **Alternative Domain Names**에 사용할 도메인을 입력하고. 아래 **Custom SSL Certificate** 를 선택한다. 그 후 아래 텍스트박스에 포커스하면 만들어둔 인증서가 보일텐데 그것을 선택한다.
 
-<PostImage src="#/post/20200602/cf-2.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/cf-2.jpg')} />
 
 마지막으로 **Default Root Object**를 반드시 **index.html**로 입력한 후 다음으로 넘어간다. 이렇게 되면 세팅이 끝나고 전세계의 모든 서버에 해당 설정이 반영되는 시간 후 **Distribution Status**가 **Deployed**로 바뀌며 화면의 **Domain Name** 으로 블로그에 접속할 수 있게 된다. 하지만 우리는 이 주소가 아닌 내 소유의 도메인 johnny.com을 연결해야 한다 이후에서 진행한다.
 
-<PostImage src="#/post/20200602/cf-3.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/cf-3.jpg')} />
 
 ## Route 53으로 커스텀 도메인 연결하기
 
@@ -94,7 +94,7 @@ CloudFront는 S3버킷에 담긴 파일을 전세계 서버에 캐싱해서 빠�
 
 직접 입력해도 되지만 **별칭** 을 **예**로 선택하고 텍스트박스에 포커스 하면 목록이 출력되는데. 그 중 **CloudFront**배포 에 이전에 설정한 값이 있으므로 선택해서 채워도 된다. Route 53 미사용자는 앞서 도메인을 인증할 때 썼던 페이지에서 주소를 직접 입력하면 된다.
 
-<PostImage src="#/post/20200602/r-1.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/r-1.jpg')} />
 
 저장 후 10분 정도 기다리면 해당 도메인으로 블로그에 접속할 수 있다!
 
@@ -104,7 +104,7 @@ CloudFront는 S3버킷에 담긴 파일을 전세계 서버에 캐싱해서 빠�
 
 속성에서 정적 웹사이트 호스팅을 체크하고 이번엔 **요청 리디렉션**을 선택한다. **대상 버킷 또는 도메인**에 johnny.com을 입력하고 프로토콜은 https를 선택한다. 반대의 경우는 반대로 입력하면 된다. 물론 위의 세팅들이 모두 반대 (www)로 설정되었어야 한다.
 
-<PostImage src="#/post/20200602/non-www.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/non-www.jpg')} />
 
 그 다음 Route 53에서 같은 호스팅 영역에 새 레코드 세트를 만든다. 이름은 **www.johnny.com**. 유형은 **A**. 값은 **별칭**으로 동일하게 선택하되 **www.johnny.com**버킷을 선택한다.
 
@@ -162,6 +162,6 @@ module.exports = {
 - johnny.com으로는 접속이 잘 되는데 johnny.com/blog와 같이 서브도메인에서 새로고침했을 때 AccessDenied에러가 나는 경우는 S3버킷 정책이 올바르게 설정되지 않았기 때문일 수 있다. 최종적으로 설정했을 때 정책이 바뀌어 있다면 맨 위 S3버킷 설정과 동일하게 다시 설정한다.
 - 이제 캐시를 직접 제거할 수 있다. CloudFront에서 해당 Distribution을 선택하고 아래 처럼 Invalidation을 만들어 주면 된다.
 
-<PostImage src="#/post/20200602/cache.jpg" />
+<PostImage src={import('../../assets/postImages//20200602/cache.jpg')} />
 
 - CloudFront의 내용 수정이 모든 Edge에 반영되기까지 시간이 꽤 걸린다. 그리고 삭제를 원하는 경우 Distribution이 비활성화가 되어야 한다.

@@ -1,50 +1,46 @@
 ---
 import '#/styles/markdown-content.scss'
 
-import { posts } from '#/content'
+import { getPosts } from '#/collection'
 import Layout from '#/layouts/Layout.astro'
-import { sitemeta } from '#/sitemeta'
 import { TOC } from '#/components/TOC'
 import { Comment } from '#/components/Comment'
 import Pager from '#/components/Pager.astro'
 import PostHeader from '#/components/PostHeader.astro'
 
-export async function getStaticPaths({ paginate }) {
-  const POST_FILENAME_REGEX = /\d{4}-\d{2}-\d{2}-(.+)/
+export async function getStaticPaths() {
+  const posts = await getPosts()
 
   const list = posts.map((post, idx) => {
     const prev = posts[idx - 1]
     const next = posts[idx + 1]
 
     return {
-      prev: prev?.path,
-      next: next?.path,
+      prev: prev?.path ? `/post/${prev.path}` : null,
+      next: next?.path ? `/post/${next.path}` : null,
       post,
     }
   })
 
   return await Promise.all(
-    list.map(({ prev, next, post }) =>
-      post
-        .render()
-        .then(({ remarkPluginFrontmatter: frontmatter, Content, headings }) => {
-          const [, slug] = POST_FILENAME_REGEX.exec(post.slug) || []
-
-          if (!slug) {
-            throw new Error(`컨텐츠 경로 확인: ${post.id}`)
-          }
-
-          return {
-            params: { slug },
-            props: {
-              prev,
-              next,
-              frontmatter,
-              Content,
-              headings,
-            },
-          }
-        })
+    list.map(
+      ({
+        prev,
+        next,
+        post: {
+          path,
+          rendered: { remarkPluginFrontmatter: frontmatter, Content, headings },
+        },
+      }) => ({
+        params: { slug: path },
+        props: {
+          prev,
+          next,
+          frontmatter,
+          Content,
+          headings,
+        },
+      })
     )
   )
 }

@@ -1,18 +1,11 @@
 ---
-import { posts } from '#/content'
+import { getPosts } from '#/collection'
 import Layout from '#/layouts/Layout.astro'
 
-const data = await Promise.all(
-  posts.map((post) =>
-    post.render().then((rendered) => ({
-      ...post,
-      rendered,
-    }))
-  )
-)
+const posts = await getPosts()
 
 const categories = [
-  ...data.reduce((map, { rendered: { remarkPluginFrontmatter } }) => {
+  ...posts.reduce((map, { rendered: { remarkPluginFrontmatter } }) => {
     remarkPluginFrontmatter.categories?.forEach((cat) => {
       map.set(cat, (map.get(cat) ?? 0) + 1)
     })
@@ -21,7 +14,7 @@ const categories = [
 ]
 
 const tags = [
-  ...data.reduce((map, { rendered: { remarkPluginFrontmatter } }) => {
+  ...posts.reduce((map, { rendered: { remarkPluginFrontmatter } }) => {
     remarkPluginFrontmatter.tags?.forEach((tag) => {
       map.set(tag, (map.get(tag) ?? 0) + 1)
     })
@@ -30,7 +23,7 @@ const tags = [
 ]
 
 const groups = [
-  ...data.reduce((map, data) => {
+  ...posts.reduce((map, data) => {
     const {
       rendered: { remarkPluginFrontmatter },
     } = data
@@ -39,7 +32,7 @@ const groups = [
     map.set(year, [...(map.get(year) ?? []), data])
 
     return map
-  }, new Map<string, Array<(typeof data)[number]>>()),
+  }, new Map<string, Array<(typeof posts)[number]>>()),
 ]
 ---
 
@@ -54,7 +47,7 @@ const groups = [
               fontSize: cnt >= 9 ? '1.8em' : cnt >= 5 ? '1.4em' : '1em',
             }}
           >
-            <a href={`/post/category/${name}`}>{name}</a>
+            <a href={`/post/category/${name}/1`}>{name}</a>
           </li>
         ))
       }
@@ -70,7 +63,7 @@ const groups = [
               fontSize: cnt >= 9 ? '1.8em' : cnt >= 5 ? '1.4em' : '1em',
             }}
           >
-            <a href={`/post/category/${name}`}>{name}</a>
+            <a href={`/post/tag/${name}/1`}>{name}</a>
           </li>
         ))
       }

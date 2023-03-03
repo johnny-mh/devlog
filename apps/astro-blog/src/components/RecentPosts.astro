@@ -1,5 +1,5 @@
 ---
-import { posts } from '#/content'
+import { getPosts } from '#/collection'
 import {
   formatDuration,
   intervalToDuration,
@@ -10,25 +10,25 @@ import SVG from '@jasikpark/astro-svg-loader'
 export interface Props {
   title?: string
 }
+const posts = await getPosts()
 
-const recentPosts = await Promise.all(
-  posts.slice(0, 5).map(({ render, path }) =>
-    render().then(
-      ({ remarkPluginFrontmatter: { title, createdAt, readingTime } }) => {
-        return {
-          title,
-          path,
-          createdAt,
-          readingTime: formatDuration(
-            intervalToDuration({
-              start: 0,
-              end: roundToNearestMinutes(readingTime).getTime(),
-            })
-          ),
-        }
-      }
-    )
-  )
+const recentPosts = posts.slice(0, 5).map(
+  ({
+    path,
+    rendered: {
+      remarkPluginFrontmatter: { title, createdAt, readingTime },
+    },
+  }) => ({
+    title,
+    path,
+    createdAt,
+    readingTime: formatDuration(
+      intervalToDuration({
+        start: 0,
+        end: roundToNearestMinutes(readingTime).getTime(),
+      })
+    ),
+  })
 )
 
 const { title = '최근 포스트' } = Astro.props

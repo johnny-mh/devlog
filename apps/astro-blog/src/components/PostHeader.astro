@@ -15,8 +15,8 @@ const {
 } = Astro.props
 ---
 
-<header>
-  <h1>{title}</h1>
+<header class="wrapper">
+  <h1 class="title">{title}</h1>
   <div class="post-meta">
     <span class="date">
       <time>{createdAt}</time>
@@ -25,7 +25,7 @@ const {
     <span class="categories">
       in {
         categories.map((cat) => (
-          <a href={`/post/category/${cat}`} rel="tag">
+          <a class="link" href={`/post/category/${cat}/1`} rel="tag">
             {cat}
           </a>
         ))
@@ -36,7 +36,7 @@ const {
     <SVG src={import('../images/tag.svg?raw')} width={11} height={11} />
     {
       tags.map((tag) => (
-        <a href={`/post/tag/${tag}`} rel="tag">
+        <a class="link" href={`/post/tag/${tag}/1`} rel="tag">
           {tag}
         </a>
       ))
@@ -45,58 +45,55 @@ const {
 </header>
 
 <style lang="scss">
-  header {
+  .wrapper {
     display: grid;
     margin-bottom: 35px;
+  }
 
-    h1 {
-      margin: 0 0 0.5rem;
+  .title {
+    margin: 0 0 0.5rem;
+  }
+
+  .link,
+  .link:visited {
+    color: #a8a8a8;
+
+    &:hover {
+      color: #333;
     }
+  }
 
-    .post-meta {
-      margin: 0 0 0.5rem;
+  .post-meta {
+    margin: 0 0 0.5rem;
 
-      * {
-        text-transform: uppercase;
-        line-height: 1.6em;
-        letter-spacing: 1px;
-        font-size: 12px;
-        color: #a8a8a8;
-      }
-
-      span + span {
-        padding-left: 5px;
-      }
-
-      a:hover {
-        color: #333;
-      }
-    }
-
-    .tags {
-      font-size: 0.8em;
+    * {
+      text-transform: uppercase;
+      line-height: 1.6em;
+      letter-spacing: 1px;
+      font-size: 12px;
       color: #a8a8a8;
-      display: flex;
-      align-items: center;
-      gap: 7px;
+    }
 
-      a {
-        color: #a8a8a8;
+    span + span {
+      padding-left: 5px;
+    }
+  }
 
-        &:hover {
-          color: #333;
-        }
-      }
+  .tags {
+    font-size: 0.8em;
+    color: #a8a8a8;
+    display: flex;
+    align-items: center;
+    gap: 7px;
 
-      .icon-tag {
-        display: inline-block;
-        margin-right: 4px;
-        width: 14px;
-        height: 14px;
-        margin-top: -4px;
-        line-height: inherit;
-        vertical-align: middle;
-      }
+    .icon-tag {
+      display: inline-block;
+      margin-right: 4px;
+      width: 14px;
+      height: 14px;
+      margin-top: -4px;
+      line-height: inherit;
+      vertical-align: middle;
     }
   }
 </style>
