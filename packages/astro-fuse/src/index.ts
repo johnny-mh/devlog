@@ -2,8 +2,9 @@ import type { AstroConfig, AstroIntegration } from 'astro'
 import Fuse from 'fuse.js'
 import { debounce, map } from 'lodash-es'
 import { createHmac } from 'node:crypto'
+import { existsSync, mkdirSync } from 'node:fs'
 import { readFile, writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { Plugin } from 'vite'
 import { getSearchable, getFileInfo, Searchable } from './util'
 
@@ -13,25 +14,31 @@ declare global {
   function loadFuse(): Promise<Fuse<Searchable>>
 }
 
+const PLUGIN_NAME = 'astro-fuse'
+
 export default function astroFuse(
   fuseIndexOptions: Fuse.IFuseOptions<Searchable>
 ): AstroIntegration {
+  let outDir = ''
+
   return {
-    name: 'astro-fuse',
+    name: PLUGIN_NAME,
     hooks: {
       'astro:config:setup': async ({ config, updateConfig, injectScript }) => {
+        outDir = config.outDir.pathname
+
         injectScript(
           'page',
-          `window.loadFuse = () => 
+          `window.loadFuse = (options) => 
   Promise.all([
     import('fuse.js'),
     fetch('/fuse.json').then(res => res.json())
   ]).then(([Fuse, { list, index }]) =>
-    new Fuse.default(list, {keys: [${map(
-      fuseIndexOptions.keys,
-      (key) => `'${key}'`
-    )}]}, Fuse.default.parseIndex(index))
-  )`
+    new Fuse.default(
+      list,
+      {...options, keys: [${map(fuseIndexOptions.keys, (key) => `'${key}'`)}]},
+      Fuse.default.parseIndex(index))
+    )`
         )
 
         updateConfig({
@@ -39,6 +46,16 @@ export default function astroFuse(
             plugins: [fuse(config, fuseIndexOptions)],
           },
         })
+      },
+
+      'astro:build:done': () => {
+        if (existsSync(join(outDir, 'fuse.json'))) {
+          console.log(
+            `%s${PLUGIN_NAME}:%s \`fuse.json\` is created.`,
+            '\x1b[32m',
+            '\x1b[0m'
+          )
+        }
       },
     },
   }
@@ -48,7 +65,13 @@ function fuse(
   config: AstroConfig,
   fuseIndexOptions: Fuse.IFuseOptions<Searchable>
 ): Plugin {
-  const outputPath = join(config.outDir.pathname, 'fuse.json')
+  const outDir = config.outDir.pathname
+  const outputPath = join(outDir, 'fuse.json')
+
+  if (!existsSync(outDir)) {
+    mkdirSync(dirname(outputPath))
+  }
+
   const result = new Map<string, [hash: string, searchable: Searchable]>()
   const buffer = new Map<string, [hash: string, searchable: Searchable]>()
 
@@ -74,7 +97,7 @@ function fuse(
   }, 1000)
 
   return {
-    name: 'astro-fuse',
+    name: PLUGIN_NAME,
     async transform(_, id) {
       if (!id.match(/mdx?/)) {
         return
