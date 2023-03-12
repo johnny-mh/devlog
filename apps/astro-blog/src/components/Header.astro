@@ -12,7 +12,7 @@ import SVG from '@jasikpark/astro-svg-loader'
     <div class="links">
       <a href="/about">About</a>
       <a href="/archives">Archives</a>
-      <a href="#search">
+      <a id="search-btn" href="#search">
         <SVG src={import('../images/search.svg?raw')} width={15} height={13} />
       </a>
     </div>
@@ -128,6 +128,8 @@ import SVG from '@jasikpark/astro-svg-loader'
 </style>
 
 <script>
+  import { appAtom } from '#/stores/app'
+
   const header = document.querySelector('header')
   let lastValue = ''
 
@@ -149,4 +151,14 @@ import SVG from '@jasikpark/astro-svg-loader'
   }
 
   window.addEventListener('scroll', onScroll)
+
+  const searchBtn = document.querySelector('#search-btn')
+
+  function onSearchClick(e: MouseEvent) {
+    e.preventDefault()
+
+    appAtom.set({ showSearch: !appAtom.get().showSearch })
+  }
+
+  searchBtn?.addEventListener('click', onSearchClick)
 </script>

@@ -1,11 +1,5 @@
 import { throttle } from '#/util/throttle'
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'preact/hooks'
+import { useCallback, useEffect, useMemo, useState } from 'preact/hooks'
 import styles from './TOC.module.css'
 
 export function TOC({

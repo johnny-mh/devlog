@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx'
 import preact from '@astrojs/preact'
 import sitemap from '@astrojs/sitemap'
 import robotsTxt from 'astro-robots-txt'
+import fuse from 'astro-fuse'
 
 import { remarkReadingTime } from './remarks/readingTime.mjs'
 import { remarkCreatedAt } from './remarks/createdAt.mjs'
@@ -18,6 +19,7 @@ export default defineConfig({
     preact(),
     sitemap(),
     robotsTxt(),
+    fuse({ keys: ['content', 'frontmatter.title'] }),
   ],
   markdown: {
     syntaxHighlight: false,

@@ -11,12 +11,14 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "publish-packages": "turbo run build lint && changeset version && changeset publish"
+    "publish-packages": "turbo run build lint && changeset version && changeset publish",
+    "sort-deps": "sort-package-json apps/*/package.json packages/*/package.json"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "gh-pages": "^5.0.0",
     "prettier": "latest",
+    "sort-package-json": "^2.4.1",
     "turbo": "latest"
   },
   "engines": {

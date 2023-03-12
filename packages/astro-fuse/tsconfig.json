@@ -1,0 +1,13 @@
+{
+  "extends": "tsconfig/base.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "module": "ES2020",
+    "target": "ES2020",
+    "removeComments": true,
+    "isolatedModules": false,
+
+    "baseUrl": ".",
+    "outDir": "dist"
+  }
+}

@@ -19,10 +19,10 @@
   "license": "MIT",
   "author": "johnny-mh <romz1212@gmail.com>",
   "type": "module",
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],
-  "main": "dist/index.js",
   "scripts": {
     "build": "esbuild src/index.ts --outfile=dist/index.js --bundle --sourcemap --format=esm && tsc"
   },

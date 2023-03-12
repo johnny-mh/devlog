@@ -9,8 +9,19 @@ import { setDefaultOptions } from 'date-fns'
 import { ko } from 'date-fns/locale/index'
 import { sitemeta } from '#/sitemeta'
 import Footer from '#/components/Footer.astro'
+import Search from '#/components/Search.astro'
+import { getPosts } from '#/collection'
 
 setDefaultOptions({ locale: ko })
+
+const posts = await getPosts()
+
+const tags = posts.reduce((set, post) => {
+  ;(post.rendered.remarkPluginFrontmatter?.tags ?? []).forEach((tag) => {
+    set.add(tag)
+  })
+  return set
+}, new Set<string>())
 
 export interface Props {
   title?: string
@@ -61,5 +72,18 @@ const openGraph = {
       <slot />
     </main>
     <Footer />
+    <Search tags={tags} />
+    <script>
+      import { appAtom } from '#/stores/app'
+
+      appAtom.listen(({ showSearch }) => {
+        if (showSearch) {
+          document.body.style.overflow = 'hidden'
+          return
+        }
+
+        document.body.style.overflow = 'auto'
+      })
+    </script>
   </body>
 </html>
