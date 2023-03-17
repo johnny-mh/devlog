@@ -1,0 +1,38 @@
+---
+import { Search } from './Search'
+
+export interface Props {
+  tags: Set<string>
+}
+
+const { tags } = Astro.props
+---
+
+<div id="search-wrapper">
+  <Search client:visible tags={tags} />
+</div>
+
+<style lang="scss">
+  #search-wrapper {
+    display: none;
+  }
+</style>
+
+<script>
+  import { appAtom } from '#/stores/app'
+
+  appAtom.listen(({ showSearch }) => {
+    const wrapper = document.querySelector<HTMLDivElement>('#search-wrapper')
+
+    if (!wrapper) {
+      return
+    }
+
+    if (showSearch) {
+      wrapper.style.display = 'block'
+      return
+    }
+
+    wrapper.style.display = 'none'
+  })
+</script>

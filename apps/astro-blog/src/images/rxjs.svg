@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 253">
+  <defs>
+    <linearGradient id="a" x1="11.9%" x2="62.9%" y1="90.1%" y2="37.1%">
+      <stop offset="0%" stop-color="#EC0B8E"/>
+      <stop offset="40.1%" stop-color="#EB0B8E"/>
+      <stop offset="70.4%" stop-color="#A11D8B"/>
+      <stop offset="100%" stop-color="#5C2E88"/>
+    </linearGradient>
+    <linearGradient id="c" x1="-.1%" x2="100%" y1="50.1%" y2="50.1%">
+      <stop offset="0%" stop-color="#EC0B8E"/>
+      <stop offset="36.8%" stop-color="#E10E8F"/>
+      <stop offset="99.9%" stop-color="#C41693"/>
+    </linearGradient>
+    <radialGradient id="b" cx="77.6%" cy="33.2%" r="77.3%" fx="77.6%" fy="33.2%" gradientTransform="scale(.7346 1)">
+      <stop offset="0%" stop-color="#EC0B8E"/>
+      <stop offset="16%" stop-color="#E80C8E"/>
+      <stop offset="32.8%" stop-color="#DB0F8D"/>
+      <stop offset="49.9%" stop-color="#C6148C"/>
+      <stop offset="67.3%" stop-color="#A91B8B"/>
+      <stop offset="84.7%" stop-color="#83248A"/>
+      <stop offset="100%" stop-color="#5C2E88"/>
+    </radialGradient>
+  </defs>
+  <path fill="#ED168F" d="M15 160a107 107 0 012-73s13-46 61-67c0 0 16-8 40-9l-5-4C101-1 84-4 74 7l-9 10c-3 4-7 7-12 9l-12 1-12 5c-4 3-5 7-6 12v11c-1 11-4 14-12 20-3 2-6 5-8 9-6 11 4 22 4 32l-1 7-3 6c-2 2-3 5-3 8l4 9 10 13 1 1"/>
+  <path fill="url(#a)" d="M207 198c23-10 33-27 33-27 22-30 14-61 14-61-13 30-26 39-26 39 34-52 0-83 0-83 14 29-4 65-4 65-16 32-38 44-38 44 25 4 43-12 43-12-35 38-73 36-73 36 16 18 40 16 40 16-32 8-61-3-85-23-5-3-9-7-13-12l-4-5c-1 19 19 36 19 36-25-10-36-32-36-32s-16-28-5-60c12-32 48-38 48-38 30 14 55 18 55 18 53 9 50-17 50-17 1-22-33-46-33-46C132-8 78 21 78 21 30 41 17 87 17 87a113 113 0 0014 105c26 39 68 53 68 53 63 21 106-10 106-10 40-28 48-59 48-59-32 25-46 22-46 22zM158 51c3 0 5 3 5 6s-2 5-5 5-6-2-6-5 3-6 6-6z"/>
+  <path fill="url(#b)" d="M225 82c1-22-33-46-33-46C132-8 77 20 77 20 30 41 16 87 16 87l-5 20c-3 15-1 28-1 28 1 14 4 22 4 22l4 13v-3s-5-20-1-40c0 0 4-20 18-36 0 0 22-32 64-19a159 159 0 0021 8c30 15 55 19 55 19 53 9 50-17 50-17zm-67-20c-3 0-6-2-6-5s3-6 6-6 5 3 5 6-2 5-5 5z"/>
+  <path fill="url(#c)" d="M123 42L89 31h-3s-20 5-17 16c0 0 2 7 8 14l38-2 8-17z"/>
+</svg>

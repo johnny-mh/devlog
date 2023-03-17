@@ -1,0 +1,92 @@
+---
+import '#/styles/markdown-content.scss'
+
+import { getPosts } from '#/collection'
+import Layout from '#/layouts/Layout.astro'
+import { TOC } from '#/components/TOC'
+import { Comment } from '#/components/Comment'
+import Pager from '#/components/Pager.astro'
+import PostHeader from '#/components/PostHeader.astro'
+
+export async function getStaticPaths() {
+  const posts = await getPosts()
+
+  const list = posts.map((post, idx) => {
+    const prev = posts[idx - 1]
+    const next = posts[idx + 1]
+
+    return {
+      prev: prev?.path ? `/post/${prev.path}` : null,
+      next: next?.path ? `/post/${next.path}` : null,
+      post,
+    }
+  })
+
+  return await Promise.all(
+    list.map(
+      ({
+        prev,
+        next,
+        post: {
+          path,
+          rendered: { remarkPluginFrontmatter: frontmatter, Content, headings },
+        },
+      }) => ({
+        params: { slug: path },
+        props: {
+          prev,
+          next,
+          frontmatter,
+          Content,
+          headings,
+        },
+      })
+    )
+  )
+}
+
+const { prev, next, frontmatter, Content, headings } = Astro.props
+---
+
+<Layout frontmatter={frontmatter}>
+  <div class="wrapper">
+    <div class="content">
+      <PostHeader frontmatter={frontmatter} />
+
+      <div class="markdown-content">
+        <Content />
+      </div>
+
+      <Pager prev={prev} next={next} />
+
+      <Comment client:only client:visible />
+    </div>
+
+    <div class="toc">
+      <TOC headings={headings} client:visible />
+    </div>
+  </div>
+</Layout>
+
+<style lang="scss">
+  .wrapper {
+    display: flex;
+    position: relative;
+  }
+
+  .content {
+    max-width: 736px;
+    flex-grow: 0;
+  }
+
+  .toc {
+    width: 300px;
+    margin-right: -100%;
+  }
+
+  @media (max-width: 1388px) {
+    .toc {
+      display: none;
+    }
+  }
+</style>

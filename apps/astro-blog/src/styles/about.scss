@@ -1,0 +1,53 @@
+.markdown-content.about {
+  section {
+    margin-bottom: 5rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+
+  h2:first-child {
+    margin-top: 0px !important;
+  }
+
+  ul {
+    line-height: 2rem;
+    margin-left: 1rem;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  li::before {
+    position: absolute;
+    left: 0px;
+    content: '\2022';
+    font-size: 1rem;
+    padding-right: 0.5rem;
+  }
+
+  section > ul {
+    margin-bottom: 2rem;
+  }
+
+  details {
+    display: inline;
+  }
+
+  details summary {
+    cursor: pointer;
+  }
+
+  details summary > * {
+    display: inline;
+  }
+}

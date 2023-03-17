@@ -1,0 +1,89 @@
+---
+import '#/styles/syntax-highlight.scss'
+import '#/styles/reset.scss'
+import '#/styles/site.scss'
+
+import { SEO } from 'astro-seo'
+import Header from '#/components/Header.astro'
+import { setDefaultOptions } from 'date-fns'
+import { ko } from 'date-fns/locale/index'
+import { sitemeta } from '#/sitemeta'
+import Footer from '#/components/Footer.astro'
+import Search from '#/components/Search.astro'
+import { getPosts } from '#/collection'
+
+setDefaultOptions({ locale: ko })
+
+const posts = await getPosts()
+
+const tags = posts.reduce((set, post) => {
+  ;(post.rendered.remarkPluginFrontmatter?.tags ?? []).forEach((tag) => {
+    set.add(tag)
+  })
+  return set
+}, new Set<string>())
+
+export interface Props {
+  title?: string
+  frontmatter?: any
+}
+
+const { frontmatter, title } = Astro.props
+
+const openGraph = {
+  basic: {
+    title: title ?? frontmatter?.title ?? 'JOHNN DEV BLOG',
+    type: frontmatter ? 'article' : 'website',
+    image: frontmatter?.featuredImage ?? '/ogImage.webp',
+  },
+  image: {
+    alt: frontmatter ? frontmatter.title : sitemeta.title,
+  },
+}
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=5, width=device-width, viewport-fit=cover"
+    />
+    <meta
+      name="google-site-verification"
+      content="er9zvCmECxtt0KP_BjDZ4WplZsNT5ApeDBK4wYD7aI0"
+    />
+    <meta
+      name="naver-site-verification"
+      content="aef0a8e4429c4f7c5f7e3b52074dc2d968716069"
+    />
+    <SEO
+      title={sitemeta.title}
+      description={sitemeta.description}
+      openGraph={openGraph}
+    />
+    <link rel="icon" href="/favicon.png" sizes="any" />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <Search tags={tags} />
+    <script>
+      import { appAtom } from '#/stores/app'
+
+      appAtom.listen(({ showSearch }) => {
+        if (showSearch) {
+          document.body.style.overflow = 'hidden'
+          return
+        }
+
+        document.body.style.overflow = 'auto'
+      })
+    </script>
+  </body>
+</html>

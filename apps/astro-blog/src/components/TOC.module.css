@@ -1,0 +1,39 @@
+.wrapper {
+  position: sticky;
+  top: 100px;
+  font-size: 0.9rem;
+}
+
+.content {
+  width: 300px;
+  margin: 0 0 0 5rem;
+}
+
+.list {
+  list-style: none;
+  list-style-position: inside;
+  line-height: 1.3rem;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  border-left: 2px solid #333;
+  transition: opacity 0.3s ease;
+  opacity: 0.5;
+}
+
+.list li:hover {
+  opacity: 1;
+}
+
+.list a,
+.list a:visited {
+  color: #333;
+  text-decoration: none;
+}
+
+.list :global(.active) {
+  opacity: 1;
+  font-weight: 700;
+}

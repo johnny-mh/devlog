@@ -1,0 +1,125 @@
+---
+import { getPosts } from '#/collection'
+import {
+  formatDuration,
+  intervalToDuration,
+  roundToNearestMinutes,
+} from 'date-fns'
+import SVG from '@jasikpark/astro-svg-loader'
+
+export interface Props {
+  title?: string
+}
+const posts = await getPosts()
+
+const recentPosts = posts.slice(0, 5).map(
+  ({
+    path,
+    rendered: {
+      remarkPluginFrontmatter: { title, createdAt, readingTime },
+    },
+  }) => ({
+    title,
+    path,
+    createdAt,
+    readingTime: formatDuration(
+      intervalToDuration({
+        start: 0,
+        end: roundToNearestMinutes(readingTime).getTime(),
+      })
+    ),
+  })
+)
+
+const { title = '최근 포스트' } = Astro.props
+---
+
+<section>
+  <h3>{title}</h3>
+  <ul>
+    {
+      recentPosts.map((post) => (
+        <li>
+          <article>
+            <h4>
+              <a href={`/post/${post.path}`}>{post.title}</a>
+            </h4>
+            <div class="meta">
+              <span>{post.createdAt}</span>
+              <span>
+                <SVG src={import('../images/time.svg?raw')} /> 읽는 데{' '}
+                {post.readingTime}
+              </span>
+            </div>
+          </article>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style lang="scss">
+  section {
+    margin-bottom: 3rem;
+  }
+
+  ul {
+    li {
+      margin-bottom: 0.5rem;
+      line-height: 2rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #ebebeb;
+      position: relative;
+
+      &:last-of-type {
+        border-bottom: 1px solid transparent;
+      }
+
+      h4 {
+        margin: 0;
+        padding: 0;
+
+        a {
+          color: #333;
+          text-decoration: none;
+
+          &:visited {
+            color: #333;
+          }
+
+          &:hover {
+            color: #000;
+            text-decoration: none;
+          }
+
+          &:before {
+            content: ' ';
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+          }
+        }
+      }
+
+      .meta {
+        font-size: 0.8rem;
+        color: #a8a8a8;
+
+        svg {
+          width: 11px;
+          height: 11px;
+        }
+
+        span + span {
+          padding-left: 11px;
+        }
+
+        .updated {
+          color: #db4c69;
+        }
+      }
+    }
+  }
+</style>

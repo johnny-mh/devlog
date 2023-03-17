@@ -1,13 +1,13 @@
 {
   "name": "gatsby-plugin-fusejs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Gatsby plugin for providing client-side search for data available in Gatsby's GraphQL layer using Fuse.js",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
     "fuse.js"
   ],
-  "homepage": "https://github.com/johnny-mh/blog2/tree/main/libs/gatsby-plugin-fusejs#readme",
+  "homepage": "https://github.com/johnny-mh/blog2/tree/main/packages/gatsby-plugin-fusejs",
   "bugs": {
     "url": "https://github.com/johnny-mh/blog2/issues"
   },

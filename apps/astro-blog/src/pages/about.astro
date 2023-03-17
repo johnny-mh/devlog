@@ -1,0 +1,12 @@
+---
+import '#/styles/about.scss'
+import Layout from '#/layouts/Layout.astro'
+
+const [about] = await Astro.glob('../content/about/*.mdx')
+---
+
+<Layout>
+  <div class="markdown-content about">
+    <about.Content />
+  </div>
+</Layout>

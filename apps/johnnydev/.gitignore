@@ -1,1 +1,4 @@
-
+dist/
+.cache/
+public/
+gatsby-types.d.ts

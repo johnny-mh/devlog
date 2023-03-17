@@ -1,0 +1,30 @@
+@import './variables';
+
+div[data-rehype-pretty-code-fragment] {
+  font-family: $monospace;
+  font-size: 0.9rem;
+  background-color: #333;
+  margin-bottom: 2rem;
+  border-radius: 5px;
+}
+
+div[data-rehype-pretty-code-fragment] > pre {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+div[data-rehype-pretty-code-fragment] .line {
+  padding-left: 1rem;
+}
+
+pre > code {
+  display: grid;
+  white-space: pre-wrap;
+}
+
+.highlighted {
+  background-color: rgba(200, 200, 255, 0.1);
+  border-left-color: #60a5fa;
+  border-left-width: 3px;
+  border-left-style: solid;
+}
