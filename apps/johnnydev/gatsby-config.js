@@ -12,12 +12,7 @@ module.exports = {
     `gatsby-plugin-sass`,
     'gatsby-plugin-emotion',
     `gatsby-plugin-sitemap`,
-    {
-      resolve: "gatsby-plugin-webpack-bundle-analyser-v2",
-      options: {
-        devMode: true,
-      },
-    },
+    // `gatsby-plugin-webpack-bundle-analyser-v2`,
     {
       resolve: 'gatsby-plugin-svgr',
       options: {
