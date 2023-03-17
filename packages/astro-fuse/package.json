@@ -30,7 +30,7 @@
     "@types/js-yaml": "^4.0.5",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.14.6",
-    "astro": "^2.0.17",
+    "astro": "latest",
     "fuse.js": "^6.6.2",
     "js-yaml": "^4.1.0",
     "lodash-es": "^4.17.21",

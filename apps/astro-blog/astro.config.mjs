@@ -12,7 +12,7 @@ import { rehypePrettyCode } from './remarks/rehypePrettyCode.mjs'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'http://johnny-mh.github.io',
+  site: 'http://johnny-mh.github.io/',
   integrations: [
     image({ serviceEntryPoint: '@astrojs/image/sharp' }),
     mdx(),

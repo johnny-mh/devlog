@@ -11,13 +11,13 @@
     "start": "astro dev"
   },
   "devDependencies": {
-    "@astrojs/image": "^0.15.1",
-    "@astrojs/mdx": "^0.17.2",
-    "@astrojs/preact": "^2.0.3",
-    "@astrojs/sitemap": "^1.1.0",
+    "@astrojs/image": "latest",
+    "@astrojs/mdx": "latest",
+    "@astrojs/preact": "latest",
+    "@astrojs/sitemap": "latest",
     "@jasikpark/astro-svg-loader": "^0.1.0",
     "@nanostores/preact": "^0.3.1",
-    "astro": "^2.0.15",
+    "astro": "latest",
     "astro-fuse": "workspace:^",
     "astro-robots-txt": "^0.4.0",
     "astro-seo": "^0.7.1",
