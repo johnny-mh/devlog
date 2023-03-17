@@ -17,7 +17,7 @@ declare global {
 const PLUGIN_NAME = 'astro-fuse'
 
 export default function astroFuse(
-  fuseIndexOptions: Fuse.IFuseOptions<Searchable>
+  fuseIndexOptions: Fuse.IFuseOptions<Searchable> & { injectScript?: boolean }
 ): AstroIntegration {
   let outDir = ''
 
@@ -27,9 +27,10 @@ export default function astroFuse(
       'astro:config:setup': async ({ config, updateConfig, injectScript }) => {
         outDir = config.outDir.pathname
 
-        injectScript(
-          'page',
-          `window.loadFuse = (options) => 
+        if (fuseIndexOptions.injectScript !== false) {
+          injectScript(
+            'page',
+            `window.loadFuse = (options) => 
   Promise.all([
     import('fuse.js'),
     fetch('/fuse.json').then(res => res.json())
@@ -39,7 +40,8 @@ export default function astroFuse(
       {...options, keys: [${map(fuseIndexOptions.keys, (key) => `'${key}'`)}]},
       Fuse.default.parseIndex(index))
     )`
-        )
+          )
+        }
 
         updateConfig({
           vite: {
