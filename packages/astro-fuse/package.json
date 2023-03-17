@@ -1,6 +1,22 @@
 {
   "name": "astro-fuse",
   "version": "0.0.1",
+  "description": "Use Fuse.js to search documents in your Astro site",
+  "keywords": [
+    "astro-integration",
+    "astro-component"
+  ],
+  "homepage": "https://github.com/johnny-mh/blog2/tree/main/packages/astro-fuse",
+  "bugs": {
+    "url": "https://github.com/johnny-mh/blog2/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnny-mh/blog2.git",
+    "directory": "packages/astro-fuse"
+  },
+  "license": "MIT",
+  "author": "johnny-mh <romz1212@gmail.com>",
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
