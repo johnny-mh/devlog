@@ -3,16 +3,24 @@ import SVG from '@jasikpark/astro-svg-loader'
 ---
 
 <footer>
-  <div></div>
+  <div>
+    <a
+      href="/rss.xml"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="RSS">RSS</a
+    >
+  </div>
   <div>
     <a
       href="https://github.com/johnny-mh"
       target="_blank"
       rel="noopener noreferrer"
+      aria-label="Go to github profile page"
     >
       <SVG src={import('../images/github.svg?raw')} width={24} height={24} />
     </a>
-    <a href="mailto://romz1212@gmail.com">
+    <a href="mailto://romz1212@gmail.com" aria-label="Send mail to Johnny">
       <SVG src={import('../images/mail.svg?raw')} width={20} height={20} />
     </a>
   </div>

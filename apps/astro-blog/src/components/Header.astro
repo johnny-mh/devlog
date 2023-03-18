@@ -5,14 +5,14 @@ import SVG from '@jasikpark/astro-svg-loader'
 <header>
   <div class="container">
     <div class="brand">
-      <a href="/">
+      <a href="/" aria-label="Go to Home">
         <SVG src={import('../images/johnnydev.svg?raw')} width={230} />
       </a>
     </div>
     <div class="links">
       <a href="/about">About</a>
       <a href="/archives">Archives</a>
-      <a id="search-btn" href="#search">
+      <a id="search-btn" href="#search" aria-label="Search blogs">
         <SVG src={import('../images/search.svg?raw')} width={15} height={13} />
       </a>
     </div>

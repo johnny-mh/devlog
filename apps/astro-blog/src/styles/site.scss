@@ -4,15 +4,25 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
-*, :after, :before, html {
+*,
+:after,
+:before,
+html {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   color: #333;
 }
 
-body, button, input, select, td, textarea, th {
+body,
+button,
+input,
+select,
+td,
+textarea,
+th {
   font-family: $sans-serif;
   line-height: 1.1rem;
 }
@@ -22,7 +32,7 @@ a {
   text-decoration: none;
 
   &:visited {
-    color: #bb6dff;
+    color: #ac4dff;
   }
 
   &:hover {
@@ -45,7 +55,12 @@ main {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-top: 0;
   margin-bottom: 2rem;
   font-weight: 700;
@@ -54,7 +69,6 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-size: 2rem;
   line-height: 1.2em;
-
 }
 
 h2 {

@@ -27,8 +27,12 @@ const { title, list } = Astro.props
             <div class="meta">
               <span>{post.createdAt}</span>
               <span>
-                <SVG src={import('../images/time.svg?raw')} /> 읽는 데{' '}
-                {post.readingTime}
+                <SVG
+                  src={import('../images/time.svg?raw')}
+                  width={11}
+                  height={11}
+                />{' '}
+                읽는 데 {post.readingTime}
               </span>
             </div>
           </article>
@@ -85,12 +89,7 @@ const { title, list } = Astro.props
 
       .meta {
         font-size: 0.8rem;
-        color: #a8a8a8;
-
-        svg {
-          width: 11px;
-          height: 11px;
-        }
+        color: #777;
 
         span + span {
           padding-left: 11px;
