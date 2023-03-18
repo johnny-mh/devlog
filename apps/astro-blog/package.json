@@ -13,6 +13,7 @@
   "devDependencies": {
     "@astrojs/image": "latest",
     "@astrojs/mdx": "latest",
+    "@astrojs/partytown": "^1.1.1",
     "@astrojs/preact": "latest",
     "@astrojs/sitemap": "latest",
     "@jasikpark/astro-svg-loader": "^0.1.0",

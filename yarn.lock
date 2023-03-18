@@ -156,6 +156,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@astrojs/partytown@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@astrojs/partytown@npm:1.1.1"
+  dependencies:
+    "@builder.io/partytown": ^0.7.4
+    mrmime: ^1.0.0
+  checksum: c9ffe4ee4117a530e6f2c15f5ae9fe7b8d8b4f0e62bdae5d7d963775c6fa00b27cd1e87cfe83e0f0d41f41577311e826ad8311f7be2986f12d4acd4300997918
+  languageName: node
+  linkType: hard
+
 "@astrojs/preact@npm:latest":
   version: 2.1.0
   resolution: "@astrojs/preact@npm:2.1.0"
@@ -1649,7 +1659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/partytown@npm:^0.7.5":
+"@builder.io/partytown@npm:^0.7.4, @builder.io/partytown@npm:^0.7.5":
   version: 0.7.5
   resolution: "@builder.io/partytown@npm:0.7.5"
   bin:
@@ -5350,6 +5360,7 @@ __metadata:
   dependencies:
     "@astrojs/image": latest
     "@astrojs/mdx": latest
+    "@astrojs/partytown": ^1.1.1
     "@astrojs/preact": latest
     "@astrojs/sitemap": latest
     "@jasikpark/astro-svg-loader": ^0.1.0

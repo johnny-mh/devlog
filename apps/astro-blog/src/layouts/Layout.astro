@@ -32,7 +32,7 @@ const { frontmatter, title } = Astro.props
 
 const openGraph = {
   basic: {
-    title: title ?? frontmatter?.title ?? 'JOHNN DEV BLOG',
+    title: title ?? frontmatter?.title ?? 'JOHNNY DEV BLOG',
     type: frontmatter ? 'article' : 'website',
     image: frontmatter?.featuredImage ?? '/ogImage.webp',
   },
@@ -59,12 +59,25 @@ const openGraph = {
       name="naver-site-verification"
       content="aef0a8e4429c4f7c5f7e3b52074dc2d968716069"
     />
+    <meta name="generator" content={Astro.generator} />
     <SEO
       title={sitemeta.title}
       description={sitemeta.description}
       openGraph={openGraph}
     />
     <link rel="icon" href="/favicon.png" sizes="any" />
+    <script
+      type="text/partytown"
+      src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"
+    ></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      gtag('config', 'G-R9PQNBWGC9')
+    </script>
   </head>
   <body>
     <Header />
