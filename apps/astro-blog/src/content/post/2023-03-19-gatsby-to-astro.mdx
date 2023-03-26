@@ -2,7 +2,7 @@
 title: 웹 성능 관점에서 본 Astro
 description: 블로그를 Astro로 옮기며 느꼈던 장점들을 웹 성능 관점에서 정리해 본다
 featuredImage: /20230319/cover.webp
-tags: [astro, performance, Island Architecture]
+tags: [astro, performance, island architecture]
 categories: [development]
 ---
 
@@ -101,7 +101,7 @@ Astro는 각 island에 대해 어느 순간에 어떻게 로드될 것인지에 
   alt="astro로 옮긴 후 측정한 결과. 이전에도 좋았지만 훨씬 좋아졌다."
 />
 
-이는 Astro로 개발한 이 블로그의 홈 페이지에서 이미지와 GA를 제외한 초기 사이즈 (약 30KB)대비 57.14%나 많은 수치이다. (이 블로그 뿐만 아니라 Astro공식 홈페이지의 Showcase에 있는 사이트들은 모두 매우 작은 크기를 자랑하고 있다)
+이는 Astro로 개발한 이 블로그의 홈에서 이미지와 GA를 제외한 초기 사이즈 (약 30KB)대비 57.14%나 안 좋은 수치이다. (이 블로그 뿐만 아니라 Astro공식 홈페이지의 Showcase에 있는 사이트들은 모두 매우 작은 크기를 자랑하고 있다)
 
 Astro가 용량이 작을 수 있는 건. 초기 설계 단에서 신경을 쓴것도 영향이 있겠지만 단지.. 이런 코드들이 없기 때문이다. [Astro Routing API문서](https://docs.astro.build/en/core-concepts/routing/#navigating-between-pages)를 확인해 보면 알겠지만 기본적으로 SPA를 위한 js가 포함되어 있지 않다. 페이지 이동은 `<a href=".." />`를 사용한 전통적인 리다이렉트에 의존하고 있다.
 
@@ -115,11 +115,13 @@ Astro가 용량이 작을 수 있는 건. 초기 설계 단에서 신경을 쓴�
 
 gatsby 공식 스타터 중 [`gatsby-starter-blog`](https://www.gatsbyjs.com/starters/gatsbyjs/gatsby-starter-blog) 데모는 내용이 별로 많지 않음에도 웹 폰트 제외 초기 JS의 크기만 100kB이다.
 
-이 블로그도 이전에 gatsby로 개발했었는데. "블로그" 본질적인 기능인 "글 제공" 만을 남긴다고 했을 때 불필요한 JS가 너무 많았다. 스타터 템플릿이 그런데 예전 gatsby버전은 더 했을 것이다.
+이 블로그도 이전에 gatsby로 개발했었는데. **블로그 본질적인 기능**만을 남긴다고 했을 때 불필요한 JS가 너무 많았다. 스타터 템플릿이 그런데 예전 gatsby버전은 더 했을 것이다.
+
+글을 보여주는 기능 외 다른 리소스들은 아무리 사용자 경험을 개선한다는 목적이라고 해도 꼼꼼히 따져본다면 결국 불필요한 리소스가 되고 만다. 이는 앱을 기획할 때 부터 앱의 성격에 따라 전략을 달리하는것이 올바르다 할 수 있다.
 
 현재까지 Astro를 포함 Island Architecture를 구현한 프로젝트들은 모두 적은 TTI를 강점으로 내새우고 있고 이는 정적 컨텐츠 위주의 사이트에서 극대화된다. **JS를 최소화하기 용이하도록 만들어졌기 때문이다.**
 
-반면에 대시보드 앱과 같이 인터렉션이 필요한 UI가 많은 상황에서는 페이지 로드와 동시에 모든 JS를 받아 처리애햐 할 것이다. 이렇게 되면 Astro의 모든 장점을 극대화하기가 어려워진다. 이럴 땐 핸들러 단위로 JS를 쪼개주는 [qwik](https://qwik.builder.io/)을 고려해보는 것이 좋겠다.
+반면에 대시보드 앱과 같이 인터렉션이 필요한 UI가 많은 상황에서는 페이지 로드와 동시에 모든 JS를 받게 될 확률이 높을 것이다. 이렇게 되면 Astro의 모든 장점을 극대화하기가 어려워진다. 이럴 땐 핸들러 단위로 JS를 쪼개주는 [qwik](https://qwik.builder.io/)을 고려해보는 것이 좋겠다.
 
 ## 결론
 
