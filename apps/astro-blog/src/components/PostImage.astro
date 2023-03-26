@@ -11,14 +11,13 @@ export interface Props {
 }
 
 const { src, alt, ...attrs } = Astro.props
-// const img = await import(/* @vite-ignore */ src)
 
 const img = await src
 const {
   default: { width, height, format },
 } = img
 
-const aspectRatio = width / height
+const aspectRatio = parseFloat(String(width / height)).toFixed(2)
 ---
 
 <figure style="margin-bottom:1rem">
@@ -30,8 +29,9 @@ const aspectRatio = width / height
       aspectRatio={`${width}:${height}`}
       format={format}
       alt={alt ?? ''}
+      style={`margin-bottom: -8px`}
       {...attrs}
     />
   </span>
-  <figcaption>{attrs.alt}</figcaption>
+  <figcaption>{alt}</figcaption>
 </figure>

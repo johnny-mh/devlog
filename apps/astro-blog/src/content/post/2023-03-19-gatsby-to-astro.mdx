@@ -1,0 +1,144 @@
+---
+title: 웹 성능 관점에서 본 Astro
+description: 블로그를 Astro로 옮기며 느꼈던 장점들을 웹 성능 관점에서 정리해 본다
+featuredImage: /20230319/cover.webp
+tags: [astro, performance, Island Architecture]
+categories: [development]
+---
+
+import PostImage from '#/components/PostImage.astro'
+
+<PostImage
+  src={import('../../assets/postImages/20230319/cover.webp')}
+  alt="Astro의 성능 측정 결과"
+/>
+
+## 서론
+
+XMLHttpRequest기반 RIA의 개발부터. Selective Hydration을 구현하고 있는 웹 기술의 변천사를 하나하나 돌이켜 보다 보면. 어떻게 이런 생각까지 할 수 있을까라는 생각으로 자연스럽게 흘러 가게 된다.
+
+웹 기술의 변화를 이끄는 조직은 수도 없겠지만 가장 눈에 띄는 곳은 단연 facebook, vercel, shopify일 것이다. 이 곳의 협업을 통해 개선되는 react, nextjs 의 신기능 시연은 여가 시간에 한번이라도 더 컴퓨터 앞에 앉게 만드는 자극제가 되고 있다.
+
+소개된 기술 중 [Streaming Server Rendering with Suspense](https://youtu.be/8dUpL8SCO1w?t=4174) 와 같은 기능들은 이 글을 쓰고 있는 2023년에도 아직 실험적 기능이라는 딱지를 달고 있고 완전하게 동작하지는 않고 있지만. (nextjs 13.2 에는 라우팅 단위로 비슷하게 구현될 수 있도록 업데이트 되었다)
+
+사실 Hydration 과정을 스트리밍하는 개념 자체는 react의 발표 전에도 존재했으며 오늘 글에서 소개할 Astro는 그런 개념 중 [Island Architecture](https://patterns-dev-kr.github.io/rendering-patterns/the-island-architecture/)를 프레임워크 레벨에서 구현하고 있다.
+
+**용어가 생소할 수 있는데 내용을 보다 보면 익숙한 느낌이 들 것이다.** 기본적인 개념 설명과 Gatsby로 개발했던 블로그를 Astro로 옮기며 생긴 변화들에 대해서 정리한다.
+
+## Island Architecture
+
+preactjs의 개발자 Jason Miller가 쓴 [Island Architecture에 대한 소개](https://jasonformat.com/islands-architecture/)를 보면 Etsy의 프론트엔드 엔지니어 [Katie Sylor-Miller](https://twitter.com/ksylor) 와의 미팅 중에 관련된 개념에 대한 이야기를 처음 나눴다고 한다.
+
+<PostImage
+  src={import('../../assets/postImages/20230319/island-architecture.webp')}
+  alt="출처: Islands Architecture: Jason Miller"
+/>
+
+Island Architecture의 요점은 페이지 내에 동적인 영역에 대한 html은 서버가 렌더링하여 내려주고. 인터렉션을 위한 JS를 후속하여 내려받도록 해 **점진적으로 페이지의 기능을 이용할 수 있도록 하는 것이다.**
+
+SSR이 SEO를 고려해 자주 구현되곤 하지만, SSR은 인터렉션에 관련된 JS가 다운로드되고 실행되기 전 까지 페이지가 동작하지 않는 부정적인 경험을 사용자에게 줄 수 있다. 일반적으로 개발되는 JS를 처리하기 위한 리소스 소모가 생각보다 많다고 한다.
+
+또한. 서버에서 렌더링해 내려주는 html에는 뉴스의 경우 본문이, 상품 페이지의 경우 상품 설명 등. 사용자 입장에서 필수적인 내용이 꼭 포함되어 있어야 한다는 내용을 포함하고 있다.
+
+react의 스트리밍 서버 렌더링 소개 영상이 2021년 발표되었으니. 이 개념은 알려진 것 보다 프론트엔드 엔지니어들 사이에서 훨씬 전에 논의되고 구현되어 왔던 것이다.
+
+따라서 **Island Architecture는 어느 프레임웍 혹은 라이브러리를 지칭하는 용어가 아니라 디자인 패턴일 뿐이다.** 해당 디자인 패턴을 구현하는 프레임웍이나 라이브러리는 많다. 그런데 Astro가 State Of JS 2022 기준으로는 가장 높은 Ratio를 기록하고 있다.
+
+<PostImage
+  src={import('../../assets/postImages/20230319/ratios_over_time.webp')}
+  alt="State Of JS 2022 Rendering Frameworks"
+/>
+
+## Astro의 Component Island
+
+Astro는 기본적으로 모든 웹을 zero client-side JS으로 생성한다. Astro는 React, Preact, Svelte, Vue, SolidJS, AlpineJS, Lit 등으로 만든 UI컴포넌트들도 HTML을 만들긴 하지만 마찬가지로 JS를 걷어낸 상태로 렌더링한다.
+
+렌더링 된 HTML에는 placeholder혹은 slot역할을 하는 `<astro-island />` 요소가 자리잡게 된다. 아래는 현재 블로그에서 preact로 구현된 Table Of Content (목차) 컴포넌트의 SSR결과 스크린샷이다. 보면 알겠지만 주요 컨텐츠를 포함하고 있다.
+
+<PostImage
+  src={import('../../assets/postImages/20230319/astro-island.webp')}
+  alt="preact로 개발된 TOC컴포넌트의 SSR 결과"
+/>
+
+Astro는 각 island에 대해 어느 순간에 어떻게 로드될 것인지에 대한 지시자를 사용할 수 있다. 이 블로그의 경우 뷰포트의 크기가 1388px 이상일 때에만 우측에 TOC를 노출하고 있는데 따라서 아래와 같이 지시자를 추가하였다.
+
+```tsx {4}
+<Layout>
+  <div class="wrapper">
+    <div class="content">{/* 본문 */}</div>
+    <TOC headings={headings} client:visible />
+  </div>
+</Layout>
+```
+
+```scss {3}
+@media (max-width: 1388px) {
+  .toc {
+    display: none;
+  }
+}
+```
+
+미디어쿼리를 통해 뷰포트가 작으면 `<TOC />`가 노출되지 않고. 조건에 해당될 경우 `client:visible` 지시자를 통해 화면에 노출될 때에만 컴포넌트에 필요한 JS를 동적으로 로드하여 Hydration하게 된다.
+
+<PostImage
+  src={import('../../assets/postImages/20230319/network.webp')}
+  alt="동적으로 로드된 JS들. react 런타임마저도 동적으로 로드되고 있다."
+/>
+
+이런 [클라이언트 지시자](https://docs.astro.build/en/reference/directives-reference/#client-directives)들은 위에서 소개한 뷰포트 노출 여부 뿐만 아니라 브라우저 활성화 상태, 미디어 쿼리 등 다양하게 지원하고 있으므로 적절하게 잘 사용하는 것 만으로도 브라우저의 FCP를 위해 열심히 일하고 있는 메인 스레드를 방해하지 않을 수 있다.
+
+필요한 곳에 일일히 직접 구현해 적용해야 했던 과거와 달리 엄청 간편해진 셈이다.
+
+## Zero Client-Side JS
+
+**어떤 기술을 사용하던 결국 모던 웹 앱 개발에서 TTI(인터렉티브가 가능해지기까지의 시간)를 개선하는 것은 JS를 얼만큼 줄이느냐의 싸움으로 귀결된다.** [Netflix가 서비스를 Vanilla JS로 전환하고 TTI가 50% 감소했다](https://medium.com/dev-channel/a-netflix-web-performance-case-study-c0bcde26a9d9)는 사례를 보면 JS가 차지하는 비중이 작지 않다는 것을 알 수 있다.
+
+아무런 내용 없이 `create-react-app`과 `react-router-dom`만을 사용한 앱의 번들 크기는 gzipped기준 약 70kB 정도가 된다. history를 응용해 인앱 라우팅을 구현하는 코드만으로도 번들 크기가 꽤 늘어나는 것을 볼 수 있다.
+
+<PostImage
+  src={import('../../assets/postImages/20230319/blog-lighthouse.webp')}
+  alt="astro로 옮긴 후 측정한 결과. 이전에도 좋았지만 훨씬 좋아졌다."
+/>
+
+이는 Astro로 개발한 이 블로그의 홈 페이지에서 이미지와 GA를 제외한 초기 사이즈 (약 30KB)대비 57.14%나 많은 수치이다. (이 블로그 뿐만 아니라 Astro공식 홈페이지의 Showcase에 있는 사이트들은 모두 매우 작은 크기를 자랑하고 있다)
+
+Astro가 용량이 작을 수 있는 건. 초기 설계 단에서 신경을 쓴것도 영향이 있겠지만 단지.. 이런 코드들이 없기 때문이다. [Astro Routing API문서](https://docs.astro.build/en/core-concepts/routing/#navigating-between-pages)를 확인해 보면 알겠지만 기본적으로 SPA를 위한 js가 포함되어 있지 않다. 페이지 이동은 `<a href=".." />`를 사용한 전통적인 리다이렉트에 의존하고 있다.
+
+또 Astro에서는 위에서 소개한 서드파티 컴포넌트 라이브러리 없이 Astro로 컴포넌트를 만들 경우에 대해서는. DOM에 이벤트를 붙이기 위해 `document.querySelector`와 `addEventListener`를 사용해야 한다.
+
+그럼 이벤트 제거는 어떻게 하나? 안해도 된다. 왜냐면 `<a href=".." />`로 페이지 자체가 이동되어 버리기 때문이다. (물론 이런 경우가 필요하면 위에서 언급한 react, preact, solidjs 등을 사용하면 된다)
+
+페이지 로드 후 실행되는 코드들에 대해 트랜스파일은 해 주지만 별도 추가 코드가 포함되어 있지는 않다. 말 그대로 **Zero Client-Side JS**에 가까운 셈이다.
+
+## Astro를 도입해야 하나 말아야 하나?
+
+gatsby 공식 스타터 중 [`gatsby-starter-blog`](https://www.gatsbyjs.com/starters/gatsbyjs/gatsby-starter-blog) 데모는 내용이 별로 많지 않음에도 웹 폰트 제외 초기 JS의 크기만 100kB이다.
+
+이 블로그도 이전에 gatsby로 개발했었는데. "블로그" 본질적인 기능인 "글 제공" 만을 남긴다고 했을 때 불필요한 JS가 너무 많았다. 스타터 템플릿이 그런데 예전 gatsby버전은 더 했을 것이다.
+
+현재까지 Astro를 포함 Island Architecture를 구현한 프로젝트들은 모두 적은 TTI를 강점으로 내새우고 있고 이는 정적 컨텐츠 위주의 사이트에서 극대화된다. **JS를 최소화하기 용이하도록 만들어졌기 때문이다.**
+
+반면에 대시보드 앱과 같이 인터렉션이 필요한 UI가 많은 상황에서는 페이지 로드와 동시에 모든 JS를 받아 처리애햐 할 것이다. 이렇게 되면 Astro의 모든 장점을 극대화하기가 어려워진다. 이럴 땐 핸들러 단위로 JS를 쪼개주는 [qwik](https://qwik.builder.io/)을 고려해보는 것이 좋겠다.
+
+## 결론
+
+아래는 위의 내용을 바탕으로 정리해본 생각들과 장점 및 단점이다
+
+**장점**
+
+- 정적 컨텐츠 위주의 사이트에서 JS를 최소하하여 TTI를 크게 개선할 수 있다 (페이지 로드 속도가 드라마틱하게 빨라진다)
+- react, preact, solidjs, lit 등 기존에 만들어진 컴포넌트를 그대로 쓸 수 있다
+- Island 별로 지시자를 통해 Hydration을 적절히 컨트롤할 수 있다
+
+**단점**
+
+- 동적 컨텐츠 위주의 사이트에서는 초기에 모든 JS를 로드해야 할 가능성이 높아 장점이 퇴색된다
+- 커뮤니티가 아직 많이 활성화되지 않았다
+
+티저 사이트, 블로그, 포트폴리오 사이트에는 무조건 쓰는 것이 좋겠다.
+
+> 참고
+>
+> - [Islands Architecture](https://jasonformat.com/islands-architecture/)
+> - [The Island Architecture](https://patterns-dev-kr.github.io/rendering-patterns/the-island-architecture/)
