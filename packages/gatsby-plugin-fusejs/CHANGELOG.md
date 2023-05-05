@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2
+
+### Patch Changes
+
+- c5686f1: Fixed an issue where bundle configuration was not set correctly.
+
 ## 2.0.1
 
 ### Patch Changes
