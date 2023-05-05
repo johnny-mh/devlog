@@ -10239,7 +10239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-fusejs@2.0.1, gatsby-plugin-fusejs@workspace:packages/gatsby-plugin-fusejs":
+"gatsby-plugin-fusejs@2.0.2, gatsby-plugin-fusejs@workspace:packages/gatsby-plugin-fusejs":
   version: 0.0.0-use.local
   resolution: "gatsby-plugin-fusejs@workspace:packages/gatsby-plugin-fusejs"
   dependencies:
@@ -12878,7 +12878,7 @@ __metadata:
     gatsby-awesome-pagination: ^0.3.8
     gatsby-plugin-emotion: ^8.4.0
     gatsby-plugin-feed: ^5.4.0
-    gatsby-plugin-fusejs: 2.0.1
+    gatsby-plugin-fusejs: 2.0.2
     gatsby-plugin-google-gtag: ^5.4.0
     gatsby-plugin-image: ^3.4.0
     gatsby-plugin-manifest: ^5.4.0
@@ -12908,7 +12908,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-helmet: ^6.1.0
-    react-use-fusejs: 2.0.1
+    react-use-fusejs: 2.0.2
     sass: ^1.57.1
     tsconfig: 0.0.0
     typescript: ^4.9.4
@@ -17236,7 +17236,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-use-fusejs@2.0.1, react-use-fusejs@workspace:packages/react-use-fusejs":
+"react-use-fusejs@2.0.2, react-use-fusejs@workspace:packages/react-use-fusejs":
   version: 0.0.0-use.local
   resolution: "react-use-fusejs@workspace:packages/react-use-fusejs"
   dependencies:
