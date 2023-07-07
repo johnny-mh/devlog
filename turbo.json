@@ -7,14 +7,16 @@
       "outputs": ["dist/**", "public/**"]
     },
     "dev": {
-      "dependsOn": ["^build"],
       "cache": false
     },
     "serve": {
-      "dependsOn": ["^build"],
       "cache": false
     },
-    "clean": {},
-    "typecheck": {}
+    "clean": {
+      "cache": false
+    },
+    "typecheck": {
+      "cache": false
+    }
   }
 }

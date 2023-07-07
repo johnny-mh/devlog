@@ -1,4 +1,0 @@
-{
-  "extends": "tsconfig/blog.json",
-  "include": ["./src/**/*", "./plugins/**/*"]
-}
