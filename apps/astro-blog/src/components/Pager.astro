@@ -48,24 +48,21 @@ const { prev, next } = Astro.props
   .pager {
     height: 56px;
     margin-bottom: 30px;
-  }
-
-  ul {
     text-align: center;
 
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+
     li {
-      display: inline-block;
-      *display: block;
-      *zoom: 1;
       height: 56px;
       line-height: 56px;
       white-space: nowrap;
-      margin: 0 10px;
 
       svg {
-        margin-top: -3px;
         width: 21px;
         height: 21px;
+        margin-top: -3px;
         vertical-align: middle;
       }
 
