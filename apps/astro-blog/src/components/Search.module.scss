@@ -1,14 +1,21 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
 .wrapper {
   position: fixed;
   z-index: 20;
   inset: 0;
-  background-color: #f8f8f8;
-  overflow-y: scroll;
+  background-color: $theme-light-bg;
+  overflow: hidden;
   overscroll-behavior: none;
   clip-path: circle(0% at 100% 0px);
   transition-property: clip-path;
   transition-duration: 1s;
   transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+
+  @include dark {
+    background-color: $theme-dark-bg;
+  }
 }
 
 :global(.reveal) {
@@ -26,6 +33,12 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
+
+  fill: $theme-light-text;
+
+  @include dark {
+    fill: $theme-dark-text;
+  }
 }
 
 .header {
@@ -50,18 +63,21 @@
 }
 
 .tags button {
-  color: #333;
+  color: $theme-light-text;
   background-color: transparent;
-  border: 1px solid #888;
+  border: 1px solid $theme-light-text-secondary;
   padding: 0.25rem 0.5rem;
   font-family: var(--monospace);
   border-radius: 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+
+  @include dark {
+    color: $theme-dark-text;
+  }
 }
 
 .tags button:hover {
-  border-color: #333;
   border-radius: 0.5rem;
 }
 
@@ -72,6 +88,11 @@
   outline: none;
   background-color: transparent;
   padding: 0;
+  color: $theme-light-text;
+
+  @include dark {
+    color: $theme-dark-text;
+  }
 }
 
 .list {
@@ -89,7 +110,7 @@
 }
 
 .list a {
-  color: #333;
+  @include link;
 }
 
 .spinner {

@@ -43,6 +43,8 @@ const { prev, next } = Astro.props
 </ul>
 
 <style lang="scss">
+  @use '../styles/mixins' as *;
+
   .pager {
     height: 56px;
     margin-bottom: 30px;
@@ -67,23 +69,8 @@ const { prev, next } = Astro.props
         vertical-align: middle;
       }
 
-      a,
-      a:visited {
-        color: #333;
-        text-decoration: none;
-
-        svg {
-          fill: #333;
-        }
-      }
-
-      a:hover {
-        color: #000;
-        text-decoration: none;
-
-        svg {
-          fill: #000;
-        }
+      a {
+        @include link;
       }
 
       span {

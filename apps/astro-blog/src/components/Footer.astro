@@ -27,6 +27,9 @@ import SVG from '@jasikpark/astro-svg-loader'
 </footer>
 
 <style lang="scss">
+  @use '../styles/variables' as *;
+  @use '../styles/mixins' as *;
+
   footer {
     margin: 4rem auto;
     display: flex;
@@ -42,18 +45,8 @@ import SVG from '@jasikpark/astro-svg-loader'
       align-items: center;
       gap: 0.5rem;
 
-      a,
-      a:visited {
-        color: #333;
-        text-decoration: none;
-
-        &:hover {
-          color: #000;
-
-          svg path {
-            fill: #000;
-          }
-        }
+      a {
+        @include link;
       }
     }
   }

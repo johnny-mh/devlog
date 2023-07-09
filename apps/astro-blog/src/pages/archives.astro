@@ -37,7 +37,7 @@ const groups = [
 ---
 
 <Layout>
-  <section>
+  <section class="section">
     <h2>By Categories</h2>
     <ul class="tagcloud">
       {
@@ -53,7 +53,7 @@ const groups = [
       }
     </ul>
   </section>
-  <section>
+  <section class="section">
     <h2>By Tags</h2>
     <ul class="tagcloud">
       {
@@ -69,7 +69,7 @@ const groups = [
       }
     </ul>
   </section>
-  <section>
+  <section class="section">
     <h2>Archives</h2>
     <ul class="archives">
       {
@@ -96,7 +96,10 @@ const groups = [
 </Layout>
 
 <style lang="scss">
-  section {
+  @use '../styles/variables' as *;
+  @use '../styles/mixins' as *;
+
+  .section {
     padding-bottom: 2rem;
     margin-bottom: 2rem;
     border-bottom: 1px solid #bbb;
@@ -116,12 +119,7 @@ const groups = [
       margin: 0.25em 0.5em;
 
       a {
-        color: #333;
-        text-decoration: none;
-
-        &:hover {
-          color: #000;
-        }
+        @include link;
       }
     }
   }
@@ -160,17 +158,17 @@ const groups = [
           a {
             display: block;
             margin-right: 5px;
-            color: #333;
-            text-decoration: none;
 
-            :hover {
-              color: #000;
-            }
+            @include link;
           }
 
           span {
             display: block;
-            color: #a8a8a8;
+            color: $theme-light-text-secondary;
+
+            @include dark {
+              color: $theme-dark-text-secondary;
+            }
           }
         }
       }

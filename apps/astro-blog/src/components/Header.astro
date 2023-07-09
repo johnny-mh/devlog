@@ -20,7 +20,8 @@ import SVG from '@jasikpark/astro-svg-loader'
 </header>
 
 <style lang="scss">
-  @import '../styles/_mixin';
+  @use '../styles/variables' as *;
+  @use '../styles/mixins' as *;
 
   header {
     position: fixed;
@@ -28,7 +29,7 @@ import SVG from '@jasikpark/astro-svg-loader'
     left: 0;
     z-index: 3;
     width: 100%;
-    background-color: #fff;
+    background-color: $theme-light-bg;
 
     &.scroll {
       box-shadow: 1px 2px 18px rgba(0, 0, 0, 0.1);
@@ -36,6 +37,10 @@ import SVG from '@jasikpark/astro-svg-loader'
       .container {
         height: 80px;
       }
+    }
+
+    @include dark {
+      background-color: $theme-dark-bg;
     }
   }
 
@@ -46,15 +51,27 @@ import SVG from '@jasikpark/astro-svg-loader'
       transition: background-color 0.2s ease-in-out;
 
       svg {
-        fill: #333;
+        fill: $theme-light-text;
         transition: fill 0.2s ease-in-out;
+
+        @include dark {
+          fill: $theme-dark-text;
+        }
       }
 
       &:hover {
-        background-color: #333;
+        background-color: $theme-light-text;
 
         svg {
-          fill: #fff;
+          fill: $theme-light-bg;
+        }
+
+        @include dark {
+          background-color: theme-dark-text;
+
+          svg {
+            fill: $theme-dark-bg;
+          }
         }
       }
     }
@@ -84,18 +101,10 @@ import SVG from '@jasikpark/astro-svg-loader'
       align-items: center;
       padding: 0.75rem;
       margin: 0 0.25rem;
-      color: #333;
       line-height: 1.2rem;
       text-align: center;
 
-      &:hover {
-        color: #000;
-        text-decoration: none;
-      }
-    }
-
-    svg {
-      fill: #333;
+      @include link;
     }
   }
 

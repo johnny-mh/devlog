@@ -17,14 +17,20 @@ import SVG from '@jasikpark/astro-svg-loader'
         >
           rxjs-shell
         </a>
-        <img
-          class="travis"
-          src="https://github.com/johnny-mh/rxjs-shell/actions/workflows/pull_request.yml/badge.svg"
-          alt="CI"
-          width={123}
-          height={20}
-          draggable={false}
-        />
+        <span class="badges">
+          <img
+            src="https://github.com/johnny-mh/rxjs-shell/actions/workflows/pull_request.yml/badge.svg"
+            alt="CI"
+            width={121}
+            height={18}
+            draggable={false} />
+          <img
+            src="https://img.shields.io/npm/dw/rxjs-shell"
+            alt=""
+            width={121}
+            height={18}
+            draggable={false} />
+        </span>
       </h4>
       <div>
         NodeJS의 child_process를 rxjs의 operator로 사용할 수 있게 해 주는 패키지
@@ -76,9 +82,30 @@ import SVG from '@jasikpark/astro-svg-loader'
       </div>
     </div>
   </li>
+  <li>
+    <div class="icon">
+      <SVG src={import('../images/astro.svg?raw')} width={56} height={56} />
+    </div>
+    <div class="desc">
+      <h4>
+        <a
+          href="https://www.npmjs.com/package/astro-fuse"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          astro-fuse
+        </a>
+      </h4>
+      <div>
+        astro 사이트에 <a href="https://fusejs.io/" target="_blank" rel="noopener noreferrer">Fuse.js</a> 기반 검색 기능을 추가할 수 있는 플러그인
+      </div>
+    </div>
+  </li>
 </ul>
 
 <style lang="scss">
+  @use '../styles/mixins' as *;
+
   .opensources {
     margin: 0;
     padding: 0;
@@ -93,31 +120,24 @@ import SVG from '@jasikpark/astro-svg-loader'
         padding: 0;
 
         a {
-          color: #333;
-          text-decoration: none;
-
-          &:hover {
-            color: #000;
-          }
+          @include link;
 
           &:before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
           }
         }
       }
 
       .desc {
         margin-left: 21px;
+      }
 
-        .travis {
-          padding-left: 11px;
-          vertical-align: middle;
-        }
+      .badges {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
       }
     }
   }

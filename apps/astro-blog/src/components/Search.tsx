@@ -1,11 +1,11 @@
+import Styles from './Search.module.scss'
+
 import { Searchable } from 'astro-fuse'
 import { useStore } from '@nanostores/preact'
 import Fuse from 'fuse.js'
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
-import styles from './Search.module.css'
 import { appAtom } from '#/stores/app'
 import { shuffle } from '#/util/common'
-import { string } from 'astro/zod'
 
 interface SearchedItem {
   title: string
@@ -15,7 +15,7 @@ interface SearchedItem {
 export function Search(props: { tags: Set<string> }) {
   const tags = useMemo(
     () => shuffle(Array.from(props.tags.values())).slice(0, 5),
-    []
+    [props.tags]
   )
 
   const app = useStore(appAtom)
@@ -60,13 +60,8 @@ export function Search(props: { tags: Set<string> }) {
     setTimeout(() => appAtom.set({ showSearch: false }), 1000)
   }
 
-  const onKeyUp = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      close()
-    }
-  }
-
-  const onInput = (e) => setQuery((e.target as HTMLInputElement).value)
+  const onInput = (e: KeyboardEvent) =>
+    setQuery((e.target as HTMLInputElement).value)
 
   const onTagClick = (name: string) => {
     if (inpRef.current) {
@@ -87,6 +82,12 @@ export function Search(props: { tags: Set<string> }) {
       inpRef.current?.focus()
     }
 
+    function onKeyUp(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        close()
+      }
+    }
+
     document.addEventListener('keyup', onKeyUp)
 
     return () => {
@@ -95,12 +96,12 @@ export function Search(props: { tags: Set<string> }) {
   }, [app.showSearch])
 
   return (
-    <div className={`${styles.wrapper} ${reveal}`}>
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <form onSubmit={() => {}}>
+    <div className={`${Styles.wrapper} ${reveal}`}>
+      <div className={Styles.content}>
+        <div className={Styles.header}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <input
-              className={styles.inp}
+              className={Styles.inp}
               type="text"
               placeholder="Type to Search"
               autoCapitalize="off"
@@ -111,11 +112,14 @@ export function Search(props: { tags: Set<string> }) {
             />
           </form>
 
-          <button className={styles.closeBtn} type="button" onClick={close}>
-            <img src="/close.svg" width={25} height={25} alt="close" />
+          <button className={Styles.closeBtn} type="button" onClick={close}>
+            <svg width="37" height="37" x="0" y="0" viewBox="0 0 512 512">
+              <path d="m25 512a25 25 0 0 1 -17.68-42.68l462-462a25 25 0 0 1 35.36 35.36l-462 462a24.93 24.93 0 0 1 -17.68 7.32z" />
+              <path d="m487 512a24.93 24.93 0 0 1 -17.68-7.32l-462-462a25 25 0 0 1 35.36-35.36l462 462a25 25 0 0 1 -17.68 42.68z" />
+            </svg>
           </button>
         </div>
-        <div className={styles.tags}>
+        <div className={Styles.tags}>
           {tags.map((name) => (
             <button key={name} onClick={() => onTagClick(name)}>
               {name}
@@ -123,8 +127,8 @@ export function Search(props: { tags: Set<string> }) {
           ))}
         </div>
 
-        <div className={styles.list}>
-          <ul className={styles.searchResult}>
+        <div className={Styles.list}>
+          <ul className={Styles.searchResult}>
             {list.map((item) => (
               <li key={item.slug}>
                 <a href={`/post/${item.slug.toLowerCase()}`}>{item.title}</a>

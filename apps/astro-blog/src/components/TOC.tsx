@@ -1,13 +1,16 @@
 import { throttle } from '#/util/throttle'
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks'
-import styles from './TOC.module.css'
+import Styles from './TOC.module.scss'
 
 export function TOC({
   headings,
 }: {
   headings: Array<{ depth: number; text: string; slug: string }>
 }) {
-  const headers = useMemo(() => headings.filter(({ depth }) => depth < 3), [])
+  const headers = useMemo(
+    () => headings.filter(({ depth }) => depth < 3),
+    [headings]
+  )
   const [currentIndex, setCurrentIndex] = useState<null | number>(null)
 
   const calcActive = useCallback(() => {
@@ -52,14 +55,15 @@ export function TOC({
     return () => {
       window.removeEventListener('scroll', onScrollForActive)
     }
-  }, [])
+  }, [calcActive])
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.content}>
-        <ol className={styles.list}>
+    <div className={Styles.wrapper}>
+      <div className={Styles.content}>
+        <ol className={Styles.list}>
           {headers.map(({ slug, text, depth }, idx) => (
             <li
+              key={idx}
               style={`padding-left: ${depth * 11}px`}
               className={currentIndex === idx ? 'active' : ''}
             >

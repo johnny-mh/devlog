@@ -1,4 +1,5 @@
-@import './_mixin';
+@use './variables' as *;
+@use './mixins' as *;
 
 html {
   -webkit-font-smoothing: antialiased;
@@ -13,7 +14,13 @@ html {
 
 html,
 body {
-  color: #333;
+  color: $theme-light-text;
+  background-color: $theme-light-bg;
+
+  @include dark {
+    color: $theme-dark-text;
+    background-color: $theme-dark-bg;
+  }
 }
 
 body,
@@ -28,11 +35,11 @@ th {
 }
 
 a {
-  color: #5596ff;
+  color: $link-color;
   text-decoration: none;
 
   &:visited {
-    color: #ac4dff;
+    color: $link-visited;
   }
 
   &:hover {
@@ -46,10 +53,8 @@ main {
   max-width: 800px;
   margin: 0 auto;
   min-height: calc(100vh - 23rem);
-}
 
-@include mobile {
-  main {
+  @include mobile {
     margin: 4rem auto 0 auto;
     padding: 2rem 0.5rem;
   }
