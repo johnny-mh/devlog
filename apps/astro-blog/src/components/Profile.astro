@@ -29,7 +29,8 @@ import profileImage from '#/images/profile.webp'
 </section>
 
 <style lang="scss">
-  @import '../styles/_mixin';
+  @use '../styles/variables' as *;
+  @use '../styles/mixins' as *;
 
   section {
     display: flex;
@@ -74,22 +75,23 @@ import profileImage from '#/images/profile.webp'
       span {
         line-height: 1.5rem;
         border-radius: 1.5rem;
-        background-color: #555;
-        color: #fff;
+        color: $theme-light-text;
+        background-color: $theme-light-text-bg;
         padding: 0.1rem 1rem;
+
+        @include dark {
+          color: $theme-dark-text;
+          background-color: $theme-dark-text-bg;
+        }
       }
     }
 
     .mail {
       margin-left: 0.5rem;
       line-height: 1rem;
-      a {
-        color: #333;
-        text-decoration: none;
 
-        :hover {
-          color: #000;
-        }
+      a {
+        @include link;
       }
     }
   }

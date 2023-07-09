@@ -43,6 +43,9 @@ const { title, list } = Astro.props
 </section>
 
 <style lang="scss">
+  @use '../styles/variables' as *;
+  @use '../styles/mixins' as *;
+
   section {
     margin-bottom: 3rem;
   }
@@ -52,8 +55,12 @@ const { title, list } = Astro.props
       margin-bottom: 0.5rem;
       line-height: 2rem;
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid #ebebeb;
+      border-bottom: 1px solid $theme-light-text-secondary;
       position: relative;
+
+      @include dark {
+        border-bottom-color: $theme-dark-text-secondary;
+      }
 
       &:last-of-type {
         border-bottom: 1px solid transparent;
@@ -64,32 +71,32 @@ const { title, list } = Astro.props
         padding: 0;
 
         a {
-          color: #333;
-          text-decoration: none;
+          @include link;
 
-          &:visited {
-            color: #333;
-          }
-
-          &:hover {
-            color: #000;
-            text-decoration: none;
-          }
 
           &:before {
-            content: ' ';
+            content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
           }
         }
       }
 
       .meta {
         font-size: 0.8rem;
-        color: #777;
+        color: $theme-light-text-secondary;
+
+        svg {
+          fill: $theme-light-text-secondary;
+        }
+
+        @include dark {
+          color: $theme-dark-text-secondary;
+
+          svg {
+            fill: $theme-dark-text-secondary;
+          }
+        }
 
         span + span {
           padding-left: 11px;

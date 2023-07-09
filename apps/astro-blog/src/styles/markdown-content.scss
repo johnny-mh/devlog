@@ -1,4 +1,5 @@
-@import './_variables';
+@use './variables' as *;
+@use './mixins' as *;
 
 .markdown-content {
   line-height: 1.8rem;
@@ -16,19 +17,31 @@
     font-family: $monospace;
     font-size: 0.9rem;
     padding: 0.1rem 0.2rem;
-    background-color: rgb(171, 249, 255, 0.5);
+    background-color: $theme-light-text-bg;
     border-radius: 3px;
+
+    @include dark {
+      background-color: $theme-dark-text-bg;
+    }
   }
 
   blockquote {
     padding: 0 1em;
-    color: #6a737d;
+    color: $theme-light-text-secondary;
     border-left: 0.25em solid #dfe2e5;
+
+    @include dark {
+      color: $theme-dark-text-secondary;
+    }
   }
 
   figcaption {
     font-size: 0.8rem;
-    color: #6a737d;
+    color: $theme-light-text-secondary;
+
+    @include dark {
+      color: $theme-dark-text-secondary;
+    }
   }
 
   h1 {
@@ -65,12 +78,16 @@
   }
 
   hr {
-    border-top: 1px solid #888;
+    border-top: 1px solid $theme-light-text-secondary;
     border-right: none;
     border-bottom: none;
     border-left: none;
     width: 50%;
     margin: 3rem auto;
+
+    @include dark {
+      border-top-color: $theme-dark-text-secondary;
+    }
   }
 
   img {

@@ -45,6 +45,9 @@ const {
 </header>
 
 <style lang="scss">
+  @use '../styles/variables' as *;
+  @use '../styles/mixins' as *;
+
   .wrapper {
     display: grid;
     margin-bottom: 35px;
@@ -54,24 +57,20 @@ const {
     margin: 0 0 0.5rem;
   }
 
-  .link,
-  .link:visited {
-    color: #777;
-
-    &:hover {
-      color: #333;
-    }
+  .link {
+    @include link-secondary;
   }
 
   .post-meta {
     margin: 0 0 0.5rem;
-
-    * {
       text-transform: uppercase;
       line-height: 1.6em;
       letter-spacing: 1px;
-      font-size: 12px;
-      color: #777;
+      font-size: 0.8rem;
+    color: $theme-light-text-secondary;
+
+    @include dark {
+      color: $theme-dark-text-secondary;
     }
 
     span + span {
@@ -81,19 +80,12 @@ const {
 
   .tags {
     font-size: 0.8em;
-    color: #777;
     display: flex;
     align-items: center;
     gap: 7px;
 
-    .icon-tag {
-      display: inline-block;
-      margin-right: 4px;
-      width: 14px;
-      height: 14px;
-      margin-top: -4px;
-      line-height: inherit;
-      vertical-align: middle;
+    svg {
+      fill: $theme-light-text-secondary;
     }
   }
 </style>

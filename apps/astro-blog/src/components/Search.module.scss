@@ -1,0 +1,119 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.wrapper {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  background-color: $theme-light-bg;
+  overflow: hidden;
+  overscroll-behavior: none;
+  clip-path: circle(0% at 100% 0px);
+  transition-property: clip-path;
+  transition-duration: 1s;
+  transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+
+  @include dark {
+    background-color: $theme-dark-bg;
+  }
+}
+
+:global(.reveal) {
+  clip-path: circle(300% at 100% 0px);
+}
+
+.content {
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 9rem auto 0 auto;
+  position: relative;
+}
+
+.closeBtn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  fill: $theme-light-text;
+
+  @include dark {
+    fill: $theme-dark-text;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 1.5rem;
+}
+
+.header form {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+}
+
+.tags {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+}
+
+.tags button {
+  color: $theme-light-text;
+  background-color: transparent;
+  border: 1px solid $theme-light-text-secondary;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--monospace);
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  @include dark {
+    color: $theme-dark-text;
+  }
+}
+
+.tags button:hover {
+  border-radius: 0.5rem;
+}
+
+.inp {
+  width: 100%;
+  font-size: 3rem;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  color: $theme-light-text;
+
+  @include dark {
+    color: $theme-dark-text;
+  }
+}
+
+.list {
+  position: relative;
+  padding-top: 20px;
+}
+
+.list ul {
+  margin: 0 0 0 0.5rem;
+}
+
+.list li {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.list a {
+  @include link;
+}
+
+.spinner {
+  position: absolute;
+  top: -10px;
+}

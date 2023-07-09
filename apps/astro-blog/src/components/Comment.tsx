@@ -4,12 +4,14 @@ const COMMENTS_ID = 'comments-container'
 
 export function Comment() {
   useEffect(() => {
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
+
     const script = document.createElement('script')
     script.src = 'https://utteranc.es/client.js'
     script.setAttribute('repo', 'johnny-mh/blog2')
     script.setAttribute('issue-term', 'og:title')
     script.setAttribute('label', 'Comment')
-    script.setAttribute('theme', 'github-light')
+    script.setAttribute('theme', dark ? 'github-dark' : 'github-light')
     script.setAttribute('crossorigin', 'anonymous')
     script.async = true
 
