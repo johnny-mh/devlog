@@ -13,7 +13,7 @@ interface FileInfo {
 }
 
 function appendForwardSlash(path: string) {
-  return path.endsWith('/') ? path : path + '/'
+  return path.endsWith('/') ? path : `${path}/`
 }
 
 export function getFileInfo(id: string, config: AstroConfig): FileInfo {
@@ -22,10 +22,10 @@ export function getFileInfo(id: string, config: AstroConfig): FileInfo {
   )
 
   // Try to grab the file's actual URL
-  let url: URL | undefined = undefined
+  let url: URL | undefined
   try {
     url = new URL(`file://${id}`)
-  } catch {}
+  } catch { }
 
   const fileId = id.split('?')[0]
   let fileUrl: string
@@ -53,9 +53,12 @@ export interface Searchable {
 }
 
 export function getSearchable(source: string): Omit<Searchable, 'fileUrl'> {
-  const tree = fromMarkdown(source, {
+  const tree = fromMarkdown(source, 'utf-8', {
     extensions: [mdxjs(), frontmatter(['yaml'])],
-    mdastExtensions: [mdxFromMarkdown(), frontmatterFromMarkdown(['yaml'])],
+    mdastExtensions: [
+      mdxFromMarkdown() as any,
+      frontmatterFromMarkdown(['yaml']),
+    ],
   })
 
   const yaml = tree.children.splice(

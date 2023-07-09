@@ -12,19 +12,30 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
+      - name: Check out code
+        uses: actions/checkout@v3
         with:
-          node-version: '18'
+          fetch-depth: 2
 
-      - name: 📥 Monorepo install
-        uses: ./.github/actions/yarn-nm-install
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.32.2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm
 
       - run: git remote set-url origin https://git:${SECRET_TOKEN}@github.com/johnny-mh/johnny-mh.github.io.git
         env:
           SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
-      - run: NODE_ENV=production yarn turbo build --filter astro-blog
+      - name: Build
+        run: NODE_ENV=production pnpm turbo build --filter astro-blog
 
-      - run: yarn gh-pages -f -t -d apps/astro-blog/dist -b master -u 'github-actions-bot <support+actions@github.com>'
+      - name: Publish
+        run: pnpm gh-pages -f -t -d apps/astro-blog/dist -b master -u 'github-actions-bot <support+actions@github.com>'
