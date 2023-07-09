@@ -5,7 +5,7 @@
   position: fixed;
   z-index: 20;
   inset: 0;
-  background-color: $theme-light-bg;
+  background-color: #d9d9d9;
   overflow: hidden;
   overscroll-behavior: none;
   clip-path: circle(0% at 100% 0px);
@@ -14,7 +14,7 @@
   transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
 
   @include dark {
-    background-color: $theme-dark-bg;
+    background-color: #161c26;
   }
 }
 

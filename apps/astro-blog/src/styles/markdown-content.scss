@@ -78,7 +78,7 @@
   }
 
   hr {
-    border-top: 1px solid $theme-light-text-secondary;
+    border-top: 1px solid $theme-light-border;
     border-right: none;
     border-bottom: none;
     border-left: none;
@@ -86,7 +86,7 @@
     margin: 3rem auto;
 
     @include dark {
-      border-top-color: $theme-dark-text-secondary;
+      border-top-color: $theme-dark-border;
     }
   }
 

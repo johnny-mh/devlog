@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 
 const COMMENTS_ID = 'comments-container'
 
@@ -29,6 +29,38 @@ export function Comment() {
       }
     }
   }, [])
+
+  const [dark, setDark] = useState(false)
+
+  useEffect(() => {
+    function onChange(mediaQuery: MediaQueryListEvent) {
+      setDark(mediaQuery.matches)
+    }
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
+
+    prefersDark.addEventListener('change', onChange)
+
+    return () => {
+      prefersDark.removeEventListener('change', onChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (document.querySelector('.utterances-frame')) {
+      const iframe =
+        document.querySelector<HTMLIFrameElement>('.utterances-frame')
+
+      if (!iframe) {
+        return
+      }
+
+      iframe?.contentWindow?.postMessage(
+        { type: 'set-theme', theme: dark ? 'github-dark' : 'github-light' },
+        'https://utteranc.es'
+      )
+    }
+  }, [dark])
 
   return <div id={COMMENTS_ID} />
 }

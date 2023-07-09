@@ -102,7 +102,11 @@ const groups = [
   .section {
     padding-bottom: 2rem;
     margin-bottom: 2rem;
-    border-bottom: 1px solid #bbb;
+    border-bottom: 1px solid $theme-light-border;
+
+    @include dark {
+      border-bottom-color: $theme-dark-border;
+    }
 
     &:last-of-type {
       border-bottom: none;
