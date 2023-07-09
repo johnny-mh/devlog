@@ -6,6 +6,7 @@ import Fuse from 'fuse.js'
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
 import { appAtom } from '#/stores/app'
 import { shuffle } from '#/util/common'
+import { JSXInternal } from 'preact/src/jsx'
 
 interface SearchedItem {
   title: string
@@ -60,7 +61,7 @@ export function Search(props: { tags: Set<string> }) {
     setTimeout(() => appAtom.set({ showSearch: false }), 1000)
   }
 
-  const onInput = (e: KeyboardEvent) =>
+  const onInput: JSXInternal.GenericEventHandler<HTMLInputElement> = (e) =>
     setQuery((e.target as HTMLInputElement).value)
 
   const onTagClick = (name: string) => {
