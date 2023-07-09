@@ -27,7 +27,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm
+        run: pnpm install
 
       - run: git remote set-url origin https://git:${SECRET_TOKEN}@github.com/johnny-mh/johnny-mh.github.io.git
         env:
