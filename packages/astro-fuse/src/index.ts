@@ -2,7 +2,7 @@ import type { AstroConfig, AstroIntegration } from 'astro'
 import Fuse from 'fuse.js'
 import { debounce, map } from 'lodash-es'
 import { createHmac } from 'node:crypto'
-import { existsSync, mkdirSync } from 'node:fs'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { Plugin } from 'vite'
@@ -11,13 +11,21 @@ import { getSearchable, getFileInfo, Searchable } from './util'
 export { Searchable } from './util'
 
 declare global {
-  function loadFuse(): Promise<Fuse<Searchable>>
+  function loadFuse(
+    options?: Omit<Fuse.IFuseOptions<Searchable>, 'keys'>
+  ): Promise<Fuse<Searchable>>
 }
 
 const PLUGIN_NAME = 'astro-fuse'
 
+export type AstroFuseConfig = {
+  keys: Fuse.FuseOptionKey<Searchable>[],
+  injectScript?: boolean
+}
+  & Fuse.FuseIndexOptions<Searchable>
+
 export default function astroFuse(
-  fuseIndexOptions: Fuse.IFuseOptions<Searchable> & { injectScript?: boolean }
+  _config: AstroFuseConfig
 ): AstroIntegration {
   let outDir = ''
 
@@ -27,25 +35,43 @@ export default function astroFuse(
       'astro:config:setup': async ({ config, updateConfig, injectScript }) => {
         outDir = config.outDir.pathname
 
-        if (fuseIndexOptions.injectScript !== false) {
+        if (_config.injectScript !== false) {
+          injectScript(
+            'head-inline',
+            `window.addEventListener('fuseLoaded', function(e) {
+  window.loadFuse = function loadFuse(options) {
+    return new Promise(function(resolve, reject) {
+        const Fuse = e.detail;
+
+        fetch('/fuse.json')
+          .then(res => res.json())
+          .then(({list, index}) => {
+            resolve(new Fuse(
+              list,
+              Object.assign(
+                Object.assign({}, options),
+                {keys: [${map(_config.keys, (key) => `'${key}'`)}]}
+              ),
+              Fuse.parseIndex(index)
+            ))
+          })
+          .catch(reject)
+    });
+  };
+});`
+          )
+
           injectScript(
             'page',
-            `window.loadFuse = (options) => 
-  Promise.all([
-    import('fuse.js'),
-    fetch('/fuse.json').then(res => res.json())
-  ]).then(([Fuse, { list, index }]) =>
-    new Fuse.default(
-      list,
-      {...options, keys: [${map(fuseIndexOptions.keys, (key) => `'${key}'`)}]},
-      Fuse.default.parseIndex(index))
-    )`
+            `import('fuse.js').then(mod => {
+  window.dispatchEvent(new CustomEvent('fuseLoaded', {detail: mod.default}));
+})`
           )
         }
 
         updateConfig({
           vite: {
-            plugins: [fuse(config, fuseIndexOptions)],
+            plugins: [fuse(config, _config)],
           },
         })
       },
@@ -65,43 +91,47 @@ export default function astroFuse(
 
 function fuse(
   config: AstroConfig,
-  fuseIndexOptions: Fuse.IFuseOptions<Searchable>
+  _config: AstroFuseConfig,
 ): Plugin {
   const outDir = config.outDir.pathname
   const outputPath = join(outDir, 'fuse.json')
 
   if (!existsSync(outDir)) {
     mkdirSync(dirname(outputPath))
+    writeFileSync(outputPath, '{}')
   }
 
   const result = new Map<string, [hash: string, searchable: Searchable]>()
   const buffer = new Map<string, [hash: string, searchable: Searchable]>()
 
-  const writeFuseIndex = debounce(() => {
-    let diff = false
+  const writeFuseIndex = debounce(
+    () => {
+      let diff = false
 
-    buffer.forEach(([hash, searchable], fileId) => {
-      const doc = result.get(fileId)
+      buffer.forEach(([hash, searchable], fileId) => {
+        const doc = result.get(fileId)
 
-      if (!doc || doc[0] !== hash) {
-        diff = true
+        if (!doc || doc[0] !== hash) {
+          diff = true
 
-        result.set(fileId, [hash, searchable])
+          result.set(fileId, [hash, searchable])
+        }
+      })
+
+      if (diff) {
+        const list = map(Array.from(result.values()), 1)
+        const index = Fuse.createIndex(_config.keys, list, _config)
+
+        writeFile(outputPath, JSON.stringify({ list, index: index.toJSON() }))
       }
-    })
-
-    if (diff) {
-      const list = map(Array.from(result.values()), 1)
-      const index = Fuse.createIndex(fuseIndexOptions.keys ?? [], list)
-
-      writeFile(outputPath, JSON.stringify({ list, index: index.toJSON() }))
-    }
-  }, 1000)
+    },
+    process.env.NODE_ENV === 'production' ? 0 : 500
+  )
 
   return {
     name: PLUGIN_NAME,
     async transform(_, id) {
-      if (!id.match(/mdx?/)) {
+      if (!id.match(/\.mdx?/)) {
         return
       }
 
