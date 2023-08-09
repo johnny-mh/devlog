@@ -63,7 +63,52 @@ const result = fuse.search('search keyword')
 
 `astro-fuse` adds a function called `'loadFuse'` to the global context. Calling this function will give you an instance of `Fuse.js` that uses the generated index during the build process.
 
-Here is an example of a preact component using the loadFuse function:
+### Basic Example
+
+```astro
+<input type="text" data-search-inp />
+<ul data-search-result></ul>
+
+<script>
+  import type Fuse from 'fuse.js';
+  import type { Searchable } from 'astro-fuse';
+
+  const inp = document.querySelector<HTMLInputElement>('[data-search-inp]');
+  const ul = document.querySelector('[data-search-result]');
+
+  let inst: Fuse<Searchable>;
+
+  function load() {
+    // for prevent duplicated requests
+    if (!inst) {
+      return loadFuse().then((_inst) => {
+        inst = _inst;
+        return inst;
+      });
+    }
+
+    return Promise.resolve(inst);
+  }
+
+  inp?.addEventListener("input", () => {
+    load()
+      .then((fuse) => fuse.search(inp?.value))
+      .then((results) => {
+        if (!ul) {
+          return;
+        }
+
+        ul.innerHTML = results
+          .map(({ item }) => `<li>${item.fileUrl}</li>`)
+          .join('');
+      });
+  });
+</script>
+```
+
+
+### Preact Example
+
 
 ```js
 export function Search() {
@@ -145,4 +190,5 @@ function loadFuseCustom(options) {
 
 ## Remarks
 
-Since this plugin goes through a separate processing step using mdast and micromark to handle markdown files, elements other than text in markdown files (components rendered with `@astrojs/mdx`) may not be searchable.
+1. Since this plugin goes through a separate processing step using mdast and micromark to handle markdown files, elements other than text in markdown files (components rendered with `@astrojs/mdx`) may not be searchable.
+2. In a development environment, the index file for Fuse.js may not be created immediately when the server starts. In this case, you can request a page that uses a Markdown file to trigger the build process. Please note that the file is created immediately in the production build stage. If it is not created, please report an issue.
