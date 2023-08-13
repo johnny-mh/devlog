@@ -1,5 +1,11 @@
 # astro-fuse
 
+## 0.0.5
+
+### Patch Changes
+
+- Added `basedOn: output` mode to support rendered HTML based search features.
+
 ## 0.0.4
 
 ### Patch Changes
