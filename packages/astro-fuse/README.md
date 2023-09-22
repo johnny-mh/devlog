@@ -30,8 +30,7 @@ export default defineConfig({
 When you install the integration, the Fuse.js index file will be generated when you start the development server.
 
 ```json
-// dist/fuse.json
-{"list": [{"pathname": "...", "content": "...", "fileUrl": "..."}, {...}, {...}]}
+{"list": [{"pathname": "...", "content": "...", {...}, {...}]}
 ```
 
 Now we just need to implement the search UI. Please refer to the `Using index file on site` section below.
@@ -353,14 +352,17 @@ The output format of the search method is as follows (in `basedOn: output` mode)
 
         ul.innerHTML = results
           .map(
-            ({ item }) =>
-              `<li><a href="${item.pathname}">${item.frontmatter.title}</a></li>`
-          )
+            ({ item }) => `<li><a href="${item.pathname}">${item.frontmatter.title}</a></li>`)
           .join("");
       });
   });
 </script>
 ```
+
+## Examples
+
+- [source mode](https://codesandbox.io/p/sandbox/astro-fuse-525dp7)
+- [output mode](https://codesandbox.io/p/sandbox/astro-fuse-output-mode-8my6qg)
 
 ## Remarks
 

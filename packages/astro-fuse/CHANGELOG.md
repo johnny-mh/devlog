@@ -1,5 +1,11 @@
 # astro-fuse
 
+## 0.0.6
+
+### Patch Changes
+
+- export `Searchable` type and adding example
+
 ## 0.0.5
 
 ### Patch Changes
