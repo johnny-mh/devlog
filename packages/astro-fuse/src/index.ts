@@ -7,16 +7,20 @@ import { map, uniq } from 'lodash-es'
 import { basedOnOutput, writeFuseIndex } from './basedOnOutput'
 import { basedOnSource } from './basedOnSource'
 import {
+  Searchable,
   AstroFuseConfig,
   OutputBaseAstroFuseConfig,
-  Searchable,
   SourceBaseAstroFuseConfig,
 } from './types'
 import { log } from './util'
 
 import type { AstroConfig, AstroIntegration } from 'astro'
 
-export { OutputBaseSearchable, SourceBaseSearchable } from './types'
+export {
+  Searchable,
+  SourceBaseSearchable,
+  OutputBaseAstroFuseConfig,
+} from './types'
 
 declare global {
   function loadFuse<TSearchable = Searchable>(
