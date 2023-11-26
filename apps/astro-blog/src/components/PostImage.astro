@@ -1,0 +1,23 @@
+---
+import { Picture } from 'astro:assets'
+
+export interface Props {
+  src: any
+  alt?: string
+}
+
+const { src, alt } = Astro.props
+
+const img = await src
+---
+
+<figure style="margin-bottom:1rem">
+  <Picture
+    src={Promise.resolve(img)}
+    alt={alt ?? ''}
+    style={`margin-bottom: -8px`}
+    quality="high"
+    data-zoomable
+  />
+  <figcaption>{alt}</figcaption>
+</figure>
