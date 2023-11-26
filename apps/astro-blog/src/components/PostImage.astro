@@ -1,37 +1,23 @@
 ---
-import { Picture } from '@astrojs/image/components'
-import { promisify } from 'util'
-import _sizeOf from 'image-size'
-
-const sizeOf = promisify(_sizeOf)
+import { Picture } from 'astro:assets'
 
 export interface Props {
   src: any
   alt?: string
 }
 
-const { src, alt, ...attrs } = Astro.props
+const { src, alt } = Astro.props
 
 const img = await src
-const {
-  default: { width, height, format },
-} = img
-
-const aspectRatio = parseFloat(String(width / height)).toFixed(2)
 ---
 
 <figure style="margin-bottom:1rem">
-  <span style={`display:block;aspect-ratio:${aspectRatio};`}>
-    <Picture
-      src={Promise.resolve(img)}
-      widths={[600, 900]}
-      sizes="(min-width: 414px) 900px, 600px"
-      aspectRatio={`${width}:${height}`}
-      format={format}
-      alt={alt ?? ''}
-      style={`margin-bottom: -8px`}
-      {...attrs}
-    />
-  </span>
+  <Picture
+    src={Promise.resolve(img)}
+    alt={alt ?? ''}
+    style={`margin-bottom: -8px`}
+    quality="high"
+    data-zoomable
+  />
   <figcaption>{alt}</figcaption>
 </figure>

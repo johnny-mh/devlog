@@ -1,12 +1,12 @@
 import Styles from './Search.module.scss'
 
-import { Searchable } from 'astro-fuse'
+import type { Searchable, SourceBaseSearchable } from 'astro-fuse'
 import { useStore } from '@nanostores/preact'
 import Fuse from 'fuse.js'
+import type { JSX } from 'preact'
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
 import { appAtom } from '#/stores/app'
 import { shuffle } from '#/util/common'
-import { JSXInternal } from 'preact/src/jsx'
 
 interface SearchedItem {
   title: string
@@ -30,9 +30,9 @@ export function Search(props: { tags: Set<string> }) {
       return []
     }
 
-    const list = fuse.current.search(query)
+    const list = fuse.current.search<SourceBaseSearchable>(query)
 
-    return list.reduce<SearchedItem[]>(
+    return list.reduce(
       (
         arr,
         {
@@ -51,7 +51,7 @@ export function Search(props: { tags: Set<string> }) {
 
         return arr
       },
-      []
+      [] as SearchedItem[]
     )
   }, [query])
 
@@ -61,7 +61,7 @@ export function Search(props: { tags: Set<string> }) {
     setTimeout(() => appAtom.set({ showSearch: false }), 1000)
   }
 
-  const onInput: JSXInternal.GenericEventHandler<HTMLInputElement> = (e) =>
+  const onInput = (e: JSX.TargetedEvent<HTMLInputElement, Event>) =>
     setQuery((e.target as HTMLInputElement).value)
 
   const onTagClick = (name: string) => {

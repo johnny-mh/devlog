@@ -128,3 +128,13 @@ h6 {
     font-size: 1rem;
   }
 }
+
+.medium-zoom-overlay,
+.medium-zoom-image--opened {
+  z-index: 999;
+  --bg-color: #{$theme-light-bg};
+
+  @include dark {
+    --bg-color: #{$theme-dark-bg};
+  }
+}

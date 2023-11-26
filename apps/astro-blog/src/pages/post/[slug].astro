@@ -90,3 +90,9 @@ const { prev, next, frontmatter, Content, headings } = Astro.props
     }
   }
 </style>
+
+<script>
+  import mediumZoom from 'medium-zoom'
+
+  mediumZoom('[data-zoomable]', { background: 'var(--bg-color)' })
+</script>
