@@ -35,7 +35,7 @@ export async function getStaticPaths({ paginate }) {
       params: { tag },
       pageSize: 10,
     })
-  })
+  }).flatMap(arr => arr)
 }
 
 const { page } = Astro.props

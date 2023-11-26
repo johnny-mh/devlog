@@ -34,7 +34,7 @@ jobs:
           SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
       - name: Build
-        run: NODE_ENV=production pnpm turbo build --filter astro-blog
+        run: NODE_ENV=production pnpm turbo build --filter devlog
 
       - name: Publish
-        run: pnpm gh-pages -f -t -d apps/astro-blog/dist -b master -u 'github-actions-bot <support+actions@github.com>'
+        run: pnpm gh-pages -f -t -d apps/devlog/dist -b master -u 'github-actions-bot <support+actions@github.com>'

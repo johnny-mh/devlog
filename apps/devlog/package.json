@@ -1,5 +1,5 @@
 {
-  "name": "astro-blog",
+  "name": "devlog",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -11,18 +11,17 @@
     "start": "astro dev"
   },
   "devDependencies": {
-    "@astrojs/image": "latest",
-    "@astrojs/mdx": "latest",
+    "@astrojs/mdx": "^1.1.5",
     "@astrojs/partytown": "^1.2.3",
-    "@astrojs/preact": "latest",
-    "@astrojs/rss": "^2.3.0",
-    "@astrojs/sitemap": "latest",
+    "@astrojs/preact": "^3.0.1",
+    "@astrojs/rss": "^2.4.4",
+    "@astrojs/sitemap": "^3.0.3",
     "@jasikpark/astro-svg-loader": "^0.1.0",
     "@nanostores/preact": "^0.3.1",
-    "astro": "latest",
+    "astro": "^3.6.0",
     "astro-fuse": "workspace:*",
     "astro-robots-txt": "^0.4.0",
-    "astro-seo": "^0.7.1",
+    "astro-seo": "^0.7.6",
     "date-fns": "^2.29.3",
     "eslint": "^8.32.0",
     "eslint-config-custom": "workspace:*",
@@ -36,5 +35,8 @@
     "remark-toc": "^8.0.1",
     "sass": "^1.58.3",
     "sharp": "^0.31.3"
+  },
+  "dependencies": {
+    "medium-zoom": "^1.1.0"
   }
 }
