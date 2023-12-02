@@ -1,12 +1,13 @@
-import Styles from './Search.module.scss'
-
-import type { Searchable, SourceBaseSearchable } from 'astro-fuse'
 import { useStore } from '@nanostores/preact'
+import type { Searchable, SourceBaseSearchable } from 'astro-fuse'
 import Fuse from 'fuse.js'
 import type { JSX } from 'preact'
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
+
 import { appAtom } from '#/stores/app'
 import { shuffle } from '#/util/common'
+
+import Styles from './Search.module.scss'
 
 interface SearchedItem {
   title: string

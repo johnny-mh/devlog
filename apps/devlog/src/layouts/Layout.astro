@@ -4,13 +4,14 @@ import '#/styles/reset.scss'
 import '#/styles/site.scss'
 
 import { SEO } from 'astro-seo'
-import Header from '#/components/Header.astro'
 import { setDefaultOptions } from 'date-fns'
 import { ko } from 'date-fns/locale/index'
-import { sitemeta } from '#/sitemeta'
-import Footer from '#/components/Footer.astro'
-import Search from '#/components/Search.astro'
+
 import { getPosts } from '#/collection'
+import Footer from '#/components/Footer.astro'
+import Header from '#/components/Header.astro'
+import Search from '#/components/Search.astro'
+import { sitemeta } from '#/sitemeta'
 
 setDefaultOptions({ locale: ko })
 
@@ -42,7 +43,7 @@ const openGraph = {
 }
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
@@ -68,12 +69,11 @@ const openGraph = {
     <link rel="icon" href="/favicon.png" sizes="any" />
     <script
       type="text/partytown"
-      src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"
-    ></script>
+      src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"></script>
     <script type="text/partytown">
       window.dataLayer = window.dataLayer || []
       function gtag() {
-        dataLayer.push(arguments)
+        window.dataLayer.push(arguments)
       }
       gtag('js', new Date())
       gtag('config', 'G-R9PQNBWGC9')

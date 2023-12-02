@@ -1,8 +1,9 @@
-import { getPosts } from '#/collection'
 import rss from '@astrojs/rss'
-import { sitemeta } from '#/sitemeta'
-import { APIContext } from 'astro'
+import type { APIContext } from 'astro'
 import { parse } from 'date-fns'
+
+import { getPosts } from '#/collection'
+import { sitemeta } from '#/sitemeta'
 
 export async function get(context: APIContext) {
   const posts = await getPosts()

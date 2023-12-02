@@ -1,11 +1,12 @@
 ---
-import { getPosts } from '#/collection'
+import SVG from '@jasikpark/astro-svg-loader'
 import {
   formatDuration,
   intervalToDuration,
   roundToNearestMinutes,
 } from 'date-fns'
-import SVG from '@jasikpark/astro-svg-loader'
+
+import { getPosts } from '#/collection'
 
 export interface Props {
   title?: string
