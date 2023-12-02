@@ -1,7 +1,7 @@
 ---
+import { getPosts } from '#/collection'
 import Pager from '#/components/Pager.astro'
 import PostList from '#/components/PostList.astro'
-import { getPosts } from '#/collection'
 import Layout from '#/layouts/Layout.astro'
 
 export async function getStaticPaths({ paginate }) {
@@ -30,12 +30,14 @@ export async function getStaticPaths({ paginate }) {
     ),
   ]
 
-  return categories.map(([category, list]) => {
-    return paginate(list, {
-      params: { category },
-      pageSize: 10,
+  return categories
+    .map(([category, list]) => {
+      return paginate(list, {
+        params: { category },
+        pageSize: 10,
+      })
     })
-  }).flatMap(arr => arr)
+    .flatMap((arr) => arr)
 }
 
 const { page } = Astro.props

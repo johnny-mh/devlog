@@ -8,8 +8,7 @@
     "strictNullChecks": true,
     "types": ["@astrojs/image/client"],
     "paths": { "#/*": ["src/*"] },
-
-    // for lit components
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "moduleResolution": "node"
   }
 }

@@ -2,11 +2,11 @@
 import '#/styles/markdown-content.scss'
 
 import { getPosts } from '#/collection'
-import Layout from '#/layouts/Layout.astro'
-import { TOC } from '#/components/TOC'
 import { Comment } from '#/components/Comment'
 import Pager from '#/components/Pager.astro'
 import PostHeader from '#/components/PostHeader.astro'
+import { TOC } from '#/components/TOC'
+import Layout from '#/layouts/Layout.astro'
 
 export async function getStaticPaths() {
   const posts = await getPosts()
