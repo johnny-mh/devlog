@@ -91,8 +91,19 @@ const { prev, next, frontmatter, Content, headings } = Astro.props
   }
 </style>
 
-<script>
-  import mediumZoom from 'medium-zoom'
-
-  mediumZoom('[data-zoomable]', { background: 'var(--bg-color)' })
+<script
+  is:inline
+  src="
+https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js
+"
+></script>
+<link
+  href="
+https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css
+"
+  rel="stylesheet"
+/>
+<script is:inline>
+  // eslint-disable-next-line no-undef
+  mediumZoom('img[data-zoomable]', { background: 'var(--bg-color)' })
 </script>
