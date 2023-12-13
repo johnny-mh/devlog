@@ -20,6 +20,7 @@ module.exports = {
     },
   },
   rules: {
+    'no-undef': 0,
     'sort-imports': [
       2,
       {
