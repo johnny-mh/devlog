@@ -139,35 +139,38 @@ import SVG from '@jasikpark/astro-svg-loader'
 <script>
   import { appAtom } from '#/stores/app'
 
-  const header = document.querySelector('header')
-  let lastValue = ''
+  function bindEvents() {
+    const header = document.querySelector('header')
+    const searchBtn = document.querySelector('#search-btn')
+    let lastValue = ''
 
-  function onScroll() {
-    window.requestAnimationFrame(() => {
-      if (window.scrollY > 0) {
-        if (lastValue !== 'scroll') {
-          lastValue = 'scroll'
-          header?.classList.add('scroll')
+    const onScroll = () => {
+      window.requestAnimationFrame(() => {
+        if (window.scrollY > 0) {
+          if (lastValue !== 'scroll') {
+            lastValue = 'scroll'
+            header?.classList.add('scroll')
+          }
+          return
         }
-        return
-      }
 
-      if (lastValue !== '') {
-        lastValue = ''
-        header?.classList.remove('scroll')
-      }
-    })
+        if (lastValue !== '') {
+          lastValue = ''
+          header?.classList.remove('scroll')
+        }
+      })
+    }
+
+    const onSearchClick = (e: MouseEvent) => {
+      e.preventDefault()
+
+      appAtom.set({ showSearch: !appAtom.get().showSearch })
+    }
+
+    window.addEventListener('scroll', onScroll)
+    searchBtn?.addEventListener('click', onSearchClick)
   }
 
-  window.addEventListener('scroll', onScroll)
-
-  const searchBtn = document.querySelector('#search-btn')
-
-  function onSearchClick(e: MouseEvent) {
-    e.preventDefault()
-
-    appAtom.set({ showSearch: !appAtom.get().showSearch })
-  }
-
-  searchBtn?.addEventListener('click', onSearchClick)
+  bindEvents()
+  document.addEventListener('astro:after-swap', bindEvents)
 </script>

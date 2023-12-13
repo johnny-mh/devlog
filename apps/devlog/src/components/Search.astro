@@ -9,7 +9,7 @@ const { tags } = Astro.props
 ---
 
 <div id="search-wrapper">
-  <Search client:visible tags={tags} />
+  <Search client:visible tags={tags} transition:persist />
 </div>
 
 <style lang="scss">
@@ -21,18 +21,19 @@ const { tags } = Astro.props
 <script>
   import { appAtom } from '#/stores/app'
 
-  appAtom.listen(({ showSearch }) => {
-    const wrapper = document.querySelector<HTMLDivElement>('#search-wrapper')
+  function bindEvents() {
+    appAtom.listen(({ showSearch }) => {
+      document.body.style.overflow = showSearch ? 'hidden' : 'auto'
 
-    if (!wrapper) {
-      return
-    }
+      const wrapper = document.querySelector<HTMLDivElement>('#search-wrapper')
 
-    if (showSearch) {
-      wrapper.style.display = 'block'
-      return
-    }
+      if (!wrapper) {
+        return
+      }
 
-    wrapper.style.display = 'none'
-  })
+      wrapper.style.display = showSearch ? 'block' : 'none'
+    })
+  }
+
+  bindEvents()
 </script>

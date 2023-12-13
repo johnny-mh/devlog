@@ -4,6 +4,7 @@ import '#/styles/reset.scss'
 import '#/styles/site.scss'
 
 import { SEO } from 'astro-seo'
+import { ViewTransitions } from 'astro:transitions'
 import { setDefaultOptions } from 'date-fns'
 import { ko } from 'date-fns/locale/index'
 
@@ -61,6 +62,7 @@ const openGraph = {
       content="aef0a8e4429c4f7c5f7e3b52074dc2d968716069"
     />
     <meta name="generator" content={Astro.generator} />
+    <ViewTransitions fallback="none" />
     <SEO
       title={sitemeta.title}
       description={sitemeta.description}
@@ -80,23 +82,11 @@ const openGraph = {
     </script>
   </head>
   <body>
-    <Header />
+    <Header transition:persist="header" />
     <main>
       <slot />
     </main>
     <Footer />
-    <Search tags={tags} />
-    <script>
-      import { appAtom } from '#/stores/app'
-
-      appAtom.listen(({ showSearch }) => {
-        if (showSearch) {
-          document.body.style.overflow = 'hidden'
-          return
-        }
-
-        document.body.style.overflow = 'auto'
-      })
-    </script>
+    <Search transition:persist="search" tags={tags} />
   </body>
 </html>

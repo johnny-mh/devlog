@@ -133,7 +133,9 @@ export function Search(props: { tags: Set<string> }) {
           <ul className={Styles.searchResult}>
             {list.map((item) => (
               <li key={item.slug}>
-                <a href={`/post/${item.slug.toLowerCase()}`}>{item.title}</a>
+                <a href={`/post/${item.slug.toLowerCase()}`} onClick={close}>
+                  {item.title}
+                </a>
               </li>
             ))}
           </ul>
