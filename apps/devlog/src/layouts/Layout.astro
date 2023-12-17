@@ -5,16 +5,12 @@ import '#/styles/site.scss'
 
 import { SEO } from 'astro-seo'
 import { ViewTransitions } from 'astro:transitions'
-import { setDefaultOptions } from 'date-fns'
-import { ko } from 'date-fns/locale/index'
 
 import { getPosts } from '#/collection'
 import Footer from '#/components/Footer.astro'
 import Header from '#/components/Header.astro'
 import Search from '#/components/Search.astro'
 import { sitemeta } from '#/sitemeta'
-
-setDefaultOptions({ locale: ko })
 
 const posts = await getPosts()
 

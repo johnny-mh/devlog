@@ -1,8 +1,8 @@
 import rss from '@astrojs/rss'
 import type { APIContext } from 'astro'
-import { parse } from 'date-fns'
 
 import { getPosts } from '#/collection'
+import { dayjs } from '#/dayjs'
 import { sitemeta } from '#/sitemeta'
 
 export async function get(context: APIContext) {
@@ -17,7 +17,7 @@ export async function get(context: APIContext) {
       description:
         post.rendered.remarkPluginFrontmatter.description ||
         post.rendered.remarkPluginFrontmatter.title,
-      pubDate: parse(post.createdAt, 'yyyy-MM-dd', new Date()),
+      pubDate: dayjs(post.createdAt, 'YYYY-MM-DD', 'ko').toDate(),
       link: `/post/${post.path}/`,
     })),
   })

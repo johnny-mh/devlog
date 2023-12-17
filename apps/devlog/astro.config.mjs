@@ -1,13 +1,13 @@
-import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
+import partytown from '@astrojs/partytown'
 import preact from '@astrojs/preact'
 import sitemap from '@astrojs/sitemap'
-import robotsTxt from 'astro-robots-txt'
+import { defineConfig } from 'astro/config'
 import fuse from 'astro-fuse'
-import partytown from '@astrojs/partytown'
+import robotsTxt from 'astro-robots-txt'
 
-import { remarkReadingTime } from './remarks/readingTime.mjs'
 import { remarkCreatedAt } from './remarks/createdAt.mjs'
+import { remarkReadingTime } from './remarks/readingTime.mjs'
 import { rehypePrettyCode } from './remarks/rehypePrettyCode.mjs'
 
 // https://astro.build/config

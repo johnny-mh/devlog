@@ -1,10 +1,6 @@
 import { getCollection } from 'astro:content'
-import {
-  formatDuration,
-  intervalToDuration,
-  parse,
-  roundToNearestMinutes,
-} from 'date-fns'
+
+import { dayjs } from '#/dayjs'
 
 const POST_FILENAME_REGEX = /(\d{4}-\d{2}-\d{2})-(.+)/
 
@@ -12,16 +8,16 @@ const rawPosts = await getCollection('post')
 
 rawPosts.sort(
   (a, b) =>
-    parse(
+    dayjs(
       b.slug.match(POST_FILENAME_REGEX)?.[1] ?? '',
-      'yyyy-MM-dd',
-      new Date()
-    ).getTime() -
-    parse(
+      'YYYY-MM-DD',
+      'ko'
+    ).unix() -
+    dayjs(
       a.slug.match(POST_FILENAME_REGEX)?.[1] ?? '',
       'yyyy-MM-dd',
-      new Date()
-    ).getTime()
+      'ko'
+    ).unix()
 )
 
 export const getPosts = () =>
@@ -34,14 +30,10 @@ export const getPosts = () =>
           path,
           rendered,
           createdAt,
-          readingTime: formatDuration(
-            intervalToDuration({
-              start: 0,
-              end: roundToNearestMinutes(
-                rendered.remarkPluginFrontmatter.readingTime
-              ).getTime(),
-            })
-          ),
+          readingTime: dayjs
+            .duration(rendered.remarkPluginFrontmatter.readingTime)
+            .locale('ko')
+            .humanize(),
         }
       })
     )

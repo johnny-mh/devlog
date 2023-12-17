@@ -7,6 +7,7 @@ import Pager from '#/components/Pager.astro'
 import PostHeader from '#/components/PostHeader.astro'
 import { TOC } from '#/components/TOC'
 import Layout from '#/layouts/Layout.astro'
+import type { FrontMatter } from '#/types'
 
 export async function getStaticPaths() {
   const posts = await getPosts()
@@ -51,7 +52,7 @@ const { prev, next, frontmatter, Content, headings } = Astro.props
 <Layout frontmatter={frontmatter}>
   <div class="wrapper">
     <div class="content">
-      <PostHeader frontmatter={frontmatter} />
+      <PostHeader frontmatter={frontmatter as FrontMatter} />
 
       <div class="markdown-content">
         <Content />
@@ -90,23 +91,14 @@ const { prev, next, frontmatter, Content, headings } = Astro.props
     }
   }
 </style>
+<script>
+  import mediumZoom from 'medium-zoom/dist/pure'
+  import 'medium-zoom/dist/style.css'
 
-<script
-  is:inline
-  src="
-https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js
-"
-  medium-zoom></script>
-<link
-  href="
-https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css
-"
-  rel="stylesheet"
-/>
-<script is:inline>
   function invokeMediumZoom() {
     mediumZoom('img[data-zoomable]', { background: 'var(--bg-color)' })
   }
 
-  document.addEventListener('astro:page-load', invokeMediumZoom, { once: true })
+  invokeMediumZoom()
+  document.addEventListener('astro:after-swap', invokeMediumZoom)
 </script>

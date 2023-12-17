@@ -2,8 +2,8 @@
 import SVG from '@jasikpark/astro-svg-loader'
 
 export interface Props {
-  prev?: string
-  next?: string
+  prev?: string | null
+  next?: string | null
 }
 
 const { prev, next } = Astro.props

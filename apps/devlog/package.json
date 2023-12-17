@@ -20,11 +20,10 @@
     "@nanostores/preact": "^0.3.1",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
-    "astro": "^4.0.4",
+    "astro": "^4.0.6",
     "astro-fuse": "workspace:*",
     "astro-robots-txt": "^0.4.0",
     "astro-seo": "^0.7.6",
-    "date-fns": "^2.29.3",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -42,5 +41,9 @@
     "remark-toc": "^8.0.1",
     "sass": "^1.58.3",
     "sharp": "^0.31.3"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.10",
+    "medium-zoom": "^1.1.0"
   }
 }

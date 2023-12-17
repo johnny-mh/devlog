@@ -1,13 +1,10 @@
 ---
 import SVG from '@jasikpark/astro-svg-loader'
 
+import type { FrontMatter } from '#/types'
+
 export interface Props {
-  frontmatter: {
-    title: string
-    createdAt: string
-    categories: string[]
-    tags: string[]
-  }
+  frontmatter: FrontMatter
 }
 
 const {
