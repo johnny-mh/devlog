@@ -9,7 +9,7 @@ Use this plugin to add search functionality to your Astro site.
 First, install the `fuse.js` and `astro-fuse` packages using your package manager.
 
 ```sh
-npm isntall fuse.js astro-fuse
+npm install fuse.js astro-fuse
 ```
 
 Then, apply this integration to your `astro.config.*` file using the integrations property:
