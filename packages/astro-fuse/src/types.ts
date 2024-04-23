@@ -19,7 +19,7 @@ export type SourceBaseAstroFuseConfig = {
   keys?: Fuse.FuseOptionKey<SourceBaseSearchable>[]
   basedOn?: 'source'
   injectScript?: boolean
-} & Fuse.FuseIndexOptions<SourceBaseSearchable>
+} & Partial<Fuse.FuseIndexOptions<SourceBaseSearchable>>
 
 export type OutputBaseAstroFuseConfig = {
   keys?: Fuse.FuseOptionKey<OutputBaseSearchable>[]
@@ -28,7 +28,7 @@ export type OutputBaseAstroFuseConfig = {
   filter?: (pathname: string) => boolean
   extractContentFromHTML?: string | (($: CheerioAPI) => Cheerio<any>)
   extractFrontmatterFromHTML?: ($: CheerioAPI, pathname: string) => any
-} & Fuse.FuseIndexOptions<OutputBaseSearchable>
+} & Partial<Fuse.FuseIndexOptions<OutputBaseSearchable>>
 
 export type AstroFuseConfig =
   | OutputBaseAstroFuseConfig

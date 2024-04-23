@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, relative } from 'node:path'
 
 import Fuse from 'fuse.js'
 import { map, uniq } from 'lodash-es'
@@ -102,9 +102,8 @@ export default function astroFuse(_config?: AstroFuseConfig): AstroIntegration {
 
       'astro:build:done': (opts) => {
         if (_basedOn === 'source') {
-          const fuseJson = join(outDir, OUTFILE)
-          if (existsSync(fuseJson)) {
-            log(`\`${fuseJson}\` is created.`)
+          if (existsSync(join(outDir, OUTFILE))) {
+            log(`\`${OUTFILE}\` created at \`${relative(process.cwd(), outDir)}\``)
           }
 
           return
