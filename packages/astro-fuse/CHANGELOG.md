@@ -1,5 +1,12 @@
 # astro-fuse
 
+## 0.0.7
+
+### Patch Changes
+
+- b1011d2: fix: enhance output log @bennycode
+- b1011d2: fix: wrong argument type of integration function
+
 ## 0.0.6
 
 ### Patch Changes
