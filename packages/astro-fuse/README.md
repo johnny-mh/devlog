@@ -72,7 +72,7 @@ The path of HTML files to be included in the index can be filtered.
 // ...
 fuse({
   basedOn: 'output',
-  filter: path => /^\/blog\/g.test(path), // index only filtered files
+  filter: path => /^\/blog/g.test(path), // index only filtered files
 });
 ```
 
