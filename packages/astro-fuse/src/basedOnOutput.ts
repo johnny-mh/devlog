@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
+import { dirname, join, relative } from 'node:path'
 
 import * as cheerio from 'cheerio'
 import Fuse from 'fuse.js'
@@ -166,11 +166,11 @@ export function writeFuseIndex(
   }
 
   const _keys = uniq(['content', ...(_config?.keys ?? [])])
-  const index = Fuse.createIndex(_keys, list, _config)
+  const index = Fuse.createIndex(_keys, list, _config?.getFn ? { getFn: _config.getFn } : undefined)
 
   writeFileSync(outputPath, JSON.stringify({ list, index: index.toJSON() }))
 
-  log(`\`${OUTFILE}\` is created.`)
+  log(`\`${OUTFILE}\` created at \`${relative(process.cwd(), dirname(outputPath))}\``)
 }
 
 const STATUS_CODE_PAGES = new Set(['404', '500'])

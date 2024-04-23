@@ -58,7 +58,7 @@ export function basedOnSource(
       if (diff) {
         const list = map(Array.from(result.values()), 1)
         const _keys = uniq(['content', ...(_config?.keys ?? [])])
-        const index = Fuse.createIndex(_keys, list, _config)
+        const index = Fuse.createIndex(_keys, list, _config?.getFn ? { getFn: _config.getFn } : undefined)
 
         writeFile(outputPath, JSON.stringify({ list, index: index.toJSON() }))
       }
@@ -115,7 +115,7 @@ export function getFileInfo(id: string, config: AstroConfig): FileInfo {
   try {
     url = new URL(`file://${id}`)
     // eslint-disable-next-line no-empty
-  } catch {}
+  } catch { }
 
   const fileId = id.split('?')[0]
   let fileUrl: string
