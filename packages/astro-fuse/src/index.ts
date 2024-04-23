@@ -102,8 +102,9 @@ export default function astroFuse(_config?: AstroFuseConfig): AstroIntegration {
 
       'astro:build:done': (opts) => {
         if (_basedOn === 'source') {
-          if (existsSync(join(outDir, OUTFILE))) {
-            log(`\`${OUTFILE}\` is created.`)
+          const fuseJson = join(outDir, OUTFILE)
+          if (existsSync(fuseJson)) {
+            log(`\`${fuseJson}\` is created.`)
           }
 
           return
