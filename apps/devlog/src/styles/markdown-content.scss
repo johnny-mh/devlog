@@ -35,7 +35,17 @@
     }
   }
 
+  figure {
+    margin-bottom: 1rem;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
   figcaption {
+    margin-top: -0.5rem;
     font-size: 0.8rem;
     color: $theme-light-text-secondary;
 
@@ -88,10 +98,5 @@
     @include dark {
       border-top-color: $theme-dark-border;
     }
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
   }
 }

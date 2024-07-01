@@ -6,8 +6,6 @@ featuredImage: /20200714/cover.jpg
 description: Bloom Filter알고리즘에 대해 알기 쉽게 설명하고. Angular 내부에서 이를 어떻게 활용하고 있는지 소개합니다
 ---
 
-import PostImage from '#/components/PostImage.astro'
-
 # Bloom Filter
 
 Bloom Filter는 어떤 Set안에 특정 값이 존재하는지 여부를 빠르게 계산할 수 있는 알고리즘이다. 속도도 빠르면서 저장 공간을 적게 차지하기 때문에 대규모 서비스에서 신규회원 여부, 크롬 브라우저의 멀웨어 사이트 여부, hbase, redis 등 여러 군데에 활용되고 있다.
@@ -140,10 +138,7 @@ class HelloComponent {
 
 이 중 **NodeInjector**는 Component들의 계층 구조에서 bootstrap된 최 상위 컴포넌트 까지 마치 DOM트리에서 버블링이 일어나는 것 처럼 각 Component마다의 providers, viewProviders를 살펴본다.
 
-<PostImage
-  src={import('../../assets/postImages//20200714/injector-chain.png')}
-  alt="Angular의 Injector Chain"
-/>
+![Angular의 Injector Chain](#/assets/postImages/20200714/injector-chain.png)
 
 이 때 Component의 메타데이터에 설정한 배열을 직접 살피는 게 아니라. 각 노드에 있는 Injector 인스턴스에게 특정 타입으로 생성된 인스턴스가 있는지 묻게 된다. 바로 [이 과정](https://github.com/angular/angular/blob/8.2.14/packages/core/src/render3/di.ts#L332)에서 [Bloom Filter를 사용](https://github.com/angular/angular/blob/8.2.14/packages/core/src/render3/di.ts#L588)한다.
 

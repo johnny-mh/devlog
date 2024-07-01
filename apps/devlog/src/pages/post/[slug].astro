@@ -96,7 +96,7 @@ const { prev, next, frontmatter, Content, headings } = Astro.props
   import 'medium-zoom/dist/style.css'
 
   function invokeMediumZoom() {
-    mediumZoom('img[data-zoomable]', { background: 'var(--bg-color)' })
+    mediumZoom('.markdown-content img', { background: 'var(--bg-color)' })
   }
 
   invokeMediumZoom()

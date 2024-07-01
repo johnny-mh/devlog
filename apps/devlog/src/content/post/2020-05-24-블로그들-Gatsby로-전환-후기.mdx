@@ -5,18 +5,13 @@ tags: [gatsby, react]
 description: squarespace에서 gatsby로 블로그를 전환했던 경험을 공유합니다
 ---
 
-import PostImage from '#/components/PostImage.astro'
-
 # 전환 배경
 
 두달 전 우연히 Gatsby라는 Static Site Generator(이하 SSG)를 알게 되었고. 프로토타이핑 후 기존 블로그를 Gatsby로 전환하는 작업을 하기 시작했다. Gatsby의 전반적인 시스템을 이해하는데 총 2주 정도 걸렸고. 나머지는 두 개의 블로그 프로젝트 마이그레이션, 최적의 호스팅 서비스 찾기와 연동, 모노레포 구성, 빌드 및 배포설정에 6주 정도 걸렸다.
 
 ## from jekyll
 
-<PostImage
-  src={import('../../assets/postImages//20200524/minimal-mistakes.png')}
-  alt="익숙한 그 디자인. 심지어 featured image도 없다면 완전 클론의 습격이다."
-/>
+![익숙한 그 디자인. 심지어 featured image도 없다면 완전 클론의 습격이다.](#/assets/postImages/20200524/minimal-mistakes.png)
 
 지금 보고 있는 기술 블로그 [johnny-mh.github.io](https://johnny-mh.github.io)는 원래 jekyll로 운영하고 있었다. jekyll은 ruby기반의 SSG이며 이제는 역사가 깊은 도구인 듯 싶다. github.io 에 호스팅을 전제로 개발하는 듯 접근하기 쉽고 제공 기능들도 부족함 없고 디자인 템플릿도 많다.
 
@@ -26,10 +21,7 @@ import PostImage from '#/components/PostImage.astro'
 
 사진 블로그 [mnkin.com](https://mnkim.com)은 [squarespace.com](https://www.squarespace.com)를 이용하여 운영하고 있었다. 웹 기반으로 블로그 및 쇼핑몰 사이트를 만들고 관리할 수 있는 서비스이다. 처음 발견했을 때 서비스의 웹 기반 에디터에 반해버려서 1년에 이용료와 호스팅 비용 18만원을 지불하며 3년을 사용했다.
 
-<PostImage
-  src={import('../../assets/postImages//20200524/squarespace-fillmore.jpg')}
-  alt="사진만 조금 넣고 글 조금 쓰면 이런 룩앤필이 뚝딱"
-/>
+![사진만 조금 넣고 글 조금 쓰면 이런 룩앤필이 뚝딱](#/assets/postImages/20200524/squarespace-fillmore.jpg)
 
 개발자라 근본이 사대주의라 그런지 모르겠으나 디자인도 대부분 너무 이쁘고. 반응형 기본제공, SEO자동 최적화, 아이폰 안드로이드용 관리 툴, 통합 google analytics등 서비스 운영에 필요한 모든 것이 기본으로 제공된다.
 
