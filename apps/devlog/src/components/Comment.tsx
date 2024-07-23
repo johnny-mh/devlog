@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'react'
 
 const COMMENTS_ID = 'comments-container'
 
 export function Comment() {
   useEffect(() => {
     const dark = window.matchMedia('(prefers-color-scheme: dark)').matches
-
     const script = document.createElement('script')
+
     script.src = 'https://utteranc.es/client.js'
-    script.setAttribute('repo', 'johnny-mh/blog2')
+    script.setAttribute('repo', 'johnny-mh/devlog')
     script.setAttribute('issue-term', 'og:title')
     script.setAttribute('label', 'Comment')
     script.setAttribute('theme', dark ? 'github-dark' : 'github-light')
@@ -56,7 +56,7 @@ export function Comment() {
       }
 
       iframe?.contentWindow?.postMessage(
-        { type: 'set-theme', theme: dark ? 'github-dark' : 'github-light' },
+        { theme: dark ? 'github-dark' : 'github-light', type: 'set-theme' },
         'https://utteranc.es'
       )
     }

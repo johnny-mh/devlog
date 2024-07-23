@@ -2,16 +2,16 @@
 import SVG from '@jasikpark/astro-svg-loader'
 
 export interface Props {
-  title: string
   list: Array<{
-    title: string
-    path: string
     createdAt: string
+    path: string
     readingTime: string
+    title: string
   }>
+  title: string
 }
 
-const { title, list } = Astro.props
+const { list, title } = Astro.props
 ---
 
 <section>
@@ -28,9 +28,9 @@ const { title, list } = Astro.props
               <span>{post.createdAt}</span>
               <span>
                 <SVG
+                  height={11}
                   src={import('../images/time.svg?raw')}
                   width={11}
-                  height={11}
                 />{' '}
                 읽는 데 {post.readingTime}
               </span>

@@ -1,38 +1,27 @@
 ---
-import '#/styles/syntax-highlight.scss'
-import '#/styles/reset.scss'
-import '#/styles/site.scss'
-
-import { SEO } from 'astro-seo'
-import { ViewTransitions } from 'astro:transitions'
-
-import { getPosts } from '#/collection'
 import Footer from '#/components/Footer.astro'
 import Header from '#/components/Header.astro'
 import Search from '#/components/Search.astro'
 import { sitemeta } from '#/sitemeta'
-
-const posts = await getPosts()
-
-const tags = posts.reduce((set, post) => {
-  ;(post.rendered.remarkPluginFrontmatter?.tags ?? []).forEach((tag) => {
-    set.add(tag)
-  })
-  return set
-}, new Set<string>())
+import '#/styles/reset.scss'
+import '#/styles/site.scss'
+import '#/styles/syntax-highlight.scss'
+import { SEO } from 'astro-seo'
+import { ViewTransitions } from 'astro:transitions'
 
 export interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  frontmatter?: Record<string, any>
   title?: string
-  frontmatter?: any
 }
 
 const { frontmatter, title } = Astro.props
 
 const openGraph = {
   basic: {
+    image: frontmatter?.featuredImage ?? '/ogImage.webp',
     title: title ?? frontmatter?.title ?? 'JOHNNY DEV BLOG',
     type: frontmatter ? 'article' : 'website',
-    image: frontmatter?.featuredImage ?? '/ogImage.webp',
   },
   image: {
     alt: frontmatter ? frontmatter.title : sitemeta.title,
@@ -44,33 +33,34 @@ const openGraph = {
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta content="ie=edge" http-equiv="x-ua-compatible" />
     <meta
-      name="viewport"
       content="initial-scale=1, maximum-scale=5, width=device-width, viewport-fit=cover"
+      name="viewport"
     />
     <meta
-      name="google-site-verification"
       content="er9zvCmECxtt0KP_BjDZ4WplZsNT5ApeDBK4wYD7aI0"
+      name="google-site-verification"
     />
     <meta
-      name="naver-site-verification"
       content="aef0a8e4429c4f7c5f7e3b52074dc2d968716069"
+      name="naver-site-verification"
     />
-    <meta name="generator" content={Astro.generator} />
+    <meta content={Astro.generator} name="generator" />
     <ViewTransitions fallback="none" />
     <SEO
-      title={sitemeta.title}
       description={sitemeta.description}
       openGraph={openGraph}
+      title={sitemeta.title}
     />
-    <link rel="icon" href="/favicon.png" sizes="any" />
+    <link href="/favicon.png" rel="icon" sizes="any" />
     <script
-      type="text/partytown"
-      src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"></script>
+      src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"
+      type="text/partytown"></script>
     <script type="text/partytown">
       window.dataLayer = window.dataLayer || []
       function gtag() {
+        // eslint-disable-next-line prefer-rest-params
         window.dataLayer.push(arguments)
       }
       gtag('js', new Date())
@@ -83,6 +73,6 @@ const openGraph = {
       <slot />
     </main>
     <Footer />
-    <Search transition:persist="search" tags={tags} />
+    <Search transition:persist="search" />
   </body>
 </html>

@@ -1,14 +1,14 @@
 ---
-import SVG from '@jasikpark/astro-svg-loader'
-
 import type { FrontMatter } from '#/types'
+
+import SVG from '@jasikpark/astro-svg-loader'
 
 export interface Props {
   frontmatter: FrontMatter
 }
 
 const {
-  frontmatter: { title, createdAt, categories, tags },
+  frontmatter: { categories, createdAt, tags, title },
 } = Astro.props
 ---
 
@@ -30,7 +30,7 @@ const {
     </span>
   </div>
   <div class="tags">
-    <SVG src={import('../images/tag.svg?raw')} width={11} height={11} />
+    <SVG height={11} src={import('../images/tag.svg?raw')} width={11} />
     {
       tags.map((tag) => (
         <a class="link" href={`/post/tag/${tag}/1`} rel="tag">

@@ -1,22 +1,19 @@
 ---
-import { Search } from './Search'
+import { getPosts } from '#/collection'
+import { shuffle } from '#/util/common'
 
-export interface Props {
-  tags: Set<string>
-}
+import { SearchComponent } from './SearchComponent'
 
-const { tags } = Astro.props
+const posts = await getPosts()
+
+const tags = shuffle<string>(
+  posts.map((post) => post.rendered.remarkPluginFrontmatter?.tags ?? []).flat()
+).slice(0, 5)
 ---
 
-<div id="search-wrapper">
-  <Search client:visible tags={tags} transition:persist />
+<div id="search-wrapper" style="display:none">
+  <SearchComponent client:visible transition:persist tags={tags} />
 </div>
-
-<style lang="scss">
-  #search-wrapper {
-    display: none;
-  }
-</style>
 
 <script>
   import { appAtom } from '#/stores/app'

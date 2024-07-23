@@ -1,5 +1,6 @@
 ---
-import '#/styles/markdown-content.scss'
+import type { FrontMatter } from '#/types'
+import type { GetStaticPaths } from 'astro'
 
 import { getPosts } from '#/collection'
 import { Comment } from '#/components/Comment'
@@ -7,9 +8,9 @@ import Pager from '#/components/Pager.astro'
 import PostHeader from '#/components/PostHeader.astro'
 import { TOC } from '#/components/TOC'
 import Layout from '#/layouts/Layout.astro'
-import type { FrontMatter } from '#/types'
+import '#/styles/markdown-content.scss'
 
-export async function getStaticPaths() {
+export const getStaticPaths = (async () => {
   const posts = await getPosts()
 
   const list = posts.map((post, idx) => {
@@ -17,54 +18,59 @@ export async function getStaticPaths() {
     const next = posts[idx + 1]
 
     return {
-      prev: prev?.path ? `/post/${prev.path}` : null,
       next: next?.path ? `/post/${next.path}` : null,
       post,
+      prev: prev?.path ? `/post/${prev.path}` : null,
     }
   })
 
   return await Promise.all(
     list.map(
       ({
-        prev,
         next,
         post: {
           path,
-          rendered: { remarkPluginFrontmatter: frontmatter, Content, headings },
+          rendered: { Content, headings, remarkPluginFrontmatter: frontmatter },
         },
+        prev,
       }) => ({
         params: { slug: path },
         props: {
-          prev,
-          next,
-          frontmatter,
           Content,
+          frontmatter,
           headings,
+          next,
+          prev,
         },
       })
     )
   )
-}
+}) satisfies GetStaticPaths
 
-const { prev, next, frontmatter, Content, headings } = Astro.props
+const { Content, frontmatter, headings, next, prev } = Astro.props
 ---
 
 <Layout frontmatter={frontmatter}>
   <div class="wrapper">
     <div class="content">
       <PostHeader frontmatter={frontmatter as FrontMatter} />
+      <input
+        data-frontmatter
+        type="hidden"
+        value={JSON.stringify(frontmatter)}
+      />
 
       <div class="markdown-content">
         <Content />
       </div>
 
-      <Pager prev={prev} next={next} />
+      <Pager next={next} prev={prev} />
 
-      <Comment client:only client:visible />
+      <Comment client:visible={true} client:only="react" />
     </div>
 
     <div class="toc">
-      <TOC headings={headings} client:visible />
+      <TOC client:visible={true} headings={headings} client:only="react" />
     </div>
   </div>
 </Layout>

@@ -1,31 +1,29 @@
 import mdx from '@astrojs/mdx'
 import partytown from '@astrojs/partytown'
-import preact from '@astrojs/preact'
+import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
-import rehypeFigure from "@microflash/rehype-figure";
+import rehypeFigure from '@microflash/rehype-figure'
 import {
   transformerMetaHighlight,
-  transformerMetaWordHighlight
+  transformerMetaWordHighlight,
 } from '@shikijs/transformers'
-import { defineConfig } from 'astro/config'
 import fuse from 'astro-fuse'
 import robotsTxt from 'astro-robots-txt'
+import { defineConfig } from 'astro/config'
 
 import { remarkCreatedAt } from './remarks/createdAt.mjs'
 import { remarkReadingTime } from './remarks/readingTime.mjs'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://johnny-mh.github.io',
   integrations: [
     mdx(),
-    preact(),
+    react(),
     sitemap(),
     robotsTxt({
       host: 'johnny-mh.github.io',
       policy: [
         {
-          userAgent: '*',
           allow: '/',
           disallow: [
             '/about',
@@ -35,20 +33,37 @@ export default defineConfig({
             '/post/category/',
             '/post/tag/',
           ],
+          userAgent: '*',
         },
       ],
     }),
-    fuse({ keys: ['content', 'frontmatter.title', 'frontmatter.tags'] }),
+    fuse(['content', 'frontmatter.title', 'frontmatter.tags'], {
+      extractContentFromHTML: '.markdown-content',
+      extractFrontmatterFromHTML: ($) => {
+        const el = $('[data-frontmatter]')
+
+        if (el.length) {
+          return JSON.parse(el.first().val())
+        }
+
+        return { title: $('h1').first().text() }
+      },
+      filter: (path) => /^\/post\/[^/]+\/$/.test(path),
+    }),
     partytown({ config: { forward: ['dataLayer.push'] } }),
   ],
   markdown: {
-    syntaxHighlight: 'shiki',
     extendDefaultPlugins: true,
-    remarkPlugins: [remarkReadingTime, remarkCreatedAt],
     rehypePlugins: [rehypeFigure],
+    remarkPlugins: [remarkReadingTime, remarkCreatedAt],
     shikiConfig: {
       theme: 'catppuccin-mocha',
-      transformers: [transformerMetaHighlight(), transformerMetaWordHighlight()]
-    }
+      transformers: [
+        transformerMetaHighlight(),
+        transformerMetaWordHighlight(),
+      ],
+    },
+    syntaxHighlight: 'shiki',
   },
+  site: 'https://johnny-mh.github.io',
 })

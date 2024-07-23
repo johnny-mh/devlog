@@ -1,29 +1,34 @@
+import type { AstroConfig, AstroIntegration } from 'astro'
+import type { Plugin } from 'vite'
+
+import * as cheerio from 'cheerio'
+import Fuse, { FuseOptionKey } from 'fuse.js'
+import { convert } from 'html-to-text'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { dirname, join, relative } from 'node:path'
 
-import * as cheerio from 'cheerio'
-import Fuse from 'fuse.js'
-import { convert } from 'html-to-text'
-import { isEmpty, map, uniq } from 'lodash-es'
+import { PLUGIN_NAME } from './index'
+import {
+  OutputBaseAstroFuseOptions,
+  OutputBaseSearchable,
+  Searchable,
+} from './types'
 
-import { OutputBaseAstroFuseConfig, OutputBaseSearchable } from './types'
-import { log } from './util'
-
-import type { AstroConfig, AstroIntegration } from 'astro'
-import type { Plugin } from 'vite'
-
-import { OUTFILE, PLUGIN_NAME } from './index'
-
-export function basedOnOutput(config: AstroConfig): Plugin {
+export function basedOnOutput({
+  config,
+  filename,
+}: {
+  config: AstroConfig
+  filename: string
+}): Plugin {
   const outDir = config.outDir.pathname
-  const outputPath = join(outDir, OUTFILE)
+  const outputPath = join(outDir, filename)
 
   return {
-    name: PLUGIN_NAME,
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (req.url?.endsWith(`/${OUTFILE}`)) {
+        if (req.url?.endsWith(`/${filename}`)) {
           const file = await readFile(outputPath)
 
           return res.setHeader('Content-Type', 'application/json').end(file)
@@ -32,6 +37,7 @@ export function basedOnOutput(config: AstroConfig): Plugin {
         return next()
       })
     },
+    name: PLUGIN_NAME,
   }
 }
 
@@ -39,13 +45,22 @@ type AstroBuildDoneEvent = Parameters<
   NonNullable<AstroIntegration['hooks']['astro:build:done']>
 >[0]
 
-export function writeFuseIndex(
-  config: AstroConfig,
-  _config: OutputBaseAstroFuseConfig,
-  opts: AstroBuildDoneEvent
-) {
-  const { routes, pages } = opts
+export function writeFuseIndex({
+  buildDoneEvent,
+  config,
+  filename,
+  keys,
+  options,
+}: {
+  buildDoneEvent: AstroBuildDoneEvent
+  config: AstroConfig
+  filename: string
+  keys: FuseOptionKey<Searchable>[]
+  options?: OutputBaseAstroFuseOptions
+}) {
+  const { logger, pages, routes } = buildDoneEvent
   let finalSiteBasePath: string
+
   if (config.site) {
     finalSiteBasePath = new URL(config.base, config.site).pathname
   } else {
@@ -55,7 +70,7 @@ export function writeFuseIndex(
     return
   }
 
-  let pagePaths = map(pages, ({ pathname }) => {
+  let pagePaths = pages.map(({ pathname }) => {
     if (pathname !== '' && !finalSiteBasePath.endsWith('/')) {
       finalSiteBasePath += '/'
     }
@@ -97,21 +112,21 @@ export function writeFuseIndex(
   pagePaths = Array.from(new Set([...pagePaths, ...routePaths]))
 
   try {
-    if (_config.filter) {
-      pagePaths = pagePaths.filter(_config.filter)
+    if (options?.filter) {
+      pagePaths = pagePaths.filter(options.filter)
     }
   } catch (err) {
-    log(`Error filtering pages\n${String(err)}`, 'error')
+    logger.error(`Error filtering pages\n${String(err)}`)
     return
   }
 
   if (pagePaths.length === 0) {
-    log(`No pages found!\n\`${OUTFILE}\` not created.`, 'warn')
+    logger.warn(`No pages found!\n\`${filename}\` not created.`)
     return
   }
 
   const outDir = config.outDir.pathname
-  const outputPath = join(outDir, OUTFILE)
+  const outputPath = join(outDir, filename)
 
   if (!existsSync(outDir)) {
     mkdirSync(dirname(outputPath))
@@ -129,29 +144,30 @@ export function writeFuseIndex(
         encoding: 'utf8',
       }).toString()
     } catch (err) {
-      log(`Skipped!\nNo output found! ${filePath}`, 'warn')
+      logger.warn(`Skipped!\nNo output found! ${filePath}`)
+
       continue
     }
 
     const $ = cheerio.load(content)
 
-    if (_config.extractContentFromHTML) {
-      if (typeof _config.extractContentFromHTML === 'string') {
-        content = $(_config.extractContentFromHTML).html() ?? ''
+    if (options?.extractContentFromHTML) {
+      if (typeof options.extractContentFromHTML === 'string') {
+        content = $(options.extractContentFromHTML).html() ?? ''
       } else {
-        content = _config.extractContentFromHTML($).html() ?? ''
+        content = options.extractContentFromHTML($).html() ?? ''
       }
     }
 
-    if (isEmpty(content)) {
-      log(`Skipped!\nNo content! ${filePath}`, 'warn')
+    if (!content) {
+      logger.warn(`Skipped!\nNo content! ${filePath}`)
       continue
     }
 
     let frontmatter: Record<string, string> = {}
 
-    if (_config.extractFrontmatterFromHTML) {
-      frontmatter = _config.extractFrontmatterFromHTML($, path)
+    if (options?.extractFrontmatterFromHTML) {
+      frontmatter = options.extractFrontmatterFromHTML($, path)
     } else {
       let title = $('meta[property="og:title"]').first().text()
 
@@ -162,15 +178,20 @@ export function writeFuseIndex(
       frontmatter = { title }
     }
 
-    list.push({ pathname: path, content: convert(content), frontmatter })
+    list.push({ content: convert(content), frontmatter, pathname: path })
   }
 
-  const _keys = uniq(['content', ...(_config?.keys ?? [])])
-  const index = Fuse.createIndex(_keys, list, _config?.getFn ? { getFn: _config.getFn } : undefined)
+  const index = Fuse.createIndex(
+    keys,
+    list,
+    options?.getFn ? { getFn: options.getFn } : undefined
+  )
 
-  writeFileSync(outputPath, JSON.stringify({ list, index: index.toJSON() }))
+  writeFileSync(outputPath, JSON.stringify({ index: index.toJSON(), list }))
 
-  log(`\`${OUTFILE}\` created at \`${relative(process.cwd(), dirname(outputPath))}\``)
+  logger.info(
+    `\`${filename}\` created at \`${relative(process.cwd(), dirname(outputPath))}\``
+  )
 }
 
 const STATUS_CODE_PAGES = new Set(['404', '500'])

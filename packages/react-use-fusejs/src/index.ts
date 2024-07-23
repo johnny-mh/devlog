@@ -9,7 +9,7 @@ export function useFusejs<T>(
   parseOpts?: Fuse.FuseIndexOptions<T>,
   searchOpts?: Fuse.FuseSearchOptions
 ) {
-  const [instance, setInstance] = useState<null | Fuse<T>>(null)
+  const [instance, setInstance] = useState<Fuse<T> | null>(null)
 
   useEffect(() => {
     if (!data || !index) {
@@ -38,7 +38,7 @@ export function useGatsbyPluginFusejs<T>(
   parseOpts?: Fuse.FuseIndexOptions<T>,
   searchOpts?: Fuse.FuseSearchOptions
 ) {
-  const [instance, setInstance] = useState<null | Fuse<T>>(null)
+  const [instance, setInstance] = useState<Fuse<T> | null>(null)
 
   useEffect(() => {
     if (!fusejs?.data || !fusejs?.index) {

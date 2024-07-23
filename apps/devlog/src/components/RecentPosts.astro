@@ -1,6 +1,5 @@
 ---
 import SVG from '@jasikpark/astro-svg-loader'
-
 import { getPosts } from '#/collection'
 import { dayjs } from '#/dayjs'
 
@@ -13,13 +12,13 @@ const recentPosts = posts.slice(0, 5).map(
   ({
     path,
     rendered: {
-      remarkPluginFrontmatter: { title, createdAt, readingTime },
+      remarkPluginFrontmatter: { createdAt, readingTime, title },
     },
   }) => ({
-    title,
-    path,
     createdAt,
+    path,
     readingTime: dayjs.duration(readingTime).locale('ko').humanize(),
+    title,
   })
 )
 
@@ -40,9 +39,9 @@ const { title = '최근 포스트' } = Astro.props
               <span>{post.createdAt}</span>
               <span>
                 <SVG
+                  height={11}
                   src={import('../images/time.svg?raw')}
                   width={11}
-                  height={11}
                 />{' '}
                 읽는 데 {post.readingTime}
               </span>

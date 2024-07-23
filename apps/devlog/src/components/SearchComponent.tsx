@@ -1,25 +1,19 @@
-import { useStore } from '@nanostores/preact'
-import type { Searchable, SourceBaseSearchable } from 'astro-fuse'
-import Fuse from 'fuse.js'
-import type { JSX } from 'preact'
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
+import type { OutputBaseSearchable, Searchable } from 'astro-fuse'
+import type Fuse from 'fuse.js'
 
+import { useStore } from '@nanostores/react'
 import { appAtom } from '#/stores/app'
-import { shuffle } from '#/util/common'
+import {
+  type FormEventHandler,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import Styles from './Search.module.scss'
 
-interface SearchedItem {
-  title: string
-  slug: string
-}
-
-export function Search(props: { tags: Set<string> }) {
-  const tags = useMemo(
-    () => shuffle(Array.from(props.tags.values())).slice(0, 5),
-    [props.tags]
-  )
-
+export function SearchComponent({ tags }: { tags: string[] }) {
   const app = useStore(appAtom)
   const fuse = useRef<Fuse<Searchable> | null>(null)
   const inpRef = useRef<HTMLInputElement>(null)
@@ -31,28 +25,13 @@ export function Search(props: { tags: Set<string> }) {
       return []
     }
 
-    const list = fuse.current.search<SourceBaseSearchable>(query)
-
-    return list.reduce(
-      (
-        arr,
-        {
-          item: {
-            frontmatter: { title },
-            fileUrl,
-          },
-        }
-      ) => {
-        const url = decodeURIComponent(fileUrl)
-        const [, slug] = /\d{4}-\d{2}-\d{2}-(.*)\.mdx?/.exec(url) ?? []
-
-        if (slug) {
-          arr.push({ title, slug })
-        }
-
-        return arr
-      },
-      [] as SearchedItem[]
+    return fuse.current.search<OutputBaseSearchable>(query).map(
+      ({
+        item: {
+          frontmatter: { title },
+          pathname,
+        },
+      }) => ({ pathname, title })
     )
   }, [query])
 
@@ -62,7 +41,7 @@ export function Search(props: { tags: Set<string> }) {
     setTimeout(() => appAtom.set({ showSearch: false }), 1000)
   }
 
-  const onInput = (e: JSX.TargetedEvent<HTMLInputElement, Event>) =>
+  const onInput: FormEventHandler = (e) =>
     setQuery((e.target as HTMLInputElement).value)
 
   const onTagClick = (name: string) => {
@@ -75,7 +54,9 @@ export function Search(props: { tags: Set<string> }) {
   }
 
   useEffect(() => {
-    loadFuse().then((inst) => (fuse.current = inst))
+    import('astro-fuse/client')
+      .then((mod) => mod.loadFuse({ options: { threshold: 0.3 } }))
+      .then((inst) => (fuse.current = inst))
   }, [])
 
   useEffect(() => {
@@ -103,19 +84,19 @@ export function Search(props: { tags: Set<string> }) {
         <div className={Styles.header}>
           <form onSubmit={(e) => e.preventDefault()}>
             <input
-              className={Styles.inp}
-              type="text"
-              placeholder="Type to Search"
               autoCapitalize="off"
               autoComplete="off"
               autoCorrect="off"
-              ref={inpRef}
+              className={Styles.inp}
               onInput={onInput}
+              placeholder="Type to Search"
+              ref={inpRef}
+              type="text"
             />
           </form>
 
-          <button className={Styles.closeBtn} type="button" onClick={close}>
-            <svg width="37" height="37" x="0" y="0" viewBox="0 0 512 512">
+          <button className={Styles.closeBtn} onClick={close} type="button">
+            <svg height="37" viewBox="0 0 512 512" width="37" x="0" y="0">
               <path d="m25 512a25 25 0 0 1 -17.68-42.68l462-462a25 25 0 0 1 35.36 35.36l-462 462a24.93 24.93 0 0 1 -17.68 7.32z" />
               <path d="m487 512a24.93 24.93 0 0 1 -17.68-7.32l-462-462a25 25 0 0 1 35.36-35.36l462 462a25 25 0 0 1 -17.68 42.68z" />
             </svg>
@@ -131,10 +112,10 @@ export function Search(props: { tags: Set<string> }) {
 
         <div className={Styles.list}>
           <ul className={Styles.searchResult}>
-            {list.map((item) => (
-              <li key={item.slug}>
-                <a href={`/post/${item.slug.toLowerCase()}`} onClick={close}>
-                  {item.title}
+            {list.map(({ pathname, title }) => (
+              <li key={pathname}>
+                <a href={pathname} onClick={close}>
+                  {title}
                 </a>
               </li>
             ))}

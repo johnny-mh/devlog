@@ -44,7 +44,6 @@ Astro는 기본적으로 모든 웹을 zero client-side JS으로 생성한다. A
 
 렌더링 된 HTML에는 placeholder혹은 slot역할을 하는 `<astro-island />` 요소가 자리잡게 된다. 아래는 현재 블로그에서 preact로 구현된 Table Of Content (목차) 컴포넌트의 SSR결과 스크린샷이다. 보면 알겠지만 주요 컨텐츠를 포함하고 있다.
 
-
 ![preact로 개발된 TOC컴포넌트의 SSR 결과](#/assets/postImages/20230319/astro-island.webp)
 
 Astro는 각 island에 대해 어느 순간에 어떻게 로드될 것인지에 대한 지시자를 사용할 수 있다. 이 블로그의 경우 뷰포트의 크기가 1388px 이상일 때에만 우측에 TOC를 노출하고 있는데 따라서 아래와 같이 지시자를 추가하였다.
@@ -66,7 +65,6 @@ Astro는 각 island에 대해 어느 순간에 어떻게 로드될 것인지에 
 }
 ```
 
-
 미디어쿼리를 통해 뷰포트가 작으면 `<TOC />`가 노출되지 않고. 조건에 해당될 경우 `client:visible` 지시자를 통해 화면에 노출될 때에만 컴포넌트에 필요한 JS를 동적으로 로드하여 Hydration하게 된다.
 
 ![동적으로 로드된 JS들. react 런타임마저도 동적으로 로드되고 있다.](#/assets/postImages/20230319/network.webp)
@@ -78,8 +76,6 @@ Astro는 각 island에 대해 어느 순간에 어떻게 로드될 것인지에 
 ## Zero Client-Side JS
 
 **어떤 기술을 사용하던 결국 모던 웹 앱 개발에서 TTI(인터렉티브가 가능해지기까지의 시간)를 개선하는 것은 JS를 얼만큼 줄이느냐의 싸움으로 귀결된다.** [Netflix가 서비스를 Vanilla JS로 전환하고 TTI가 50% 감소했다](https://medium.com/dev-channel/a-netflix-web-performance-case-study-c0bcde26a9d9)는 사례를 보면 JS가 차지하는 비중이 작지 않다는 것을 알 수 있다.
-
-
 
 아무런 내용 없이 `create-react-app`과 `react-router-dom`만을 사용한 앱의 번들 크기는 gzipped기준 약 70kB 정도가 된다. history를 응용해 인앱 라우팅을 구현하는 코드만으로도 번들 크기가 꽤 늘어나는 것을 볼 수 있다.
 

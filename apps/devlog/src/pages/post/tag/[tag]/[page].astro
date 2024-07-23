@@ -1,10 +1,12 @@
 ---
+import type { GetStaticPaths } from 'astro'
+
 import { getPosts } from '#/collection'
 import Pager from '#/components/Pager.astro'
 import PostList from '#/components/PostList.astro'
 import Layout from '#/layouts/Layout.astro'
 
-export async function getStaticPaths({ paginate }) {
+export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getPosts()
 
   const tags = [
@@ -33,18 +35,18 @@ export async function getStaticPaths({ paginate }) {
   return tags
     .map(([tag, list]) => {
       return paginate(list, {
-        params: { tag },
         pageSize: 10,
+        params: { tag },
       })
     })
     .flatMap((arr) => arr)
-}
+}) satisfies GetStaticPaths
 
 const { page } = Astro.props
 const { tag } = Astro.params
 ---
 
 <Layout>
-  <PostList title={`Tag: ${tag}`} list={page.data} />
-  <Pager prev={page.url.prev} next={page.url.next} />
+  <PostList list={page.data} title={`Tag: ${tag}`} />
+  <Pager next={page.url.next} prev={page.url.prev} />
 </Layout>

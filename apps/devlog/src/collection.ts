@@ -1,6 +1,5 @@
-import { getCollection } from 'astro:content'
-
 import { dayjs } from '#/dayjs'
+import { getCollection } from 'astro:content'
 
 const POST_FILENAME_REGEX = /(\d{4}-\d{2}-\d{2})-(.+)/
 
@@ -25,15 +24,16 @@ export const getPosts = () =>
     rawPosts.map((post) =>
       post.render().then((rendered) => {
         const [, createdAt, path] = post.slug.match(POST_FILENAME_REGEX) ?? []
+
         return {
           ...post,
-          path,
-          rendered,
           createdAt,
+          path,
           readingTime: dayjs
             .duration(rendered.remarkPluginFrontmatter.readingTime)
             .locale('ko')
             .humanize(),
+          rendered,
         }
       })
     )

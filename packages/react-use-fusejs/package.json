@@ -31,13 +31,18 @@
     "react": "^18.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.7.0",
     "@types/react": "^18.0.27",
-    "eslint-config-custom": "workspace:*",
+    "eslint": "9.x",
+    "eslint-plugin-perfectionist": "^3.0.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "fuse.js": "^6.0.0",
+    "globals": "^15.8.0",
+    "prettier": "3.3.3",
     "react": "^18.0.0",
-    "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
-    "typescript": "^4.9.5"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^7.17.0"
   },
   "peerDependencies": {
     "fuse.js": ">=6.0.0",

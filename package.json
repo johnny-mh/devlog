@@ -13,14 +13,13 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
-    "eslint-config-custom": "workspace:*",
     "gh-pages": "^5.0.0",
-    "prettier": "latest",
     "sort-package-json": "^2.4.1",
-    "turbo": "^1.10.16"
+    "turbo": "^2.0.9"
   },
   "engines": {
     "node": "^20.0.0",
     "pnpm": "^9.0.0"
-  }
+  },
+  "packageManager": "pnpm@9.1.0"
 }

@@ -1,11 +1,18 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["NODE_ENV"],
-  "pipeline": {
+  "globalEnv": [
+    "NODE_ENV"
+  ],
+  "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", "public/**"],
-      "outputMode": "new-only"
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        "public/**"
+      ],
+      "outputLogs": "new-only"
     },
     "dev": {
       "cache": false

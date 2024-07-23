@@ -1,31 +1,40 @@
-import { createHmac } from 'node:crypto'
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
-import { readFile, writeFile } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
+import type { Plugin } from 'vite'
 
 import { AstroConfig } from 'astro'
-import Fuse from 'fuse.js'
+import Fuse, { type FuseOptionKey } from 'fuse.js'
 import { load } from 'js-yaml'
-import { map, debounce, uniq } from 'lodash-es'
+import debounce from 'lodash.debounce'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter'
 import { mdxFromMarkdown, mdxToMarkdown } from 'mdast-util-mdx'
 import { toMarkdown } from 'mdast-util-to-markdown'
 import { frontmatter } from 'micromark-extension-frontmatter'
 import { mdxjs } from 'micromark-extension-mdxjs'
+import { createHmac } from 'node:crypto'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { readFile, writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
 
-import { SourceBaseAstroFuseConfig, SourceBaseSearchable } from './types'
+import { PLUGIN_NAME } from './index'
+import {
+  Searchable,
+  SourceBaseAstroFuseOptions,
+  SourceBaseSearchable,
+} from './types'
 
-import type { Plugin } from 'vite'
-
-import { OUTFILE, PLUGIN_NAME } from './index'
-
-export function basedOnSource(
-  config: AstroConfig,
-  _config?: SourceBaseAstroFuseConfig
-): Plugin {
+export function basedOnSource({
+  config,
+  filename,
+  keys,
+  options,
+}: {
+  config: AstroConfig
+  filename: string
+  keys: FuseOptionKey<Searchable>[]
+  options?: SourceBaseAstroFuseOptions
+}): Plugin {
   const outDir = config.outDir.pathname
-  const outputPath = join(outDir, OUTFILE)
+  const outputPath = join(outDir, filename)
 
   if (!existsSync(outDir)) {
     mkdirSync(dirname(outputPath))
@@ -56,20 +65,47 @@ export function basedOnSource(
       })
 
       if (diff) {
-        const list = map(Array.from(result.values()), 1)
-        const _keys = uniq(['content', ...(_config?.keys ?? [])])
-        const index = Fuse.createIndex(_keys, list, _config?.getFn ? { getFn: _config.getFn } : undefined)
+        const list = Array.from(result.values()).map(
+          ([, searchable]) => searchable
+        )
+        const index = Fuse.createIndex(
+          keys,
+          list,
+          options?.getFn ? { getFn: options.getFn } : undefined
+        )
 
-        writeFile(outputPath, JSON.stringify({ list, index: index.toJSON() }))
+        writeFile(outputPath, JSON.stringify({ index: index.toJSON(), list }))
       }
     },
     process.env.NODE_ENV === 'production' ? 0 : 500
   )
 
   return {
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url?.endsWith(`/${filename}`)) {
+          const file = await readFile(outputPath)
+
+          return res.setHeader('Content-Type', 'application/json').end(file)
+        }
+
+        return next()
+      })
+    },
     name: PLUGIN_NAME,
+
     async transform(_, id) {
       if (!id.match(/\.mdx?/)) {
+        return
+      }
+
+      const path = `/${id.replace(new RegExp(`^${config.root.pathname}`), '')}`
+
+      if (!path.startsWith('/src/content')) {
+        return
+      }
+
+      if (options?.filter?.(path) === false) {
         return
       }
 
@@ -80,18 +116,6 @@ export function basedOnSource(
       buffer.set(fileId, [hash, { ...content, fileUrl }])
 
       writeFuseIndex()
-    },
-
-    configureServer(server) {
-      server.middlewares.use(async (req, res, next) => {
-        if (req.url?.endsWith(`/${OUTFILE}`)) {
-          const file = await readFile(outputPath)
-
-          return res.setHeader('Content-Type', 'application/json').end(file)
-        }
-
-        return next()
-      })
     },
   }
 }
@@ -111,11 +135,11 @@ export function getFileInfo(id: string, config: AstroConfig): FileInfo {
   )
 
   // Try to grab the file's actual URL
-  let url: URL | undefined
+  let url: undefined | URL
   try {
     url = new URL(`file://${id}`)
     // eslint-disable-next-line no-empty
-  } catch { }
+  } catch {}
 
   const fileId = id.split('?')[0]
   let fileUrl: string
@@ -154,11 +178,11 @@ export function getSearchable(
   )
 
   return {
+    content: toMarkdown(tree, { extensions: [mdxToMarkdown()] }),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     frontmatter: load((yaml as any)?.[0]?.value ?? '') as Record<
       string,
       string
     >,
-    content: toMarkdown(tree, { extensions: [mdxToMarkdown()] }),
   }
 }
