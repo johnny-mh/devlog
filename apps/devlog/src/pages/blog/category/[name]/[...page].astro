@@ -1,0 +1,53 @@
+---
+import type { GetStaticPaths } from 'astro'
+
+import { getPostCategories, getPosts } from '#/collection'
+import BaseWrapper from '#/components/BaseWrapper.astro'
+import Categories from '#/components/Categories.astro'
+import Pagination from '#/components/Pagination.astro'
+import PostList from '#/components/PostList.astro'
+import SearchButton from '#/components/SearchButton.astro'
+import SearchLayer from '#/components/SearchLayer.astro'
+import Layout from '#/layouts/Layout.astro'
+
+const categories = await getPostCategories()
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getPosts()
+  const categories = await getPostCategories()
+
+  return categories.flatMap(({ category, slug }) => {
+    const filteredPosts = posts.filter((post) =>
+      post.rendered.remarkPluginFrontmatter.categories.includes(category)
+    )
+
+    return paginate(filteredPosts, {
+      pageSize: 5,
+      params: { name: slug },
+    })
+  })
+}) satisfies GetStaticPaths
+
+const {
+  params: { name },
+  props: { page },
+} = Astro
+
+const allPages = [...Array(page.lastPage).keys()].map((num) => {
+  return `/blog/category/${name}${num === 0 ? '' : `/${String(num + 1)}`}`
+})
+---
+
+<Layout>
+  <BaseWrapper>
+    <div class="my-4 flex justify-between gap-2">
+      <Categories categories={categories} current={name} />
+      <SearchButton />
+    </div>
+    <div class="flex flex-col items-center text-th-text">
+      <PostList list={page.data} />
+      <Pagination allPages={allPages} class="mx-auto my-10" page={page} />
+    </div>
+    <SearchLayer />
+  </BaseWrapper>
+</Layout>

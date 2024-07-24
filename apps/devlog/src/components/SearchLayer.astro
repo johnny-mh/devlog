@@ -1,0 +1,184 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<dialog
+  class="h-full w-full overflow-hidden rounded-lg bg-white text-th-text drop-shadow-md backdrop:fixed backdrop:inset-0 backdrop:overscroll-none backdrop:bg-black/30 backdrop:backdrop-blur-sm dark:border dark:border-th-border dark:bg-black md:max-h-[50%] md:max-w-lg"
+  is="custom-search-layer"
+>
+  <div class="flex h-full flex-col p-4">
+    <div class="relative mb-4 flex h-8 gap-2">
+      <div
+        class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-2"
+      >
+        <Icon name="octicon:search-16" />
+      </div>
+      <input
+        data-search-input
+        class="block h-8 w-full rounded-lg border border-th-border bg-th-bg-secondary px-3 ps-8 text-sm text-th-text outline-none focus:ring-2 focus:ring-th-highlight/30 focus:ring-offset-2"
+        placeholder="Search Contents..."
+        type="text"
+      />
+      <button
+        data-search-close-button
+        class="flex aspect-square h-8 w-8 flex-none items-center justify-center md:hidden"
+        ><Icon name="octicon:x-16" /></button
+      >
+    </div>
+    <ul
+      data-search-result
+      class="min-h-0 flex-1 overflow-y-auto px-2 py-1 text-sm"
+    >
+    </ul>
+    <div
+      class="flex h-5 items-end justify-end font-sg text-xs text-th-text-secondary"
+    >
+      <span>
+        Search by <a
+          href="https://www.npmjs.com/package/astro-fuse"
+          rel="noopener noreferrer"
+          target="_blank">astro-fuse</a
+        >
+      </span>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import type { OutputBaseSearchable } from 'astro-fuse'
+  import type Fuse from 'fuse.js'
+
+  class SearchLayer extends HTMLDialogElement {
+    closeBtn = this.querySelector<HTMLButtonElement>(
+      'button[data-search-close-button]'
+    )!
+    fuse: Fuse<OutputBaseSearchable> | null = null
+    input = this.querySelector<HTMLInputElement>('input[data-search-input]')!
+    onCloseClick = () => this.close()
+    onDialogClick = (e: MouseEvent) => {
+      if ((e.target as HTMLElement).nodeName === 'DIALOG') {
+        this.close()
+      }
+    }
+    onDialogClose = () => {
+      this.input.value = ''
+      this.results.innerHTML = ''
+    }
+    onInput = async () => {
+      const { input, results } = this
+
+      const query = input.value.trim()
+
+      if (!query) {
+        results.innerHTML = ''
+        return
+      }
+
+      const fuse = await this.load()
+      const result = fuse.search(query, { limit: 8 })
+
+      if (!result.length) {
+        results.innerHTML = '<li class="no-result">No results</li>'
+        return
+      }
+
+      results.innerHTML = result
+        .map((entry) => {
+          let text = entry.item.frontmatter.title
+
+          const matched = entry.matches?.find(
+            (match) => match.key === 'frontmatter.title'
+          )
+
+          if (matched) {
+            const result: string[] = []
+            const matches = [...matched.indices]
+            let pair = matches.shift()
+
+            for (let i = 0; i < text.length; i += 1) {
+              const char = text.charAt(i)
+
+              if (pair && i === pair[0]) {
+                result.push('<b>')
+              }
+
+              result.push(char)
+
+              if (pair && i === pair[1]) {
+                result.push('</b>')
+                pair = matches.shift()
+              }
+            }
+
+            text = result.join('')
+          }
+
+          return `<li class="item"><a href="${entry.item.pathname.replace(/\/$/, '')}">${text}</a></li>`
+        })
+        .join('')
+    }
+    onSearch = () => {
+      this.showModal()
+    }
+
+    results = this.querySelector<HTMLUListElement>('ul[data-search-result]')!
+
+    connectedCallback() {
+      window.addEventListener('search', this.onSearch)
+      this.addEventListener('close', this.onDialogClose)
+      this.addEventListener('click', this.onDialogClick)
+      this.closeBtn.addEventListener('click', this.onCloseClick)
+      this.input.addEventListener('input', this.onInput)
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener('search', this.onSearch)
+    }
+
+    async load() {
+      if (this.fuse) {
+        return this.fuse
+      }
+
+      const { loadFuse } = await import('astro-fuse/client')
+
+      return (this.fuse = (await loadFuse({
+        options: {
+          includeMatches: true,
+          threshold: 0.3,
+        },
+      })) as Fuse<OutputBaseSearchable>)
+    }
+  }
+
+  customElements.define('custom-search-layer', SearchLayer, {
+    extends: 'dialog',
+  })
+</script>
+
+<style>
+  :global(html.dark) {
+    dialog input,
+    [data-search-result] :global(.item a) {
+      --tw-ring-offset-color: #000;
+    }
+  }
+
+  [data-search-result] {
+    :global(.item) {
+      @apply mb-2 rounded-sm;
+    }
+
+    :global(.item a) {
+      @apply block rounded-sm py-1 outline-none focus:ring-2 focus:ring-th-highlight/30 focus:ring-offset-2;
+    }
+
+    :global(.item b) {
+      @apply font-semibold;
+    }
+
+    :global(.item:last-of-type) {
+      @apply mb-0;
+    }
+  }
+</style>

@@ -1,0 +1,61 @@
+<custom-comment></custom-comment>
+
+<script>
+  import { loadTheme } from '#/theme'
+
+  class Comment extends HTMLElement {
+    _onThemeChange = ({ detail: { actual } }: WindowEventMap['theme']) => {
+      const iframe = this.querySelector<HTMLIFrameElement>('.utterances-frame')
+
+      if (!iframe) {
+        return
+      }
+
+      iframe?.contentWindow?.postMessage(
+        {
+          theme: actual === 'dark' ? 'github-dark' : 'github-light',
+          type: 'set-theme',
+        },
+        'https://utteranc.es'
+      )
+    }
+
+    io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.init()
+
+          this.io.disconnect()
+        }
+      })
+    })
+
+    connectedCallback() {
+      this.io.observe(this)
+      window.addEventListener('theme', this._onThemeChange)
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener('theme', this._onThemeChange)
+    }
+
+    init() {
+      const script = document.createElement('script')
+
+      const { preferred, theme } = loadTheme()
+      const dark = (theme === 'auto' ? preferred : theme) === 'dark'
+
+      script.src = 'https://utteranc.es/client.js'
+      script.setAttribute('repo', 'johnny-mh/devlog')
+      script.setAttribute('issue-term', 'og:title')
+      script.setAttribute('label', 'Comment')
+      script.setAttribute('theme', dark ? 'github-dark' : 'github-light')
+      script.setAttribute('crossorigin', 'anonymous')
+      script.async = true
+
+      this.appendChild(script)
+    }
+  }
+
+  customElements.define('custom-comment', Comment)
+</script>

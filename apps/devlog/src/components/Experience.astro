@@ -1,0 +1,196 @@
+---
+import ExperienceItem from './ExperienceItem.astro'
+---
+
+<h2 class="mb-8 text-2xl font-semibold tracking-tight">경력사항</h2>
+
+<div class="relative flex flex-col gap-12" is="custom-experience">
+  <ExperienceItem
+    companyName="NAVER Z"
+    duration="2022 ~ Present"
+    tags={['Next.js', 'React', 'react-query', 'tailwindcss', 'docker', 'turbo']}
+    teamName="Web Front"
+    title="Lead"
+  >
+    <p>
+      클라우드 GPU 서버를 관리하고, AI 서비스를 위한 코드들을 작성 및 배포하고
+      관리하는 웹 앱을 개발하였습니다.<br /><a
+        href="https://hyperfuncs.m2s.team"
+        rel="noopener noreferrer"
+        target="_blank">서비스 소개</a
+      >
+    </p>
+    <p>
+      사용자가 이용하는 콘솔, 관리용 백오피스, 서비스 소개, Docs 사이트를 개발
+      하고 docker 이미지로 만들어 배포하였습니다.
+    </p>
+    <p>
+      그 외 사내의 다른 부서에서 사용하는 CMS서비스 웹 앱들을 유지
+      보수하였습니다.
+    </p>
+    <p>빠르고 안정적인 개발 및 운영에 초점을 두고 개발팀을 이끌었습니다.</p>
+  </ExperienceItem>
+
+  <ExperienceItem
+    companyName="kakao (합병)"
+    duration="2017.03 ~ 2022"
+    tags={['Angular', 'NgRx', 'Express.js', 'Lerna']}
+    teamName="FE개발 5셀"
+    title="셀장"
+  >
+    <p>
+      선물하기, 쇼핑하기 등 사내 웹 앱들이 공유하는 UI라이브러리를 개선하고
+      확장하는 업무를 담당하였습니다.
+    </p>
+    <p>
+      백엔드 API호출 코드작성을 자동화하는 도구를 개발하여. API 연동 작업 시간을
+      큰 폭으로 줄이는 데 기여했습니다.
+    </p>
+    <p>
+      Angular의 핵심 기능인 Dependency Injection 시스템에 대해 <a
+        href="https://youtu.be/dOWdfnFwLMI?si=GQH2TfdY-J7jlVNJ&t=172"
+        rel="noopener noreferrer"
+        target="_blank">컨퍼런스</a
+      >에서 공유하였습니다.
+    </p>
+    <p>
+      결제, 이벤트 등 커머스에 공통으로 사용되는 기능들을 관리하는 팀을
+      이끌었습니다.
+    </p>
+  </ExperienceItem>
+
+  <ExperienceItem
+    companyName="kakaocommerce (분사)"
+    tags={['Angular', 'Express.js', 'NgRx', 'Lerna', 'React']}
+    teamName="FE개발 5셀"
+  >
+    <p>
+      React 로 개발되어 있던 선물하기 웹 앱과 백오피스를 Angular로
+      리펙토링하였습니다.
+    </p>
+    <p>
+      쇼핑하기와 선물하기를 개발하며 쌓았던 기능들과 노하우를 "공통
+      UI라이브러리"로 private npm에 배포하여 사내 다른 서비스들에도 적용할 수
+      있도록 지원하였습니다.
+    </p>
+    <p>
+      사내 웹 앱 CI/CD 파이프라인 구축, 전용 CLI를 개발하여 테스트 및 배포
+      프로세스를 간소화 하였습니다.
+    </p>
+    <p>
+      개발, 운영간의 경험을 정리하여 <a
+        href="https://tech.kakao.com/2019/11/27/kakao-commerce-frontend-angular/"
+        rel="noopener noreferrer"
+        target="_blank">컨퍼런스</a
+      > 및 <a
+        href="https://tech.kakao.com/2020/12/23/frontend-growth-04/"
+        rel="noopener noreferrer"
+        target="_blank">밋업</a
+      >에서 공유하였습니다.
+    </p>
+    <p>기타 신입사원 교육, 카카오 인턴 코딩테스트 검수</p>
+  </ExperienceItem>
+
+  <ExperienceItem
+    companyName="kakao"
+    tags={['Angular', 'NgRx', 'Express.js']}
+    teamName="톡스토어개발셀"
+  >
+    <p>쇼핑하기 웹 앱과 백오피스를 개발하였습니다.</p>
+    <p>
+      내부 테스트용 임시 웹 서비스를 동적으로 생성하고 관리할 수 있는 웹 서버
+      등, 서비스에 필요한 기능들을 개발하고 공유하였습니다.
+    </p>
+  </ExperienceItem>
+
+  <ExperienceItem
+    companyName="NHN Entertainment"
+    duration="2013 ~ 2017.03"
+    tags={['JavaScript', 'React', 'Redux', 'redux-saga', 'selenium']}
+    teamName="FE개발팀"
+  >
+    <p>
+      웹 기반 네트워크 드라이브 서비스 TOAST Drive의 웹 앱을 개발하였습니다.
+    </p>
+    <p>
+      순수 JavaScript 라이브러리들을 개발하고 TOAST UI라는 브랜드로
+      배포하였습니다.
+    </p>
+    <ul>
+      <li>Excel과 유사한 웹 기반 테이블 라이브러리</li>
+      <li>일/주/월 단위의 스케쥴을 관리할 수 있는 캘린더 라이브러리</li>
+      <li>
+        잠실종합경기장 등 공연장 및 시설의 좌석 도면을 그리거나 예매할 때
+        사용하는 코어 라이브러리
+      </li>
+    </ul>
+    <p>
+      selenuim과 karma 플러그인을 커스텀하여 라이브러리들의 원격 단위테스트
+      자동화 시스템을 구축하였습니다.
+    </p>
+    <p>
+      기타 HTML5 웹 게임 개발, 신규입사자 대상 JavaScript교육, FE Weekly
+      기술문서 작성
+    </p>
+  </ExperienceItem>
+
+  <ExperienceItem
+    companyName="Funshop"
+    duration="2012.05 ~ 2013"
+    tags={['C#.NET', 'MSSQL', 'Windows Server']}
+    teamName="개발팀"
+  >
+    <p>Funshop 쇼핑몰 및 어드민 개발.</p>
+  </ExperienceItem>
+
+  <ExperienceItem
+    companyName="Rapius Inc"
+    duration="2011.08 ~ 2012.05"
+    tags={['VB.NET', 'C#.NET', 'MSSQL', 'Windows Server']}
+    teamName="개발팀"
+  >
+    <p>웹 기반 영문 이력서 작성 서비스, 어드민 개발.</p>
+  </ExperienceItem>
+</div>
+
+<script>
+  class CustomExperience extends HTMLDivElement {
+    tags = this.querySelectorAll<HTMLElement>('[data-tag]')
+
+    connectedCallback() {
+      this.addEventListener('mouseover', this.onEvent)
+      this.addEventListener('mouseout', this.onEvent)
+    }
+
+    onEvent(e: MouseEvent) {
+      const el = e.target as HTMLElement
+
+      if (!el.matches('[data-tag]')) {
+        return
+      }
+
+      const tag = el.dataset.tag
+
+      if (!tag) {
+        return
+      }
+
+      if (e.type === 'mouseover') {
+        this.tags.forEach((el) => {
+          if (el.dataset.tag === tag) {
+            el.dataset.emphasis = ''
+          }
+        })
+        return
+      }
+
+      this.tags.forEach((el) => {
+        delete el.dataset.emphasis
+      })
+    }
+  }
+
+  customElements.define('custom-experience', CustomExperience, {
+    extends: 'div',
+  })
+</script>

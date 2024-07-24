@@ -1,176 +1,105 @@
 ---
-import SVG from '@jasikpark/astro-svg-loader'
+import ThemeSwitcher from '#/components/ThemeSwitcher.astro'
+const logo = await import('#/icons/logo.svg?raw')
+
+const innerHTML = logo.default.replace(/^<svg/, '<svg width="135" height="38"')
+
+const current = (() => {
+  const {
+    url: { pathname },
+  } = Astro
+
+  if (/^\/blog/.test(pathname)) {
+    return 'blog'
+  }
+
+  return 'about'
+})()
 ---
 
-<header>
-  <div class="container">
-    <div class="brand">
-      <a aria-label="Go to Home" href="/">
-        <SVG src={import('../images/johnnydev.svg?raw')} width={230} />
-      </a>
-    </div>
-    <div class="links">
-      <a href="/about">About</a>
-      <a href="/archives">Archives</a>
-      <a aria-label="Search blogs" href="#search" id="search-btn">
-        <SVG height={13} src={import('../images/search.svg?raw')} width={15} />
-      </a>
-    </div>
+<header
+  data-header
+  class="fixed left-0 right-0 top-0 z-30 h-20 px-3 transition-all ease-out [&.scroll]:h-12 [&.scroll]:backdrop-blur-xl"
+>
+  <div class="container flex h-full place-content-between place-items-center">
+    <a aria-label="Go to Home" class="logo" href="/">
+      <Fragment set:html={innerHTML} />
+    </a>
+    <nav class="flex gap-5 font-sg text-sm text-th-text">
+      <a
+        class="relative data-[active]:font-semibold"
+        data-active={current === 'blog'}
+        href="/">Blog</a
+      >
+      <a
+        class="relative data-[active]:font-semibold"
+        data-active={current === 'about'}
+        href="/about">About</a
+      >
+      <ThemeSwitcher />
+    </nav>
   </div>
 </header>
 
-<style lang="scss">
-  @use '../styles/variables' as *;
-  @use '../styles/mixins' as *;
-
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 3;
-    width: 100%;
-    background-color: $theme-light-bg;
-
-    &.scroll {
-      box-shadow: 1px 2px 18px rgba(0, 0, 0, 0.1);
-
-      .container {
-        height: 80px;
-      }
-    }
-
-    @include dark {
-      background-color: $theme-dark-bg;
-    }
-  }
-
-  .brand {
-    a {
-      display: block;
-      padding: 0.5rem 1rem;
-      transition: background-color 0.2s ease-in-out;
-
-      svg {
-        fill: $theme-light-text;
-        transition: fill 0.2s ease-in-out;
-
-        @include dark {
-          fill: $theme-dark-text;
-        }
-      }
-
-      &:hover {
-        background-color: $theme-light-text;
-
-        svg {
-          fill: $theme-light-bg;
-        }
-
-        @include dark {
-          background-color: theme-dark-text;
-
-          svg {
-            fill: $theme-dark-bg;
-          }
-        }
-      }
-    }
-  }
-
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 9rem;
-    transition: height 80ms ease-out;
-
-    max-width: 800px;
-    padding: 0 2rem;
-    margin: 0 auto;
-  }
-
-  .links {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    height: 100%;
-
-    a {
-      display: flex;
-      align-items: center;
-      padding: 0.75rem;
-      margin: 0 0.25rem;
-      line-height: 1.2rem;
-      text-align: center;
-
-      @include link;
-    }
-  }
-
-  @include mobile {
-    header {
-      &.scroll {
-        height: 3rem;
-
-        .container {
-          height: 3rem;
-        }
-      }
-    }
-
-    .container {
-      padding: 0;
-      height: 4rem;
-
-      .brand {
-        svg {
-          width: 140px;
-        }
-      }
-
-      .links {
-        justify-content: end;
-      }
-    }
-  }
-</style>
-
 <script>
-  import { appAtom } from '#/stores/app'
+  function bindScrollEvent() {
+    const el = document.querySelector('header[data-header]')
 
-  function bindEvents() {
-    const header = document.querySelector('header')
-    const searchBtn = document.querySelector('#search-btn')
+    if (!el) {
+      return
+    }
+
     let lastValue = ''
 
-    const onScroll = () => {
-      window.requestAnimationFrame(() => {
+    window.addEventListener(
+      'scroll',
+      () => {
         if (window.scrollY > 0) {
           if (lastValue !== 'scroll') {
             lastValue = 'scroll'
-            header?.classList.add('scroll')
+            el?.classList.add('scroll')
           }
           return
         }
 
         if (lastValue !== '') {
           lastValue = ''
-          header?.classList.remove('scroll')
+          el?.classList.remove('scroll')
         }
-      })
-    }
-
-    const onSearchClick = (e: MouseEvent) => {
-      e.preventDefault()
-
-      appAtom.set({ showSearch: !appAtom.get().showSearch })
-    }
-
-    window.addEventListener('scroll', onScroll)
-    searchBtn?.addEventListener('click', onSearchClick)
+      },
+      { passive: true }
+    )
   }
 
-  bindEvents()
-  document.addEventListener('astro:after-swap', bindEvents)
+  bindScrollEvent()
+  document.addEventListener('astro:after-swap', bindScrollEvent)
 </script>
+
+<style>
+  .logo {
+    :global(svg) {
+      overflow: visible;
+    }
+
+    :global(rect, path:nth-of-type(2)) {
+      transition-property: fill, transform;
+      transition-duration: 0.4s;
+      transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    :global(rect) {
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+  }
+
+  :global(html.dark) .logo {
+    :global(path) {
+      fill: #fff;
+    }
+
+    :global(path:nth-of-type(2)) {
+      fill: #000;
+    }
+  }
+</style>

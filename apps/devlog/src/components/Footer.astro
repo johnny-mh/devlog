@@ -1,53 +1,39 @@
 ---
-import SVG from '@jasikpark/astro-svg-loader'
+const year = new Date().getFullYear()
 ---
 
-<footer>
-  <div>
-    <a
-      aria-label="RSS"
-      href="/rss.xml"
-      rel="noopener noreferrer"
-      target="_blank">RSS</a
-    >
-  </div>
-  <div>
-    <a
-      aria-label="Go to github profile page"
-      href="https://github.com/johnny-mh"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <SVG height={24} src={import('../images/github.svg?raw')} width={24} />
-    </a>
-    <a aria-label="Send mail to Johnny" href="mailto://romz1212@gmail.com">
-      <SVG height={20} src={import('../images/mail.svg?raw')} width={20} />
-    </a>
+<footer class="relative z-10">
+  <div
+    class="container flex justify-between gap-10 border-t border-t-th-border px-3 py-8 font-sg text-sm text-th-text"
+  >
+    <div class="flex-none">&#169; {year} - JOHNNYDEV</div>
+    <div class="flex w-60 justify-between gap-2">
+      <div class="flex flex-col gap-1 md:w-1/2">
+        <a href="/blog">Blog</a>
+        <a href="/about">About</a>
+      </div>
+      <div class="flex flex-col gap-1 md:w-1/2">
+        <a
+          aria-label="Go to github profile page"
+          href="https://github.com/johnny-mh"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Github
+        </a>
+        <a
+          aria-label="Send E-Mail to Johnny"
+          href="mailto://romz1212@gmail.com"
+        >
+          Mail
+        </a>
+        <a
+          aria-label="RSS"
+          href="/rss.xml"
+          rel="noopener noreferrer"
+          target="_blank">RSS</a
+        >
+      </div>
+    </div>
   </div>
 </footer>
-
-<style lang="scss">
-  @use '../styles/variables' as *;
-  @use '../styles/mixins' as *;
-
-  footer {
-    margin: 4rem auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    height: 6rem;
-
-    max-width: 800px;
-    padding: 0 2rem;
-
-    > div {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      a {
-        @include link;
-      }
-    }
-  }
-</style>

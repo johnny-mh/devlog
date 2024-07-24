@@ -1,116 +1,51 @@
 ---
-import profileImage from '#/images/profile.webp'
-import { Image } from 'astro:assets'
+import profileImage from '#/assets/profile.png'
+import Glow from '#/components/Glow.astro'
+import { Icon } from 'astro-icon/components'
+import Image from 'astro/components/Image.astro'
 ---
 
-<section>
-  <div class="profile">
+<div class="flex flex-col gap-8 md:flex-row">
+  <div
+    class="relative z-10 aspect-square w-full flex-none drop-shadow-xl dark:drop-shadow-none md:w-52"
+  >
+    <Glow
+      blur={'20px'}
+      colors={['#eeeefd', '#57d5fc']}
+      duration="2s"
+      opacity={0.5}
+    />
     <Image
-      alt="johnny profile image"
-      height={256}
+      alt="JOHNNY DEV"
+      class="absolute inset-0 rounded-3xl"
+      height={800}
       src={profileImage}
-      width={256}
+      width={800}
     />
   </div>
-  <div class="description">
-    <h1>안녕하세요! FE개발자 김민형입니다</h1>
-    <div class="tags">
-      {
-        ['JavaScript', 'Angular', 'React', 'NodeJS'].map((str) => (
-          <span>{str}</span>
-        ))
-      }
-    </div>
-    <div class="mail">
-      <a href="mailto:romz1212@gmail.com">romz1212@gmail.com</a>
+  <div class="flex flex-col justify-center gap-3 px-1 md:px-0">
+    <h1 class="text-2xl font-semibold tracking-tight md:text-3xl">
+      안녕하세요!<br />
+      프론트엔드 개발자 김민형 입니다.
+    </h1>
+    <p class="text-lg tracking-tight text-th-text-secondary">
+      커머스, 클라우드 플랫폼 등 여러 도메인에서<br />
+      JavaScript 라이브러리, 엔터프라이즈 레벨 웹 앱들을 개발해왔습니다.<br />
+      기업의 목표에 빠르게 부합하고. 유연하고 안정적인 결과 만들기 위해 달리고 있습니다.
+    </p>
+    <div class="flex gap-4 font-sg text-sm">
+      <a class="flex items-center gap-1" href="mailto:romz1212@gmail.com">
+        <Icon name="octicon:mail-24" />
+        romz1212@gmail.com
+      </a>
+      <a
+        class="flex items-center gap-1"
+        href="https://www.youtube.com/channel/UCsTWCFYRDOp6ofIOqFOICEQ"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <Icon name="octicon:video-24" />johnny-dev
+      </a>
     </div>
   </div>
-</section>
-
-<style lang="scss">
-  @use '../styles/variables' as *;
-  @use '../styles/mixins' as *;
-
-  section {
-    display: flex;
-    justify-content: left;
-    margin-bottom: 3rem;
-  }
-
-  .profile {
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    width: 8.75rem;
-    height: 8.75rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-
-    img {
-      width: 8rem;
-      height: 8rem;
-      border-radius: 50%;
-    }
-  }
-
-  .description {
-    padding: 1rem 0;
-    margin-left: 1rem;
-    line-height: 2rem;
-
-    h1 {
-      margin-bottom: 1rem;
-      word-break: keep-all;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-left: 0.5rem;
-      margin-bottom: 1rem;
-
-      span {
-        line-height: 1.5rem;
-        border-radius: 1.5rem;
-        color: $theme-light-text;
-        background-color: $theme-light-text-bg;
-        padding: 0.1rem 1rem;
-
-        @include dark {
-          color: $theme-dark-text;
-          background-color: $theme-dark-text-bg;
-        }
-      }
-    }
-
-    .mail {
-      margin-left: 0.5rem;
-      line-height: 1rem;
-
-      a {
-        @include link;
-      }
-    }
-  }
-
-  @include mobile {
-    section {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .tags {
-      margin-left: 0;
-      justify-content: center;
-      font-size: 0.9rem;
-    }
-
-    .description {
-      margin: 1rem 0;
-      padding: 0;
-    }
-  }
-</style>
+</div>

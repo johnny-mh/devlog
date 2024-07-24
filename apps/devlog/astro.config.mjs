@@ -1,44 +1,46 @@
 import mdx from '@astrojs/mdx'
 import partytown from '@astrojs/partytown'
-import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
+import tailwind from '@astrojs/tailwind'
 import rehypeFigure from '@microflash/rehype-figure'
 import {
   transformerMetaHighlight,
   transformerMetaWordHighlight,
 } from '@shikijs/transformers'
 import fuse from 'astro-fuse'
+import icon from 'astro-icon'
 import robotsTxt from 'astro-robots-txt'
 import { defineConfig } from 'astro/config'
+import glsl from 'vite-plugin-glsl'
 
-import { remarkCreatedAt } from './remarks/createdAt.mjs'
+import { coverColor } from './remarks/coverColor.mjs'
 import { remarkReadingTime } from './remarks/readingTime.mjs'
+import { remarkSummarize } from './remarks/summarize.mjs'
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     mdx(),
-    react(),
     sitemap(),
+    icon({
+      svgoOptions: {
+        plugins: [{ name: 'prefixIds', params: { prefix: 'uwu' } }],
+      },
+    }),
+    tailwind({ applyBaseStyles: false, nesting: true }),
+    partytown({ config: { forward: ['dataLayer.push'] } }),
     robotsTxt({
       host: 'johnny-mh.github.io',
       policy: [
         {
           allow: '/',
-          disallow: [
-            '/about',
-            '/about/',
-            '/archives',
-            '/archives/',
-            '/post/category/',
-            '/post/tag/',
-          ],
+          disallow: ['/about', '/about/'],
           userAgent: '*',
         },
       ],
     }),
     fuse(['content', 'frontmatter.title', 'frontmatter.tags'], {
-      extractContentFromHTML: '.markdown-content',
+      extractContentFromHTML: '.prose',
       extractFrontmatterFromHTML: ($) => {
         const el = $('[data-frontmatter]')
 
@@ -48,14 +50,23 @@ export default defineConfig({
 
         return { title: $('h1').first().text() }
       },
-      filter: (path) => /^\/post\/[^/]+\/$/.test(path),
+      filter: (path) => {
+        const matches = /^\/blog\/([^/]+)\/?$/g.exec(path)
+
+        if (!matches) {
+          return false
+        }
+
+        const [, param] = matches
+
+        return !/^\d+$/.test(param)
+      },
     }),
-    partytown({ config: { forward: ['dataLayer.push'] } }),
   ],
   markdown: {
     extendDefaultPlugins: true,
     rehypePlugins: [rehypeFigure],
-    remarkPlugins: [remarkReadingTime, remarkCreatedAt],
+    remarkPlugins: [remarkReadingTime, remarkSummarize, coverColor],
     shikiConfig: {
       theme: 'catppuccin-mocha',
       transformers: [
@@ -65,5 +76,9 @@ export default defineConfig({
     },
     syntaxHighlight: 'shiki',
   },
+  redirects: { '/': '/blog', '/post/[slug]': '/blog/[slug]' },
   site: 'https://johnny-mh.github.io',
+  vite: {
+    plugins: [glsl()],
+  },
 })

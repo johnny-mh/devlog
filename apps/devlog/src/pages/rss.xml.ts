@@ -1,11 +1,11 @@
-import type { APIContext } from 'astro'
+import type { APIRoute } from 'astro'
 
 import rss from '@astrojs/rss'
 import { getPosts } from '#/collection'
 import { dayjs } from '#/dayjs'
 import { sitemeta } from '#/sitemeta'
 
-export async function get(context: APIContext) {
+export const GET: APIRoute = async (context) => {
   const posts = await getPosts()
 
   return rss({
@@ -14,8 +14,8 @@ export async function get(context: APIContext) {
       description:
         post.rendered.remarkPluginFrontmatter.description ||
         post.rendered.remarkPluginFrontmatter.title,
-      link: `/post/${post.path}/`,
-      pubDate: dayjs(post.createdAt, 'YYYY-MM-DD', 'ko').toDate(),
+      link: `/blog/${post.slug}/`,
+      pubDate: dayjs(post.data.publishedAt).toDate(),
       title: post.rendered.remarkPluginFrontmatter.title,
     })),
     site: context.site!.toString(),
