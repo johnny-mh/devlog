@@ -32,6 +32,7 @@ export default function astroFuse(
   let config: AstroConfig
   let outDir = ''
 
+  const _keys = keys ?? ['content']
   const basedOn = options?.basedOn ?? 'output'
   const filename = options?.filename ?? 'fuse.json'
 
@@ -56,7 +57,7 @@ export default function astroFuse(
           buildDoneEvent,
           config,
           filename,
-          keys,
+          keys: _keys,
           options: options as OutputBaseAstroFuseOptions,
         })
       },
@@ -75,7 +76,7 @@ export default function astroFuse(
                 basedOnSource({
                   config,
                   filename,
-                  keys,
+                  keys: _keys,
                   options: options as SourceBaseAstroFuseOptions,
                 }),
               ],

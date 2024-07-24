@@ -1,5 +1,11 @@
 # astro-fuse
 
+## 1.0.1
+
+### Patch Changes
+
+- Fixed an issue where a build error occurred when there were no arguments to the 'fuse()' function.
+
 ## 1.0.0
 
 ### Major Changes
