@@ -1,16 +1,15 @@
 ---
-import { Image } from 'astro:assets'
-
 import profileImage from '#/images/profile.webp'
+import { Image } from 'astro:assets'
 ---
 
 <section>
   <div class="profile">
     <Image
-      src={profileImage}
       alt="johnny profile image"
-      width={256}
       height={256}
+      src={profileImage}
+      width={256}
     />
   </div>
   <div class="description">

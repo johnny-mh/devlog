@@ -1,35 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Cheerio, CheerioAPI } from 'cheerio'
-import type Fuse from 'fuse.js'
+import type { FuseIndexOptions } from 'fuse.js'
 
 export type SourceBaseSearchable = {
-  frontmatter: Record<string, any>
   content: string
   fileUrl: string
+  frontmatter: Record<string, any>
 }
 
 export type OutputBaseSearchable = {
-  frontmatter: Record<string, any>
   content: string
+  frontmatter: Record<string, any>
   pathname: string
 }
 
-export type Searchable = SourceBaseSearchable | OutputBaseSearchable
+export type Searchable = OutputBaseSearchable | SourceBaseSearchable
 
-export type SourceBaseAstroFuseConfig = {
-  keys?: Fuse.FuseOptionKey<SourceBaseSearchable>[]
-  basedOn?: 'source'
-  injectScript?: boolean
-} & Partial<Fuse.FuseIndexOptions<SourceBaseSearchable>>
-
-export type OutputBaseAstroFuseConfig = {
-  keys?: Fuse.FuseOptionKey<OutputBaseSearchable>[]
-  basedOn?: 'output'
-  injectScript?: boolean
+export type BaseAstroFuseOptions = {
+  filename?: string
   filter?: (pathname: string) => boolean
-  extractContentFromHTML?: string | (($: CheerioAPI) => Cheerio<any>)
-  extractFrontmatterFromHTML?: ($: CheerioAPI, pathname: string) => any
-} & Partial<Fuse.FuseIndexOptions<OutputBaseSearchable>>
+}
 
-export type AstroFuseConfig =
-  | OutputBaseAstroFuseConfig
-  | SourceBaseAstroFuseConfig
+export type SourceBaseAstroFuseOptions = {
+  basedOn?: 'source'
+} & BaseAstroFuseOptions &
+  Partial<FuseIndexOptions<SourceBaseSearchable>>
+
+export type OutputBaseAstroFuseOptions = {
+  basedOn?: 'output'
+  extractContentFromHTML?: (($: CheerioAPI) => Cheerio<any>) | string
+  extractFrontmatterFromHTML?: ($: CheerioAPI, pathname: string) => any
+} & BaseAstroFuseOptions &
+  Partial<FuseIndexOptions<OutputBaseSearchable>>
+
+export type AstroFuseOptions =
+  | OutputBaseAstroFuseOptions
+  | SourceBaseAstroFuseOptions

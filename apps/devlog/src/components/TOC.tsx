@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks'
-
 import { throttle } from '#/util/throttle'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import Styles from './TOC.module.scss'
 
 export function TOC({
   headings,
 }: {
-  headings: Array<{ depth: number; text: string; slug: string }>
+  headings: Array<{ depth: number; slug: string; text: string }>
 }) {
   const headers = useMemo(
     () => headings.filter(({ depth }) => depth < 3),
@@ -34,7 +33,7 @@ export function TOC({
 
     let index = 0
 
-    if (scrollY === 0 || scrollY <= offsets[0]) {
+    if (scrollY === 0 || scrollY <= (offsets[0] ?? 0)) {
       index = 0
     } else if (
       window.innerHeight + scrollY >= document.body.offsetHeight - 30 ||
@@ -63,11 +62,11 @@ export function TOC({
     <div className={Styles.wrapper}>
       <div className={Styles.content}>
         <ol className={Styles.list}>
-          {headers.map(({ slug, text, depth }, idx) => (
+          {headers.map(({ depth, slug, text }, idx) => (
             <li
-              key={idx}
-              style={`padding-left: ${depth * 11}px`}
               className={currentIndex === idx ? 'active' : ''}
+              key={idx}
+              style={{ paddingLeft: depth * 11 }}
             >
               <a href={`#${slug}`}>{text} </a>
             </li>

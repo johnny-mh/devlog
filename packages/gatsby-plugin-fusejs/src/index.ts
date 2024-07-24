@@ -8,12 +8,12 @@ import {
 import path from 'path'
 
 interface PluginOptions {
-  query: string
   keys: string[]
   normalizer: (input: {
     data?: unknown
     errors?: unknown
   }) => Record<string, unknown>[]
+  query: string
 }
 
 const msg = (str: string) => `[gatsby-plugin-fusejs] ${str}`
@@ -22,8 +22,8 @@ export const createPages = async (
   ctx: CreatePagesArgs,
   opts: PluginOptions
 ) => {
-  const { query, keys, normalizer } = opts
-  const { actions, graphql, reporter, createNodeId, createContentDigest } = ctx
+  const { keys, normalizer, query } = opts
+  const { actions, createContentDigest, createNodeId, graphql, reporter } = ctx
 
   const result = await graphql(query)
 
@@ -51,42 +51,40 @@ export const createPages = async (
   const index = Fuse.createIndex(keys, data)
 
   actions.createNode({
+    data,
     id: createNodeId(`fusejs`),
     index: JSON.stringify(index.toJSON()),
-    data,
     internal: {
+      contentDigest: createContentDigest({ data, index }),
       type: `fusejs`,
-      contentDigest: createContentDigest({ index, data }),
     },
   })
 }
 
 interface FuseNodeInput extends NodeInput {
-  index: string
   data: unknown
+  index: string
 }
 
 export const createSchemaCustomization = async (
   ctx: CreateSchemaCustomizationArgs
 ) => {
-  const { actions, schema, reporter, pathPrefix } = ctx
+  const { actions, pathPrefix, reporter, schema } = ctx
   const { createTypes } = actions
 
   createTypes([
     schema.buildObjectType({
-      name: 'fusejs',
       fields: {
+        data: {
+          description: 'The data returned by the GraphQL query.',
+          type: 'JSON!',
+        },
         index: {
-          type: 'String!',
           description:
             'The JSON serialized search index string created using the fusejs.',
-        },
-        data: {
-          type: 'JSON!',
-          description: 'The data returned by the GraphQL query.',
+          type: 'String!',
         },
         publicUrl: {
-          type: 'String!',
           description: 'The public URL of the search index and data.',
           resolve: (node: FuseNodeInput) => {
             const filename = `${node.internal.contentDigest}.index.json`
@@ -101,7 +99,7 @@ export const createSchemaCustomization = async (
             if (!fs.existsSync(publicPath))
               fs.writeFile(
                 publicPath,
-                JSON.stringify({ index: node.index, data: node.data }),
+                JSON.stringify({ data: node.data, index: node.index }),
                 (err) => {
                   if (err)
                     reporter.error(
@@ -114,9 +112,11 @@ export const createSchemaCustomization = async (
 
             return `${pathPrefix}/static/${filename}`
           },
+          type: 'String!',
         },
       },
       interfaces: ['Node'],
+      name: 'fusejs',
     }),
   ])
 }

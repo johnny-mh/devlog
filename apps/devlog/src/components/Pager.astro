@@ -2,11 +2,11 @@
 import SVG from '@jasikpark/astro-svg-loader'
 
 export interface Props {
-  prev?: string | null
-  next?: string | null
+  next: null | string
+  prev: null | string
 }
 
-const { prev, next } = Astro.props
+const { next, prev } = Astro.props
 ---
 
 <ul class="pager">
@@ -14,12 +14,12 @@ const { prev, next } = Astro.props
     {
       prev ? (
         <a href={prev}>
-          <SVG src={import('../images/left.svg?raw')} width={21} height={21} />
+          <SVG height={21} src={import('../images/left.svg?raw')} width={21} />
           Newer
         </a>
       ) : (
         <span>
-          <SVG src={import('../images/left.svg?raw')} width={21} height={21} />
+          <SVG height={21} src={import('../images/left.svg?raw')} width={21} />
           Newer
         </span>
       )
@@ -30,12 +30,12 @@ const { prev, next } = Astro.props
       next ? (
         <a href={next}>
           Older
-          <SVG src={import('../images/right.svg?raw')} width={21} height={21} />
+          <SVG height={21} src={import('../images/right.svg?raw')} width={21} />
         </a>
       ) : (
         <span>
           Older
-          <SVG src={import('../images/right.svg?raw')} width={21} height={21} />
+          <SVG height={21} src={import('../images/right.svg?raw')} width={21} />
         </span>
       )
     }

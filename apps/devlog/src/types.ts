@@ -1,6 +1,6 @@
 export interface FrontMatter {
-  title: string
-  createdAt: string
   categories: string[]
+  createdAt: string
   tags: string[]
+  title: string
 }

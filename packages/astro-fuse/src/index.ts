@@ -1,120 +1,95 @@
+import type { AstroConfig, AstroIntegration } from 'astro'
+import type { FuseOptionKey } from 'fuse.js'
+
 import { existsSync } from 'node:fs'
 import { join, relative } from 'node:path'
 
-import Fuse from 'fuse.js'
-import { map, uniq } from 'lodash-es'
+import type {
+  AstroFuseOptions,
+  OutputBaseAstroFuseOptions,
+  Searchable,
+  SourceBaseAstroFuseOptions,
+} from './types'
 
 import { basedOnOutput, writeFuseIndex } from './basedOnOutput'
 import { basedOnSource } from './basedOnSource'
-import {
-  Searchable,
-  AstroFuseConfig,
-  OutputBaseAstroFuseConfig,
-  SourceBaseAstroFuseConfig,
-} from './types'
-import { log } from './util'
-
-import type { AstroConfig, AstroIntegration } from 'astro'
 
 export {
+  AstroFuseOptions,
+  OutputBaseAstroFuseOptions,
+  OutputBaseSearchable,
   Searchable,
+  SourceBaseAstroFuseOptions,
   SourceBaseSearchable,
-  OutputBaseAstroFuseConfig,
 } from './types'
 
-declare global {
-  function loadFuse<TSearchable = Searchable>(
-    options?: Omit<Fuse.IFuseOptions<TSearchable>, 'keys'>
-  ): Promise<Fuse<TSearchable>>
-}
-
 export const PLUGIN_NAME = 'astro-fuse'
-export const OUTFILE = 'fuse.json'
 
-export default function astroFuse(_config?: AstroFuseConfig): AstroIntegration {
+export default function astroFuse(
+  keys: FuseOptionKey<Searchable>[],
+  options?: AstroFuseOptions
+): AstroIntegration {
   let config: AstroConfig
   let outDir = ''
 
-  const _basedOn = _config?.basedOn ?? 'source'
-  const _injectScript = _config?.injectScript ?? true
-  const _keys = uniq(['content', ...(_config?.keys ?? [])])
+  const basedOn = options?.basedOn ?? 'output'
+  const filename = options?.filename ?? 'fuse.json'
 
   return {
-    name: PLUGIN_NAME,
     hooks: {
-      'astro:config:setup': ({ config, updateConfig, injectScript }) => {
-        outDir = config.outDir.pathname
+      'astro:build:done': (buildDoneEvent) => {
+        if (basedOn === 'source') {
+          if (existsSync(join(outDir, filename))) {
+            buildDoneEvent.logger.info(
+              `\`${filename}\` created at \`${relative(process.cwd(), outDir)}\``
+            )
+          }
 
-        if (_injectScript !== false) {
-          injectScript(
-            'head-inline',
-            `window.addEventListener('fuseLoaded', function(e) {
-  window.loadFuse = function loadFuse(options) {
-    return new Promise(function(resolve, reject) {
-        const Fuse = e.detail;
-
-        fetch('/${OUTFILE}')
-          .then(res => res.json())
-          .then(({list, index}) => {
-            resolve(new Fuse(
-              list,
-              Object.assign(
-                Object.assign({}, options),
-                {keys: [${map(_keys, (key) => `'${key}'`)}]}
-              ),
-              Fuse.parseIndex(index)
-            ))
-          })
-          .catch(reject)
-    });
-  };
-});`
-          )
-
-          injectScript(
-            'page',
-            `import('fuse.js').then(mod => {
-  window.dispatchEvent(new CustomEvent('fuseLoaded', {detail: mod.default}));
-})`
-          )
+          return
         }
 
-        if (_basedOn === 'source') {
-          updateConfig({
-            vite: {
-              plugins: [
-                basedOnSource(config, _config as SourceBaseAstroFuseConfig),
-              ],
-            },
-          })
-        } else if (_basedOn === 'output') {
-          updateConfig({
-            vite: {
-              plugins: [basedOnOutput(config)],
-            },
-          })
+        if (basedOn !== 'output') {
+          return
         }
+
+        writeFuseIndex({
+          buildDoneEvent,
+          config,
+          filename,
+          keys,
+          options: options as OutputBaseAstroFuseOptions,
+        })
       },
 
       'astro:config:done': ({ config: cfg }) => {
         config = cfg
       },
 
-      'astro:build:done': (opts) => {
-        if (_basedOn === 'source') {
-          if (existsSync(join(outDir, OUTFILE))) {
-            log(`\`${OUTFILE}\` created at \`${relative(process.cwd(), outDir)}\``)
-          }
+      'astro:config:setup': ({ config, updateConfig }) => {
+        outDir = config.outDir.pathname
 
-          return
+        if (basedOn === 'source') {
+          updateConfig({
+            vite: {
+              plugins: [
+                basedOnSource({
+                  config,
+                  filename,
+                  keys,
+                  options: options as SourceBaseAstroFuseOptions,
+                }),
+              ],
+            },
+          })
+        } else if (basedOn === 'output') {
+          updateConfig({
+            vite: {
+              plugins: [basedOnOutput({ config, filename })],
+            },
+          })
         }
-
-        if (_basedOn !== 'output') {
-          return
-        }
-
-        writeFuseIndex(config, _config as OutputBaseAstroFuseConfig, opts)
       },
     },
+    name: PLUGIN_NAME,
   }
 }

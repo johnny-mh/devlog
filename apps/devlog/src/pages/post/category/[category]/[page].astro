@@ -1,10 +1,12 @@
 ---
+import type { GetStaticPaths } from 'astro'
+
 import { getPosts } from '#/collection'
 import Pager from '#/components/Pager.astro'
 import PostList from '#/components/PostList.astro'
 import Layout from '#/layouts/Layout.astro'
 
-export async function getStaticPaths({ paginate }) {
+export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getPosts()
 
   const categories = [
@@ -17,7 +19,7 @@ export async function getStaticPaths({ paginate }) {
           rendered: { remarkPluginFrontmatter: frontmatter },
         }
       ) => {
-        frontmatter.categories?.forEach((cat) => {
+        frontmatter.categories?.forEach((cat: string) => {
           map.set(cat, [
             ...(map.get(cat) ?? []),
             { ...frontmatter, path, readingTime },
@@ -33,18 +35,18 @@ export async function getStaticPaths({ paginate }) {
   return categories
     .map(([category, list]) => {
       return paginate(list, {
-        params: { category },
         pageSize: 10,
+        params: { category },
       })
     })
     .flatMap((arr) => arr)
-}
+}) satisfies GetStaticPaths
 
 const { page } = Astro.props
 const { category } = Astro.params
 ---
 
 <Layout>
-  <PostList title={`Category: ${category}`} list={page.data} />
-  <Pager prev={page.url.prev} next={page.url.next} />
+  <PostList list={page.data} title={`Category: ${category}`} />
+  <Pager next={page.url.next} prev={page.url.prev} />
 </Layout>
