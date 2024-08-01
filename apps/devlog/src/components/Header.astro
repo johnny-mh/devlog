@@ -22,14 +22,14 @@ const current = (() => {
   class="fixed left-0 right-0 top-0 z-30 h-20 px-3 transition-all ease-out [&.scroll]:h-12 [&.scroll]:backdrop-blur-xl"
 >
   <div class="container flex h-full place-content-between place-items-center">
-    <a aria-label="Go to Home" class="logo" href="/">
+    <a aria-label="Go to Home" class="logo" href="/blog">
       <Fragment set:html={innerHTML} />
     </a>
     <nav class="flex gap-5 font-sg text-sm text-th-text">
       <a
         class="relative data-[active]:font-semibold"
         data-active={current === 'blog'}
-        href="/">Blog</a
+        href="/blog">Blog</a
       >
       <a
         class="relative data-[active]:font-semibold"
