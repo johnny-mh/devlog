@@ -1,0 +1,188 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<button
+  class="relative flex h-5 w-5 place-content-center place-items-center rounded-sm"
+  is="custom-theme-switcher"
+  type="button"
+>
+  <Icon data-light name="octicon:sun-24" />
+  <Icon data-dark name="octicon:moon-24" />
+  <Icon data-auto name="octicon:devices-24" />
+</button>
+
+<script is:inline>
+  // for avoid FOUC
+  const loadTheme = () => {
+    if (typeof localStorage === 'undefined') {
+      return { preferred: 'light', theme: 'auto' }
+    }
+
+    const value = localStorage.getItem('theme')
+
+    return {
+      preferred: matchMedia('(prefers-color-scheme: light)').matches
+        ? 'light'
+        : 'dark',
+      theme: value === 'dark' || value === 'light' ? value : 'auto',
+    }
+  }
+
+  const { preferred, theme } = loadTheme()
+  const {
+    documentElement: { classList },
+  } = document
+
+  if (theme === 'auto') {
+    classList.add('auto')
+  } else {
+    classList.remove('auto')
+  }
+
+  const actual = theme === 'auto' ? preferred : theme
+
+  if (actual === 'dark') {
+    classList.add('dark')
+  } else {
+    classList.remove('dark')
+  }
+</script>
+
+<script>
+  import { loadTheme } from '#/theme'
+
+  const {
+    documentElement: { classList },
+  } = document
+
+  class ThemeSwitcher extends HTMLButtonElement {
+    _initClass = () => {
+      const { preferred, theme } = loadTheme()
+
+      if (theme === 'auto') {
+        localStorage.removeItem('theme')
+        classList.add('auto')
+      } else {
+        localStorage.setItem('theme', theme)
+        classList.remove('auto')
+      }
+
+      const actual = theme === 'auto' ? preferred : theme
+
+      if (actual === 'dark') {
+        classList.add('dark')
+      } else {
+        classList.remove('dark')
+      }
+    }
+
+    _onClick = () => {
+      const { preferred, theme } = loadTheme()
+      const next = this.nextMap[theme]
+
+      if (next === 'auto') {
+        localStorage.removeItem('theme')
+        classList.add('auto')
+      } else {
+        localStorage.setItem('theme', next)
+        classList.remove('auto')
+      }
+
+      const actual = next === 'auto' ? preferred : next
+
+      if (actual === 'dark') {
+        classList.add('dark')
+      } else {
+        classList.remove('dark')
+      }
+
+      window.dispatchEvent(new CustomEvent('theme', { detail: { actual } }))
+    }
+
+    _onPrefersColorSchemeChange = () => {
+      const { preferred, theme } = loadTheme()
+
+      if (theme === 'auto') {
+        if (preferred === 'dark') {
+          classList.add('dark')
+        } else {
+          classList.remove('dark')
+        }
+
+        window.dispatchEvent(
+          new CustomEvent('theme', { detail: { actual: preferred } })
+        )
+      }
+    }
+
+    mql = window.matchMedia('(prefers-color-scheme: light)')
+
+    nextMap = {
+      auto: 'light',
+      dark: 'auto',
+      light: 'dark',
+    } as const
+
+    connectedCallback() {
+      this._initClass()
+      this.addEventListener('click', this._onClick)
+      this.mql.addEventListener('change', this._onPrefersColorSchemeChange)
+    }
+
+    disconnectedCallback() {
+      this.mql.removeEventListener('change', this._onPrefersColorSchemeChange)
+    }
+  }
+
+  customElements.define('custom-theme-switcher', ThemeSwitcher, {
+    extends: 'button',
+  })
+</script>
+
+<style>
+  button > svg {
+    @apply absolute transition-all ease-out;
+  }
+
+  /* light */
+  [data-light] {
+    @apply scale-125;
+  }
+
+  [data-dark] {
+    @apply -translate-y-2 translate-x-2 scale-75 opacity-30;
+  }
+
+  [data-auto] {
+    @apply -translate-x-2 translate-y-2 scale-75 opacity-0;
+  }
+
+  :global(html.dark) {
+    [data-light] {
+      @apply -translate-x-2 translate-y-2 scale-75 opacity-0;
+    }
+
+    [data-dark] {
+      @apply translate-x-0 translate-y-0 scale-125 opacity-100;
+    }
+
+    [data-auto] {
+      @apply -translate-y-2 translate-x-2 scale-75 opacity-30;
+    }
+  }
+
+  :global(html.auto) {
+    [data-light] {
+      @apply -translate-y-2 translate-x-2 scale-75 opacity-30;
+    }
+
+    [data-dark] {
+      @apply -translate-x-2 translate-y-2 scale-75 opacity-0;
+    }
+
+    [data-auto] {
+      @apply translate-x-0 translate-y-0 scale-125 opacity-100;
+    }
+  }
+</style>

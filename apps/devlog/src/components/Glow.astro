@@ -1,0 +1,54 @@
+---
+interface Props {
+  blur?: string
+  class?: string
+  colors: string[]
+  duration?: string
+  opacity?: number
+}
+
+const {
+  blur = '60px',
+  class: className,
+  colors,
+  duration = '5s',
+  opacity = 0.5,
+} = Astro.props
+
+const styles = {
+  '--glow-bg': `linear-gradient(45deg, ${colors.map((c) => (Array.isArray(c) ? `rgb(${c[0]},${c[1]},${c[2]})` : c))})`,
+  '--glow-blur': blur,
+  '--glow-duration': duration,
+  '--glow-opacity': opacity,
+}
+---
+
+<div class:list={['_glow', className]} style={styles}></div>
+
+<style>
+  ._glow {
+    &:after {
+      opacity: var(--glow-opacity);
+      background: var(--glow-bg);
+      background-size: 200% 200%;
+
+      filter: blur(var(--glow-blur));
+      animation: steam var(--glow-duration) linear infinite;
+      z-index: -1;
+
+      @apply absolute inset-0 hidden h-full w-full scale-105 rounded-lg transition-all duration-1000 content-[''] dark:block;
+    }
+  }
+
+  @keyframes steam {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+</style>

@@ -1,0 +1,150 @@
+---
+import bookCover from '#/assets/bookCover.jpg'
+import { Icon } from 'astro-icon/components'
+
+import BorderedImage from './BorderedImage.astro'
+---
+
+<h2 class="mb-8 text-2xl font-semibold tracking-tight">개인 프로젝트</h2>
+<div class="grid gap-8 md:grid-cols-2">
+  <div class="group relative flex items-center gap-4">
+    <div class="relative h-20 w-20 flex-none">
+      <BorderedImage class="h-full w-full" image={bookCover} />
+    </div>
+    <div>
+      <h3 class="text-lg">
+        <a
+          class="hover:underline"
+          href="https://patterns-dev-kr.github.io/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          patterns.dev.kr
+        </a>
+      </h3>
+
+      <div class="text-th-text-secondary">
+        자바스크립트 디자인 패턴, 렌더링 및 성능에 대한 현대적인 관점을 정리한
+        웹 사이트
+        <a
+          class="underline"
+          href="https://www.patterns.dev/"
+          rel="noopener noreferrer"
+          target="_blank">patterns.dev</a
+        >의 한국어 버전
+      </div>
+    </div>
+  </div>
+
+  <div class="group relative flex items-center gap-4">
+    <div
+      class="relative flex h-20 w-20 flex-none items-center justify-center transition-all duration-500 ease-out group-hover:scale-110"
+    >
+      <Icon class="block h-16 w-16 dark:hidden" name="astro" />
+      <Icon class="hidden h-16 w-16 dark:block" name="astro-dark" />
+    </div>
+    <div>
+      <h3 class="text-lg">
+        <a
+          class="hover:underline"
+          href="https://www.npmjs.com/package/astro-fuse"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          astro-fuse
+        </a>
+        <img
+          alt="downloads"
+          class="inline"
+          draggable="false"
+          height="18"
+          src="https://img.shields.io/npm/dw/astro-fuse"
+          width="121"
+        />
+      </h3>
+      <div class="text-th-text-secondary">
+        astro 프레임웍으로 제작한 웹 사이트에 컨텐츠 검색 기능을 추가하는
+        플러그인
+      </div>
+    </div>
+  </div>
+
+  <div class="group flex items-center gap-4">
+    <div
+      class="relative flex h-20 w-20 flex-none items-center justify-center transition-all duration-500 ease-out group-hover:scale-110"
+    >
+      <Icon class="h-16 w-16" name="rxjs" />
+    </div>
+    <div>
+      <h3 class="text-lg">
+        <a
+          class="hover:underline"
+          href="https://www.npmjs.com/package/rxjs-shell"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          rxjs-shell
+        </a>
+        <img
+          alt="downloads"
+          class="inline"
+          draggable="false"
+          height="18"
+          src="https://img.shields.io/npm/dw/rxjs-shell"
+          width="121"
+        />
+      </h3>
+      <div class="text-th-text-secondary">
+        Node.js의 child_process 모듈을 RxJS의 operator로 사용할 수 있게 해 주는
+        라이브러리
+      </div>
+    </div>
+  </div>
+
+  <div class="group flex items-center gap-4">
+    <div
+      class="relative flex h-20 w-20 flex-none items-center justify-center transition-all duration-500 ease-out group-hover:scale-110"
+    >
+      <Icon class="h-16 w-16" name="gatsby" />
+    </div>
+    <div>
+      <h3 class="text-lg">
+        <a
+          class="hover:underline"
+          href="https://www.npmjs.com/package/gatsby-plugin-fusejs"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          gatsby-plugin-fusejs
+        </a>
+      </h3>
+      <div class="text-th-text-secondary">
+        gatsby 프레임웍으로 제작한 웹 사이트에 컨텐츠 검색 기능을 추가하는
+        플러그인
+      </div>
+    </div>
+  </div>
+
+  <div class="group flex items-center gap-4">
+    <div
+      class="relative flex h-20 w-20 flex-none items-center justify-center transition-all duration-500 ease-out group-hover:scale-110"
+    >
+      <Icon class="h-16 w-16" name="react" />
+    </div>
+    <div>
+      <h3 class="text-lg">
+        <a
+          class="hover:underline"
+          href="https://www.npmjs.com/package/react-use-fusejs"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          react-use-fusejs
+        </a>
+      </h3>
+      <div class="text-th-text-secondary">
+        Fuse.js 기반 Fuzzy Search 기능을 제공하는 React Custom Hook
+      </div>
+    </div>
+  </div>
+</div>

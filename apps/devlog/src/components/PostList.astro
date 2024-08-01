@@ -1,110 +1,30 @@
 ---
-import SVG from '@jasikpark/astro-svg-loader'
+import type { RenderedPostEntry } from '#/types'
+
+import PostItem from './PostItem.astro'
 
 export interface Props {
-  list: Array<{
-    createdAt: string
-    path: string
-    readingTime: string
-    title: string
-  }>
-  title: string
+  list: RenderedPostEntry[]
 }
 
-const { list, title } = Astro.props
+const { list } = Astro.props
+const page = Number(Astro.params.page ?? 1)
 ---
 
 <section>
-  <h3>{title}</h3>
-  <ul>
+  <ul class="flex flex-col gap-20 md:gap-12">
     {
-      list.map((post) => (
-        <li>
-          <article>
-            <h4>
-              <a href={`/post/${post.path}`}>{post.title}</a>
-            </h4>
-            <div class="meta">
-              <span>{post.createdAt}</span>
-              <span>
-                <SVG
-                  height={11}
-                  src={import('../images/time.svg?raw')}
-                  width={11}
-                />{' '}
-                읽는 데 {post.readingTime}
-              </span>
-            </div>
-          </article>
-        </li>
-      ))
+      list.map((post, idx) => {
+        const hero = page === 1 && idx === 0
+
+        return (
+          <li transition:name={`article-${post.slug}`}>
+            <article class:list={{ 'py-4': hero }}>
+              <PostItem hero={hero} post={post} />
+            </article>
+          </li>
+        )
+      })
     }
   </ul>
 </section>
-
-<style lang="scss">
-  @use '../styles/variables' as *;
-  @use '../styles/mixins' as *;
-
-  section {
-    margin-bottom: 3rem;
-  }
-
-  ul {
-    li {
-      margin-bottom: 0.5rem;
-      line-height: 2rem;
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid $theme-light-border;
-      position: relative;
-
-      @include dark {
-        border-bottom-color: $theme-dark-border;
-      }
-
-      &:last-of-type {
-        border-bottom: 1px solid transparent;
-      }
-
-      h4 {
-        margin: 0;
-        padding: 0;
-
-        a {
-          @include link;
-
-          &:before {
-            content: '';
-            position: absolute;
-            inset: 0;
-          }
-        }
-      }
-
-      .meta {
-        font-size: 0.8rem;
-        color: $theme-light-text-secondary;
-
-        svg {
-          fill: $theme-light-text-secondary;
-        }
-
-        @include dark {
-          color: $theme-dark-text-secondary;
-
-          svg {
-            fill: $theme-dark-text-secondary;
-          }
-        }
-
-        span + span {
-          padding-left: 11px;
-        }
-
-        .updated {
-          color: #db4c69;
-        }
-      }
-    }
-  }
-</style>

@@ -1,0 +1,115 @@
+---
+import type { Frontmatter } from '#/types'
+import type { GetStaticPaths } from 'astro'
+
+import { getPosts } from '#/collection'
+import BaseWrapper from '#/components/BaseWrapper.astro'
+import BorderedImage from '#/components/BorderedImage.astro'
+import Comment from '#/components/Comment.astro'
+import Tags from '#/components/Tags.astro'
+import { dayjs } from '#/dayjs'
+import Layout from '#/layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
+
+export const getStaticPaths = (async () => {
+  const posts = await getPosts()
+
+  return await Promise.all(
+    posts.map(async (post) => {
+      const rendered = await post.render()
+
+      return {
+        params: { slug: post.slug },
+        props: {
+          post,
+          rendered,
+        },
+      }
+    })
+  )
+}) satisfies GetStaticPaths
+
+const {
+  params: { slug },
+  props: {
+    post,
+    rendered: { Content, remarkPluginFrontmatter },
+  },
+} = Astro
+
+const frontmatter = remarkPluginFrontmatter as Frontmatter
+---
+
+<Layout frontmatter={frontmatter}>
+  <BaseWrapper>
+    <div class="py-8 text-th-text">
+      <div class="relative mb-10">
+        <button
+          data-back
+          class="absolute -top-8 flex h-4 items-center gap-1 font-sg text-sm text-th-text-secondary"
+          type="button"
+        >
+          <Icon name="octicon:arrow-left-24" /> Back to List
+        </button>
+        <h1 class="mb-4">
+          <span class="text-balance text-3xl font-semibold transition-all">
+            {frontmatter.title}
+          </span>
+        </h1>
+        <div class="mb-2">
+          <time class="font-sg text-sm text-th-text-secondary"
+            >{dayjs(frontmatter.publishedAt).format('YYYY-MM-DD')}</time
+          >
+        </div>
+        <div class="flex items-center gap-1">
+          <Tags tags={frontmatter.tags} />
+        </div>
+      </div>
+
+      <input
+        data-frontmatter
+        class="hidden"
+        type="hidden"
+        value={JSON.stringify(frontmatter)}
+      />
+
+      {
+        post.data.cover ? (
+          <div class="mb-10" transition:name={`post-image-${slug}`}>
+            <BorderedImage
+              class="aspect-video"
+              glow={{ colors: frontmatter.coverColors }}
+              image={post.data.cover}
+            />
+            {post.data.coverAlt ? (
+              <div class="px-1 text-th-text-secondary">
+                {post.data.coverAlt}
+              </div>
+            ) : null}
+          </div>
+        ) : null
+      }
+
+      <div
+        class="container prose prose-stone mb-20 max-w-none px-1 dark:prose-invert prose-headings:font-semibold prose-h1:mt-20 prose-a:relative prose-a:no-underline prose-a:after:absolute prose-a:after:bottom-0 prose-a:after:left-0 prose-a:after:right-0 prose-a:after:h-[1px] prose-a:after:bg-th-text/80 prose-a:after:content-['']"
+      >
+        <Content />
+      </div>
+
+      <Comment />
+    </div>
+  </BaseWrapper>
+</Layout>
+
+<script>
+  bindEvents()
+  document.addEventListener('astro:after-swap', bindEvents)
+
+  function bindEvents() {
+    document
+      .querySelector('button[data-back]')
+      ?.addEventListener('click', () => {
+        history.back()
+      })
+  }
+</script>

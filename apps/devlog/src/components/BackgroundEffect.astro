@@ -1,0 +1,79 @@
+<canvas
+  data-bg-effect
+  class="pointer-events-none fixed inset-0 z-0 opacity-0 transition-opacity duration-1000 data-[initialized]:opacity-100"
+  transition:persist="bgEffect"></canvas>
+
+<script>
+  import { loadTheme } from '#/theme'
+  import 'requestidlecallback-polyfill'
+
+  window.requestIdleCallback(async () => {
+    const [THREE, { default: fragmentShader }, { default: vertexShader }] =
+      await Promise.all([
+        import('#/util/three'),
+        import('#/assets/shaders/darkLand.frag.glsl'),
+        import('#/assets/shaders/darkLand.vert.glsl'),
+      ])
+
+    const canvas = document.querySelector<HTMLCanvasElement>(
+      'canvas[data-bg-effect]'
+    )!
+
+    canvas.dataset.initialized = ''
+
+    const scene = new THREE.Scene()
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      canvas,
+      powerPreference: 'low-power',
+    })
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setAnimationLoop(animate)
+
+    const geometry = new THREE.PlaneGeometry(2, 2)
+    const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight)
+
+    const { preferred, theme } = loadTheme()
+    const iDark = (theme === 'auto' ? preferred : theme) === 'dark' ? 1 : 0
+
+    const material = new THREE.ShaderMaterial({
+      blending: THREE.AdditiveBlending,
+      fragmentShader,
+      side: THREE.DoubleSide,
+      uniforms: {
+        iDark: { value: iDark },
+        iResolution: { value: resolution },
+        iTime: { value: 0 },
+      },
+      vertexShader,
+    })
+    const plane = new THREE.Mesh(geometry, material)
+    scene.add(plane)
+
+    const clock = new THREE.Clock()
+    const obj = { value: iDark }
+
+    window.addEventListener('theme', (e) => {
+      obj.value = e.detail.actual === 'dark' ? 1 : 0
+    })
+
+    window.addEventListener('resize', () => {
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+    })
+
+    function animate() {
+      if (material.uniforms.iTime) {
+        material.uniforms.iTime.value = clock.getElapsedTime()
+      }
+
+      if (material.uniforms.iDark) {
+        material.uniforms.iDark.value = obj.value
+      }
+
+      renderer.render(scene, camera)
+    }
+  })
+</script>

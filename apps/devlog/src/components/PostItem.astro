@@ -1,0 +1,68 @@
+---
+import type { RenderedPostEntry } from '#/types'
+
+import { dayjs } from '#/dayjs'
+import { getImage } from 'astro:assets'
+
+import BorderedImage from './BorderedImage.astro'
+
+interface Props {
+  hero?: boolean
+  post: RenderedPostEntry
+}
+
+const { hero, post } = Astro.props
+const {
+  data,
+  rendered: { remarkPluginFrontmatter: frontmatter },
+} = post
+
+const cover = data.cover
+  ? await getImage({
+      src: data.cover,
+      width: 800,
+    })
+  : null
+---
+
+<div
+  class="group relative flex flex-col gap-4 md:flex-row"
+  class:list={[hero ? 'gap-4' : '']}
+>
+  {
+    cover ? (
+      <div
+        class="flex-none"
+        class:list={[hero ? 'md:w-64' : 'md:w-48']}
+        transition:name={`post-image-${post.slug}`}
+      >
+        <BorderedImage
+          glow={{
+            blur: '20px',
+            colors: hero ? frontmatter.coverColors : undefined,
+          }}
+          class="aspect-4/3"
+          image={cover}
+        />
+      </div>
+    ) : null
+  }
+  <div class="flex-auto px-1 md:flex md:flex-col md:justify-center">
+    <a
+      class="after:absolute after:inset-0 md:underline-offset-4 after:md:hidden md:hover:underline"
+      href={`/blog/${post.slug}`}
+      ><span
+        class="text-balance font-semibold transition-all"
+        class:list={[hero ? 'text-2xl' : 'text-lg']}>{post.data.title}</span
+      ></a
+    >
+    <div class="mb-2 flex gap-1 md:mb-4">
+      <time class="font-sg text-th-text-secondary"
+        >{dayjs(post.data.publishedAt).format('YYYY-MM-DD')}</time
+      >
+    </div>
+    <div class="text-th-text-secondary">
+      {frontmatter.summary}...
+    </div>
+  </div>
+</div>

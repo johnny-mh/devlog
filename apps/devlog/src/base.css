@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
+    src: url('/fonts/PretendardVariable.woff2') format('woff2')
+      tech('variations');
+    font-weight: 100 1000;
+  }
+
+  html,
+  body {
+    @apply antialiased;
+  }
+
+  .win * {
+    text-shadow: 0 0 1px rgba(var(--color-text-shadow), 0.3);
+  }
+}
+
+:root {
+  --color-text: 0 0 0;
+  --color-text-shadow: 0, 0, 0;
+  --color-text-secondary: 102 102 102;
+  --color-border: 226 229 237;
+  --color-bg: 255 255 255;
+  --color-bg-secondary: 242 242 242;
+  --color-bg-highlight: 255 246 69;
+  --color-highlight: 48 48 48;
+}
+
+html.dark {
+  --color-text: 255 255 255;
+  --color-text-shadow: 255, 255, 255;
+  --color-text-secondary: 186 186 186;
+  --color-border: 59 57 61;
+  --color-bg: 0 0 0;
+  --color-bg-secondary: 18 18 18;
+  --color-bg-highlight: 206 212 44;
+  --color-highlight: 235 228 94;
+
+  @apply bg-black;
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}

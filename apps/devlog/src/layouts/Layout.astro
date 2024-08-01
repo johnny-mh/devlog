@@ -1,11 +1,9 @@
 ---
+import '#/base.css'
+import BackgroundEffect from '#/components/BackgroundEffect.astro'
 import Footer from '#/components/Footer.astro'
 import Header from '#/components/Header.astro'
-import Search from '#/components/Search.astro'
 import { sitemeta } from '#/sitemeta'
-import '#/styles/reset.scss'
-import '#/styles/site.scss'
-import '#/styles/syntax-highlight.scss'
 import { SEO } from 'astro-seo'
 import { ViewTransitions } from 'astro:transitions'
 
@@ -19,8 +17,8 @@ const { frontmatter, title } = Astro.props
 
 const openGraph = {
   basic: {
-    image: frontmatter?.featuredImage ?? '/ogImage.webp',
-    title: title ?? frontmatter?.title ?? 'JOHNNY DEV BLOG',
+    image: frontmatter?.featuredImage ?? `${Astro.url.pathname}/og-image.png`,
+    title: title ?? frontmatter?.title ?? 'JOHNNY DEV',
     type: frontmatter ? 'article' : 'website',
   },
   image: {
@@ -47,17 +45,24 @@ const openGraph = {
       name="naver-site-verification"
     />
     <meta content={Astro.generator} name="generator" />
-    <ViewTransitions fallback="none" />
     <SEO
       description={sitemeta.description}
       openGraph={openGraph}
       title={sitemeta.title}
     />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
     <link href="/favicon.png" rel="icon" sizes="any" />
+    <ViewTransitions fallback="swap" />
     <script
+      is:inline
       src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"
       type="text/partytown"></script>
-    <script type="text/partytown">
+    <script is:inline type="text/partytown">
       window.dataLayer = window.dataLayer || []
       function gtag() {
         // eslint-disable-next-line prefer-rest-params
@@ -66,13 +71,20 @@ const openGraph = {
       gtag('js', new Date())
       gtag('config', 'G-R9PQNBWGC9')
     </script>
+    <script is:inline>
+      document.addEventListener('astro:page-load', () => {
+        if (navigator.userAgent.indexOf('Win') > -1) {
+          document.documentElement.classList.add('win')
+        }
+      })
+    </script>
   </head>
   <body>
-    <Header transition:persist="header" />
-    <main>
+    <Header />
+    <main class="relative z-10">
       <slot />
     </main>
     <Footer />
-    <Search transition:persist="search" />
+    <BackgroundEffect />
   </body>
 </html>

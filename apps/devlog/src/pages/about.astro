@@ -1,12 +1,25 @@
 ---
+import BaseWrapper from '#/components/BaseWrapper.astro'
+import Experience from '#/components/Experience.astro'
+import Profile from '#/components/Profile.astro'
+import ProjectList from '#/components/ProjectList.astro'
 import Layout from '#/layouts/Layout.astro'
-import '#/styles/about.scss'
-
-const [about] = await Astro.glob('../content/about/*.mdx')
 ---
 
 <Layout>
-  <div class="markdown-content about">
-    <about.Content />
-  </div>
+  <BaseWrapper>
+    <div class="text-th-text">
+      <section class="mb-24 mt-12">
+        <Profile />
+      </section>
+
+      <section class="mb-24 mt-12">
+        <ProjectList />
+      </section>
+
+      <section class="relative mb-24 mt-12">
+        <Experience />
+      </section>
+    </div>
+  </BaseWrapper>
 </Layout>

@@ -1,0 +1,38 @@
+---
+import Glow from './Glow.astro'
+
+interface Props {
+  class?: string
+  glow?: {
+    blur?: string
+    colors?: string[]
+    duration?: string
+    opacity?: number
+  }
+  image: { src: string }
+}
+
+const {
+  class: className,
+  glow: { blur, colors, duration, opacity } = {},
+  image,
+} = Astro.props
+---
+
+<div
+  class="relative mb-2 w-full drop-shadow-md transition-all after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:border after:border-white/10 dark:drop-shadow-none"
+  class:list={[className]}
+>
+  {
+    colors ? (
+      <Glow blur={blur} colors={colors} duration={duration} opacity={opacity} />
+    ) : null
+  }
+  <div class="relative h-full w-full overflow-hidden rounded-lg">
+    <div
+      class="absolute inset-0 rounded-lg bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-110 group-hover:contrast-125"
+      style={`background-image: url(${image.src})`}
+    >
+    </div>
+  </div>
+</div>

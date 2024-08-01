@@ -9,7 +9,7 @@ const config = {
       options: { parser: 'astro' },
     },
   ],
-  plugins: ['prettier-plugin-astro'],
+  plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
   semi: false,
   singleQuote: true,
   tabWidth: 2,

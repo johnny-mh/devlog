@@ -1,0 +1,120 @@
+---
+import type { CategoryEntry } from '#/types'
+
+interface Props {
+  categories: CategoryEntry[]
+  current?: string
+}
+
+const {
+  props: { categories, current },
+} = Astro
+
+const list = [
+  {
+    category: 'All',
+    count: categories.reduce((sum, { count }) => sum + count, 0),
+    slug: 'all',
+  },
+  ...categories,
+]
+---
+
+<custom-categories
+  class="relative h-8 overflow-hidden text-nowrap font-sg text-sm text-th-text-secondary"
+>
+  <ul
+    class="flex h-8 items-center gap-3 overflow-x-auto overflow-y-hidden overscroll-none"
+  >
+    {
+      list.map(({ category, count, slug }) => (
+        <li
+          class:list={[
+            'h-full rounded-full border border-th-border bg-transparent [&.isActive]:border-th-bg-secondary [&.isActive]:bg-th-bg-secondary [&.isActive]:text-th-text',
+            current === slug ? 'isActive' : null,
+          ]}
+        >
+          <a
+            class="flex h-full items-center px-4"
+            href={slug === 'all' ? '/blog' : `/blog/category/${slug}`}
+          >
+            {category} ({count})
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</custom-categories>
+
+<script>
+  class Categories extends HTMLElement {
+    onScroll = () => {
+      const { clientWidth, scrollWidth } = this.ul
+
+      if (scrollWidth <= clientWidth) {
+        delete this.dataset.shadowStart
+        delete this.dataset.shadowEnd
+        return
+      }
+
+      const { scrollLeft } = this.ul
+
+      if (scrollLeft > 0) {
+        this.dataset.shadowStart = ''
+      } else {
+        delete this.dataset.shadowStart
+      }
+
+      if (Math.ceil(scrollLeft + clientWidth) >= scrollWidth) {
+        delete this.dataset.shadowEnd
+      } else {
+        this.dataset.shadowEnd = ''
+      }
+    }
+
+    ul = this.querySelector('ul')!
+
+    connectedCallback() {
+      this.onScroll()
+      window.addEventListener('resize', this.onScroll)
+      this.ul.addEventListener('scroll', this.onScroll)
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener('resize', this.onScroll)
+    }
+  }
+
+  customElements.define('custom-categories', Categories)
+</script>
+
+<style>
+  custom-categories {
+    &:before {
+      @apply absolute bottom-0 left-0 top-0 w-3 opacity-0 transition-all content-[''];
+      background: linear-gradient(
+        to right,
+        rgb(var(--color-border) / 0.5),
+        transparent
+      );
+    }
+
+    &:after {
+      @apply absolute bottom-0 right-0 top-0 w-3 opacity-0 content-[''];
+      background: linear-gradient(
+          to left,
+          rgb(var(--color-border) / 0.5),
+          transparent
+        )
+        right center;
+    }
+
+    &[data-shadow-start]:before {
+      @apply opacity-100;
+    }
+
+    &[data-shadow-end]:after {
+      @apply opacity-100;
+    }
+  }
+</style>
