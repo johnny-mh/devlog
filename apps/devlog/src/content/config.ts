@@ -4,7 +4,11 @@ const postCollection = defineCollection({
   schema: ({ image }) =>
     z.object({
       categories: z.string().array().min(1),
-      cover: z.optional(image()),
+      cover: z.optional(
+        image().refine((img) => img.width >= 1080, {
+          message: 'Cover image must be at least 1080 pixels wide!',
+        })
+      ),
       coverAlt: z.string().optional(),
       coverColors: z.string().array().optional(),
       draft: z.boolean().optional(),
