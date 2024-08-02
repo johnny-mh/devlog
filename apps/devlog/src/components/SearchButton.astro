@@ -2,21 +2,22 @@
 import { Icon } from 'astro-icon/components'
 ---
 
-<button
-  class="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-transparent transition-colors hover:border-th-border"
-  is="custom-search"
->
-  <Icon class="text-th-text" name="octicon:search-24" />
-</button>
+<custom-search>
+  <button
+    class="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-transparent transition-colors hover:border-th-border"
+  >
+    <Icon class="text-th-text" name="octicon:search-24" />
+  </button>
+</custom-search>
 
 <script>
-  class Search extends HTMLButtonElement {
+  class Search extends HTMLElement {
     connectedCallback() {
-      this.addEventListener('click', () => {
+      this.querySelector('button')?.addEventListener('click', () => {
         window.dispatchEvent(new CustomEvent('search'))
       })
     }
   }
 
-  customElements.define('custom-search', Search, { extends: 'button' })
+  customElements.define('custom-search', Search)
 </script>

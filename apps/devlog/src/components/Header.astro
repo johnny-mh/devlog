@@ -25,14 +25,14 @@ const current = (() => {
     <a aria-label="Go to Home" class="logo" href="/blog">
       <Fragment set:html={innerHTML} />
     </a>
-    <nav class="flex gap-5 font-sg text-sm text-th-text">
+    <nav class="flex h-8 items-stretch font-sg text-sm text-th-text">
       <a
-        class="relative data-[active]:font-semibold"
+        class="relative flex items-center px-4 data-[active]:font-semibold"
         data-active={current === 'blog'}
         href="/blog">Blog</a
       >
       <a
-        class="relative data-[active]:font-semibold"
+        class="relative flex items-center px-4 data-[active]:font-semibold"
         data-active={current === 'about'}
         href="/about">About</a
       >

@@ -2,62 +2,64 @@
 import { Icon } from 'astro-icon/components'
 ---
 
-<dialog
-  class="h-full w-full overflow-hidden rounded-lg bg-white text-th-text drop-shadow-md backdrop:fixed backdrop:inset-0 backdrop:overscroll-none backdrop:bg-black/30 backdrop:backdrop-blur-sm dark:border dark:border-th-border dark:bg-black md:max-h-[50%] md:max-w-lg"
-  is="custom-search-layer"
->
-  <div class="flex h-full flex-col p-4">
-    <div class="relative mb-4 flex h-8 gap-2">
-      <div
-        class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-2"
-      >
-        <Icon name="octicon:search-16" />
-      </div>
-      <input
-        data-search-input
-        class="block h-8 w-full rounded-lg border border-th-border bg-th-bg-secondary px-3 ps-8 text-sm text-th-text outline-none focus:ring-2 focus:ring-th-highlight/30 focus:ring-offset-2"
-        placeholder="Search Contents..."
-        type="text"
-      />
-      <button
-        data-search-close-button
-        class="flex aspect-square h-8 w-8 flex-none items-center justify-center md:hidden"
-        ><Icon name="octicon:x-16" /></button
-      >
-    </div>
-    <ul
-      data-search-result
-      class="min-h-0 flex-1 overflow-y-auto px-2 py-1 text-sm"
-    >
-    </ul>
-    <div
-      class="flex h-5 items-end justify-end font-sg text-xs text-th-text-secondary"
-    >
-      <span>
-        Search by <a
-          href="https://www.npmjs.com/package/astro-fuse"
-          rel="noopener noreferrer"
-          target="_blank">astro-fuse</a
+<custom-search-layer>
+  <dialog
+    class="h-full w-full overflow-hidden rounded-lg bg-white text-th-text drop-shadow-md backdrop:fixed backdrop:inset-0 backdrop:overscroll-none backdrop:bg-black/30 backdrop:backdrop-blur-sm dark:border dark:border-th-border dark:bg-black md:max-h-[50%] md:max-w-lg"
+  >
+    <div class="flex h-full flex-col p-4">
+      <div class="relative mb-4 flex h-8 gap-2">
+        <div
+          class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-2"
         >
-      </span>
+          <Icon name="octicon:search-16" />
+        </div>
+        <input
+          data-search-input
+          class="block h-8 w-full rounded-lg border border-th-border bg-th-bg-secondary px-3 ps-8 text-sm text-th-text outline-none focus:ring-2 focus:ring-th-highlight/30 focus:ring-offset-2"
+          placeholder="Search Contents..."
+          type="text"
+        />
+        <button
+          data-search-close-button
+          class="flex aspect-square h-8 w-8 flex-none items-center justify-center md:hidden"
+          ><Icon name="octicon:x-16" /></button
+        >
+      </div>
+      <ul
+        data-search-result
+        class="min-h-0 flex-1 overflow-y-auto px-2 py-1 text-sm"
+      >
+      </ul>
+      <div
+        class="flex h-5 items-end justify-end font-sg text-xs text-th-text-secondary"
+      >
+        <span>
+          Search by <a
+            href="https://www.npmjs.com/package/astro-fuse"
+            rel="noopener noreferrer"
+            target="_blank">astro-fuse</a
+          >
+        </span>
+      </div>
     </div>
-  </div>
-</dialog>
+  </dialog>
+</custom-search-layer>
 
 <script>
   import type { OutputBaseSearchable } from 'astro-fuse'
   import type Fuse from 'fuse.js'
 
-  class SearchLayer extends HTMLDialogElement {
+  class SearchLayer extends HTMLElement {
     closeBtn = this.querySelector<HTMLButtonElement>(
       'button[data-search-close-button]'
     )!
+    dialog = this.querySelector<HTMLDialogElement>('dialog')!
     fuse: Fuse<OutputBaseSearchable> | null = null
     input = this.querySelector<HTMLInputElement>('input[data-search-input]')!
-    onCloseClick = () => this.close()
+    onCloseClick = () => this.dialog.close()
     onDialogClick = (e: MouseEvent) => {
       if ((e.target as HTMLElement).nodeName === 'DIALOG') {
-        this.close()
+        this.dialog.close()
       }
     }
     onDialogClose = () => {
@@ -118,15 +120,16 @@ import { Icon } from 'astro-icon/components'
         .join('')
     }
     onSearch = () => {
-      this.showModal()
+      this.dialog.showModal()
+      this.load()
     }
 
     results = this.querySelector<HTMLUListElement>('ul[data-search-result]')!
 
     connectedCallback() {
       window.addEventListener('search', this.onSearch)
-      this.addEventListener('close', this.onDialogClose)
-      this.addEventListener('click', this.onDialogClick)
+      this.dialog.addEventListener('close', this.onDialogClose)
+      this.dialog.addEventListener('click', this.onDialogClick)
       this.closeBtn.addEventListener('click', this.onCloseClick)
       this.input.addEventListener('input', this.onInput)
     }
@@ -151,9 +154,7 @@ import { Icon } from 'astro-icon/components'
     }
   }
 
-  customElements.define('custom-search-layer', SearchLayer, {
-    extends: 'dialog',
-  })
+  customElements.define('custom-search-layer', SearchLayer)
 </script>
 
 <style>

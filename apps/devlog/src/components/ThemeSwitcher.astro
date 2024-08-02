@@ -2,15 +2,16 @@
 import { Icon } from 'astro-icon/components'
 ---
 
-<button
-  class="relative flex h-5 w-5 place-content-center place-items-center rounded-sm"
-  is="custom-theme-switcher"
-  type="button"
->
-  <Icon data-light name="octicon:sun-24" />
-  <Icon data-dark name="octicon:moon-24" />
-  <Icon data-auto name="octicon:devices-24" />
-</button>
+<custom-theme-switcher>
+  <button
+    class="relative flex h-8 w-8 place-content-center place-items-center rounded-sm"
+    type="button"
+  >
+    <Icon data-light name="octicon:sun-24" />
+    <Icon data-dark name="octicon:moon-24" />
+    <Icon data-auto name="octicon:devices-24" />
+  </button>
+</custom-theme-switcher>
 
 <script is:inline>
   // for avoid FOUC
@@ -56,7 +57,7 @@ import { Icon } from 'astro-icon/components'
     documentElement: { classList },
   } = document
 
-  class ThemeSwitcher extends HTMLButtonElement {
+  class ThemeSwitcher extends HTMLElement {
     _initClass = () => {
       const { preferred, theme } = loadTheme()
 
@@ -126,7 +127,7 @@ import { Icon } from 'astro-icon/components'
 
     connectedCallback() {
       this._initClass()
-      this.addEventListener('click', this._onClick)
+      this.querySelector('button')?.addEventListener('click', this._onClick)
       this.mql.addEventListener('change', this._onPrefersColorSchemeChange)
     }
 
@@ -135,9 +136,7 @@ import { Icon } from 'astro-icon/components'
     }
   }
 
-  customElements.define('custom-theme-switcher', ThemeSwitcher, {
-    extends: 'button',
-  })
+  customElements.define('custom-theme-switcher', ThemeSwitcher)
 </script>
 
 <style>
