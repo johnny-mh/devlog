@@ -58,19 +58,19 @@ const openGraph = {
     />
     <link href="/favicon.png" rel="icon" sizes="any" />
     <ViewTransitions fallback="swap" />
-    <!-- <script -->
-    <!--   is:inline -->
-    <!--   src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9" -->
-    <!--   type="text/partytown"></script> -->
-    <!-- <script is:inline type="text/partytown"> -->
-    <!--   window.dataLayer = window.dataLayer || [] -->
-    <!--   function gtag() { -->
-    <!--     // eslint-disable-next-line prefer-rest-params -->
-    <!--     window.dataLayer.push(arguments) -->
-    <!--   } -->
-    <!--   gtag('js', new Date()) -->
-    <!--   gtag('config', 'G-R9PQNBWGC9') -->
-    <!-- </script> -->
+    <script
+      is:inline
+      src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"
+      type="text/partytown"></script>
+    <script is:inline type="text/partytown">
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        // eslint-disable-next-line prefer-rest-params
+        window.dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      gtag('config', 'G-R9PQNBWGC9')
+    </script>
     <script is:inline>
       document.addEventListener('astro:page-load', () => {
         if (navigator.userAgent.indexOf('Win') > -1) {
