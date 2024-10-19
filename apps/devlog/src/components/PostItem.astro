@@ -19,8 +19,9 @@ const {
 
 const cover = data.cover
   ? await getImage({
+      format: 'webp',
       src: data.cover,
-      width: 1080,
+      width: 1000,
     })
   : null
 ---

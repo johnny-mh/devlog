@@ -18,9 +18,9 @@ import Image from 'astro/components/Image.astro'
     <Image
       alt="JOHNNY DEV"
       class="absolute inset-0 rounded-3xl"
-      height={800}
+      sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${profileImage.width}px`}
       src={profileImage}
-      width={800}
+      widths={[240, 540, 720, profileImage.width]}
     />
   </div>
   <div class="flex flex-col justify-center gap-3 px-1 md:px-0">
