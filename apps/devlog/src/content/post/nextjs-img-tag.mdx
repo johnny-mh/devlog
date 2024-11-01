@@ -32,8 +32,6 @@ export default function Page() {
 
 [\[Fizz\]\[Float\] \<img\> inside \<picture\> should not preload during SSR](https://github.com/facebook/react/pull/27346)
 
-위 PR은 `<picture>`내부 `<img>`에 대해서 예외처리하도록 수정된 내용이다.
-
 위의 내용을 정리하면. react-dom/server 의 스트리밍 버전인 ReactDomFizzServer의 `renderToPipableStream`함수는. 이미지가 `<picture>`바깥에 있거나, `fetchPriority="low"` 속성을 주지 않을 경우. 강제로 preload처리한다.
 
 리소스 우선순위를 조절해야 하는 경우. `<img>`태그를 직접 사용하려면 위의 조건을 만족하도록 적절히 수정하거나, next.js가 제공하는 `<Image>`태그를 사용해야 한다.
@@ -44,4 +42,4 @@ export default function Page() {
 
 next.js는 개발자들이 이미지를 사용할 때 대부분 `<Image>` 등 제공된 API들만 사용하길 바란 듯 하다. 그랬다면 위 문제는 없었을 것이긴 하다...
 
-사실 next.js덕분에 개발자 입장에서는 다양한 렌더링 전략을 요구사항에 맞춰 쉽게 구현할 수 있어 좋긴 하다, 그런데 일전의 Suspense사태도 그렇고. 과연 올바른 방향으로 가고 있는지는 잘 모르겠다.
+사실 next.js덕분에 개발자 입장에서는 다양한 렌더링 전략을 요구사항에 맞춰 쉽게 구현할 수 있어 좋긴 하다, 그런데 일전의 Suspense사태도 그렇고. 올바른 방향으로 가고 있는지는 잘 모르겠다.
