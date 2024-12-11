@@ -2,7 +2,6 @@
 import type { RenderedPostEntry } from '#/types'
 
 import { dayjs } from '#/dayjs'
-import { getImage } from 'astro:assets'
 
 import BorderedImage from './BorderedImage.astro'
 
@@ -16,14 +15,6 @@ const {
   data,
   rendered: { remarkPluginFrontmatter: frontmatter },
 } = post
-
-const cover = data.cover
-  ? await getImage({
-      format: 'webp',
-      src: data.cover,
-      width: 1000,
-    })
-  : null
 ---
 
 <div
@@ -31,19 +22,20 @@ const cover = data.cover
   class:list={[hero ? 'gap-4' : '']}
 >
   {
-    cover ? (
+    data.cover ? (
       <div
         class="flex-none"
         class:list={[hero ? 'md:w-64' : 'md:w-48']}
-        transition:name={`post-image-${post.slug}`}
+        transition:name={`post-image-${post.id}`}
       >
         <BorderedImage
           glow={{
             blur: '20px',
             colors: hero ? frontmatter.coverColors : undefined,
           }}
+          alt={data.coverAlt ?? data.title}
           class="aspect-4/3"
-          image={cover}
+          image={data.cover}
         />
       </div>
     ) : null
@@ -51,7 +43,7 @@ const cover = data.cover
   <div class="flex-auto px-1 md:flex md:flex-col md:justify-center">
     <a
       class="after:absolute after:inset-0 md:underline-offset-4 after:md:hidden md:hover:underline"
-      href={`/blog/${post.slug}`}
+      href={`/blog/${post.id}`}
       ><span
         class="text-balance font-semibold transition-all"
         class:list={[hero ? 'text-2xl' : 'text-lg']}>{post.data.title}</span

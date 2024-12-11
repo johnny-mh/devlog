@@ -1,15 +1,26 @@
 ---
 import bookCover from '#/assets/bookCover.jpg'
 import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
 
 import BorderedImage from './BorderedImage.astro'
+
+const astroFuseDownload = 'https://img.shields.io/npm/dw/astro-fuse'
+const rxjsShellDownload = 'https://img.shields.io/npm/dw/rxjs-shell'
 ---
+
+<link as="image" href={astroFuseDownload} rel="preload" slot="head" />
+<link as="image" href={rxjsShellDownload} rel="preload" slot="head" />
 
 <h2 class="mb-8 text-2xl font-semibold tracking-tight">개인 프로젝트</h2>
 <div class="grid gap-8 md:grid-cols-2">
   <div class="group relative flex items-center gap-4">
     <div class="relative h-20 w-20 flex-none">
-      <BorderedImage class="h-full w-full" image={bookCover} />
+      <BorderedImage
+        alt="patterns-dev-kr"
+        class="h-full w-full"
+        image={bookCover}
+      />
     </div>
     <div>
       <h3 class="text-lg">
@@ -53,7 +64,7 @@ import BorderedImage from './BorderedImage.astro'
         >
           astro-fuse
         </a>
-        <img
+        <Image
           alt="downloads"
           class="inline"
           draggable="false"
@@ -85,7 +96,7 @@ import BorderedImage from './BorderedImage.astro'
         >
           rxjs-shell
         </a>
-        <img
+        <Image
           alt="downloads"
           class="inline"
           draggable="false"

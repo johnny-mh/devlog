@@ -35,13 +35,11 @@ const collapsedPages = collapseRange(page, pages)
       page.url.prev && (
         <li class="rounded-full border border-transparent transition-colors duration-150 hover:border-th-border">
           <a
+            aria-label={`Go to page ${page.currentPage - 1} of ${page.lastPage}`}
             class="flex h-10 w-10 items-center justify-center"
             href={page.url.prev}
           >
-            <Icon
-              aria-label={`Go to page ${page.currentPage - 1} of ${page.lastPage}`}
-              name="octicon:arrow-left-24"
-            />
+            <Icon name="octicon:arrow-left-24" />
           </a>
         </li>
       )
@@ -76,13 +74,11 @@ const collapsedPages = collapseRange(page, pages)
       page.url.next && (
         <li class="rounded-full border border-transparent transition-colors duration-150 hover:border-th-border">
           <a
+            aria-label={`Go to page ${page.currentPage + 1} of ${page.lastPage}`}
             class="flex h-10 w-10 items-center justify-center"
             href={page.url.next}
           >
-            <Icon
-              aria-label={`Go to page ${page.currentPage + 1} of ${page.lastPage}`}
-              name="octicon:arrow-right-24"
-            />
+            <Icon name="octicon:arrow-right-24" />
           </a>
         </li>
       )

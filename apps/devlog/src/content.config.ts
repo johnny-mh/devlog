@@ -1,14 +1,12 @@
 import { defineCollection, z } from 'astro:content'
+import { glob } from 'astro/loaders'
 
-const postCollection = defineCollection({
+const post = defineCollection({
+  loader: glob({ base: './src/data/post', pattern: '**/[^_]*.{md,mdx}' }),
   schema: ({ image }) =>
     z.object({
       categories: z.string().array().min(1),
-      cover: z.optional(
-        image().refine((img) => img.width >= 1080, {
-          message: 'Cover image must be at least 1080 pixels wide!',
-        })
-      ),
+      cover: z.optional(image()),
       coverAlt: z.string().optional(),
       coverColors: z.string().array().optional(),
       draft: z.boolean().optional(),
@@ -19,9 +17,6 @@ const postCollection = defineCollection({
       title: z.string(),
       updatedAt: z.string().optional(),
     }),
-  type: 'content',
 })
 
-export const collections = {
-  post: postCollection,
-}
+export const collections = { post }

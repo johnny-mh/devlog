@@ -1,4 +1,4 @@
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 import Slugger from 'github-slugger'
 
 import type { RenderedPostEntry } from './types'
@@ -12,9 +12,9 @@ export const getPosts = async () => {
 
   const list = await Promise.all(
     posts.map((post) =>
-      post
-        .render()
-        .then((rendered) => ({ ...post, rendered }) as RenderedPostEntry)
+      render(post).then(
+        (rendered) => ({ ...post, rendered }) as RenderedPostEntry
+      )
     )
   )
 
