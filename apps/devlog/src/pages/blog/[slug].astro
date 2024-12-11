@@ -83,7 +83,8 @@ const frontmatter = remarkPluginFrontmatter as Frontmatter
               class="aspect-video"
               glow={{ colors: frontmatter.coverColors }}
               image={data.cover}
-              objectFit="contain"
+              objectFit="cover"
+              widths={[860, 1080]}
             />
             {data.coverAlt ? (
               <div class="px-1 text-th-text-secondary">{data.coverAlt}</div>
