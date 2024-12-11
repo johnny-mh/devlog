@@ -1,7 +1,10 @@
 ---
+import { Picture } from 'astro:assets'
+
 import Glow from './Glow.astro'
 
 interface Props {
+  alt: string
   class?: string
   glow?: {
     blur?: string
@@ -9,13 +12,21 @@ interface Props {
     duration?: string
     opacity?: number
   }
-  image: { src: string }
+  image: {
+    format: 'avif' | 'gif' | 'jpeg' | 'jpg' | 'png' | 'svg' | 'tiff' | 'webp'
+    height: number
+    src: string
+    width: number
+  }
+  objectFit?: string
 }
 
 const {
+  alt,
   class: className,
   glow: { blur, colors, duration, opacity } = {},
   image,
+  objectFit = 'cover',
 } = Astro.props
 ---
 
@@ -29,10 +40,13 @@ const {
     ) : null
   }
   <div class="relative h-full w-full overflow-hidden rounded-lg">
-    <div
-      class="absolute inset-0 rounded-lg bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-110 group-hover:contrast-125"
-      style={`background-image: url(${image.src})`}
-    >
-    </div>
+    <Picture
+      alt={alt}
+      class="aspect-4/3 rounded-lg bg-cover bg-center bg-no-repeat object-top transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-110 group-hover:contrast-125"
+      formats={['jpg', 'webp', 'avif']}
+      src={image}
+      style={{ objectFit }}
+      widths={[860, 1080]}
+    />
   </div>
 </div>

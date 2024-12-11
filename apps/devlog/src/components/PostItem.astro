@@ -2,7 +2,6 @@
 import type { RenderedPostEntry } from '#/types'
 
 import { dayjs } from '#/dayjs'
-import { getImage, Image, Picture } from 'astro:assets'
 
 import BorderedImage from './BorderedImage.astro'
 
@@ -16,14 +15,6 @@ const {
   data,
   rendered: { remarkPluginFrontmatter: frontmatter },
 } = post
-
-const cover = data.cover
-  ? await getImage({
-      format: 'webp',
-      src: data.cover,
-      width: 1000,
-    })
-  : null
 ---
 
 <div
@@ -37,15 +28,15 @@ const cover = data.cover
         class:list={[hero ? 'md:w-64' : 'md:w-48']}
         transition:name={`post-image-${post.id}`}
       >
-    <Picture alt={post.data.coverAlt ?? post.data.title} formats={['jpg', 'webp', 'avif']} sizes="(max-width: 810px) 100vw, 1080px " src={data.cover} />
-        <!-- <BorderedImage -->
-        <!--   glow={{ -->
-        <!--     blur: '20px', -->
-        <!--     colors: hero ? frontmatter.coverColors : undefined, -->
-        <!--   }} -->
-        <!--   class="aspect-4/3" -->
-        <!--   image={cover} -->
-        <!-- /> -->
+        <BorderedImage
+          glow={{
+            blur: '20px',
+            colors: hero ? frontmatter.coverColors : undefined,
+          }}
+          alt={data.coverAlt ?? data.title}
+          class="aspect-4/3"
+          image={data.cover}
+        />
       </div>
     ) : null
   }

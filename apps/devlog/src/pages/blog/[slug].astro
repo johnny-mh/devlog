@@ -10,7 +10,6 @@ import Tags from '#/components/Tags.astro'
 import { dayjs } from '#/dayjs'
 import Layout from '#/layouts/Layout.astro'
 import { Icon } from 'astro-icon/components'
-import { getImage } from 'astro:assets'
 import { render } from 'astro:content'
 
 export const getStaticPaths = (async () => {
@@ -41,14 +40,6 @@ const {
 const { data } = post
 
 const frontmatter = remarkPluginFrontmatter as Frontmatter
-
-const cover = data.cover
-  ? await getImage({
-      format: 'webp',
-      src: data.cover,
-      width: 1000,
-    })
-  : null
 ---
 
 <Layout frontmatter={frontmatter}>
@@ -85,12 +76,14 @@ const cover = data.cover
       />
 
       {
-        cover ? (
+        data.cover ? (
           <div class="mb-10" transition:name={`post-image-${slug}`}>
             <BorderedImage
+              alt={data.coverAlt ?? data.title}
               class="aspect-video"
               glow={{ colors: frontmatter.coverColors }}
-              image={cover}
+              image={data.cover}
+              objectFit="contain"
             />
             {data.coverAlt ? (
               <div class="px-1 text-th-text-secondary">{data.coverAlt}</div>
