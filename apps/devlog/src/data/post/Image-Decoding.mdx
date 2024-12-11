@@ -7,19 +7,20 @@ tags: [performance]
 publishedAt: 2024-10-26T00:33+09:00
 ---
 
-페이지에 고해상도 이미지를 출력할 때 `img`요소는 본문에 삽입되었지만, 이미지가 바로 보이지 않고 잠시 후에 출력되는 현상을 본 적 있을 것이다. 
+페이지에 고해상도 이미지를 출력할 때 `img`요소는 본문에 삽입되었지만, 이미지가 바로 보이지 않고 잠시 후에 출력되는 현상을 본 적 있을 것이다.
 
 이는 이미지 다운로드가 완료되었지만, 아직 디코딩이 되기 전이라 페이지에 나타나지 않는 현상이다.
 
 요소 추가와 동시에 이미지가 보여지길 원한다면 아래 코드를 사용해야 한다.
 
-
 ```js
-const img = new Image();
-img.src = '...';
+const img = new Image()
+
+img.src = '...'
+
 img.decode().then(() => {
-  document.body.appendChild(img);
-});
+  document.body.appendChild(img)
+})
 ```
 
 ## 이미지 디코딩
@@ -65,7 +66,6 @@ jpg, png, webp 등 대부분의 이미지 파일들은 기본적으로 인코딩
 
 개선 후의 측정 결과에서 디코딩 과정이 별도의 프로세스로 분리되어 다른 태스크들이 방해되지 않는 것을 볼 수 있다.
 
-
 ## `.decode()` 메서드를 활용한 predecoding
 
 서론에서 언급한 문제는 주로 이미지 갤러리등 이미지가 주요 컨텐츠이거나, 스크롤 등에 따른 점진적인 이미지 렌더링 과정에서 두드러지며 UX에 악영향을 끼칠 수 있다.
@@ -74,9 +74,9 @@ jpg, png, webp 등 대부분의 이미지 파일들은 기본적으로 인코딩
 
 [next.js의 이미지 컴포넌트의 decode적용](https://github.com/vercel/next.js/blob/v14.2.15/packages/next/src/client/image-component.tsx#L75)를 참고해서 필요에 따라 서비스에 구현하도록 하자.
 
-----
+---
 
 참고
 
-1. https://calendar.perfplanet.com/2018/dont-use-jpeg-xr-on-the-web/ jpeg-xr 은 소프트웨어 디코더를 사용하다 보니 렌더링 성능에 악영향이 있다고 함.
-2. https://www.linkedin.com/pulse/best-practices-from-open-source-use-imgdecode-ramu-narasinga-qukie/
+1. [Don’t use JPEG-XR on the Web](https://calendar.perfplanet.com/2018/dont-use-jpeg-xr-on-the-web/) jpeg-xr 은 소프트웨어 디코더를 사용하다 보니 렌더링 성능에 악영향이 있다고 함.
+2. [Best practices from open source: Use img.decode() in image-heavy applications](https://www.linkedin.com/pulse/best-practices-from-open-source-use-imgdecode-ramu-narasinga-qukie/)

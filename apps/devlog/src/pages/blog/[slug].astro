@@ -11,16 +11,17 @@ import { dayjs } from '#/dayjs'
 import Layout from '#/layouts/Layout.astro'
 import { Icon } from 'astro-icon/components'
 import { getImage } from 'astro:assets'
+import { render } from 'astro:content'
 
 export const getStaticPaths = (async () => {
   const posts = await getPosts()
 
   return await Promise.all(
     posts.map(async (post) => {
-      const rendered = await post.render()
+      const rendered = await render(post)
 
       return {
-        params: { slug: post.slug },
+        params: { slug: post.id },
         props: {
           post,
           rendered,
