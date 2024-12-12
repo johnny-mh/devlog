@@ -5,7 +5,7 @@ import Footer from '#/components/Footer.astro'
 import Header from '#/components/Header.astro'
 import { sitemeta } from '#/sitemeta'
 import { SEO } from 'astro-seo'
-import { ViewTransitions } from 'astro:transitions'
+import { ClientRouter } from 'astro:transitions'
 
 export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,20 +101,23 @@ const openGraph = {
       }
     </style>
     <link href="/favicon.png" rel="icon" type="image/png" />
-    <ViewTransitions fallback="swap" />
-    <script
-      is:inline
-      src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"
-      type="text/partytown"></script>
-    <script is:inline type="text/partytown">
-      window.dataLayer = window.dataLayer || []
-      function gtag() {
-        // eslint-disable-next-line prefer-rest-params
-        window.dataLayer.push(arguments)
-      }
-      gtag('js', new Date())
-      gtag('config', 'G-R9PQNBWGC9')
-    </script>
+    <ClientRouter fallback="swap" />
+    {
+      import.meta.env.PROD && (
+        <>
+          <script
+            is:inline
+            src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"
+            type="text/partytown"
+          />
+          <script is:inline type="text/partytown">
+            window.dataLayer = window.dataLayer || []; function gtag(){' '}
+            {window.dataLayer.push(arguments)}
+            gtag('js', new Date()); gtag('config', 'G-R9PQNBWGC9');
+          </script>
+        </>
+      )
+    }
     <script is:inline>
       document.addEventListener('astro:page-load', () => {
         if (navigator.userAgent.indexOf('Win') > -1) {
