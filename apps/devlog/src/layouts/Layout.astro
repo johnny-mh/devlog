@@ -50,7 +50,6 @@ const openGraph = {
       openGraph={openGraph}
       title={sitemeta.title}
     />
-    <!-- <link href="https://fonts.googleapis.com" rel="preconnect" /> -->
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
 
     <style>
@@ -111,9 +110,11 @@ const openGraph = {
             type="text/partytown"
           />
           <script is:inline type="text/partytown">
-            window.dataLayer = window.dataLayer || []; function gtag(){' '}
-            {window.dataLayer.push(arguments)}
-            gtag('js', new Date()); gtag('config', 'G-R9PQNBWGC9');
+            window.dataLayer = window.dataLayer || [];
+            // eslint-disable-next-line prefer-rest-params
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-R9PQNBWGC9');
           </script>
         </>
       )
