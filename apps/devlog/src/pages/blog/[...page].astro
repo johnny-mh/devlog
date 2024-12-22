@@ -28,7 +28,11 @@ const allPages = [...Array(page.lastPage).keys()].map((num) => {
 <Layout frontmatter={{ featuredImage: '/og-image.png' }}>
   <BaseWrapper>
     <div class="my-4 flex justify-between gap-2">
-      <Categories categories={categories} current={'all'} />
+      <Categories
+        categories={categories}
+        current={'all'}
+        transition:persist="categories"
+      />
       <SearchButton />
     </div>
     <div class="flex flex-col items-center text-th-text">

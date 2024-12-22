@@ -1,14 +1,14 @@
 ---
 interface Props {
   prefix?: string
-  tags: string[]
+  tags?: string[]
 }
 
 const { prefix = '#', tags } = Astro.props
 ---
 
 {
-  tags.map((tag) => (
+  tags?.map((tag) => (
     <span
       class="rounded-full bg-th-bg-highlight/60 px-2 py-1 font-sg text-xs text-th-highlight transition-transform data-[emphasis]:scale-125 data-[emphasis]:contrast-200 dark:bg-th-bg-highlight/10"
       data-tag={tag}

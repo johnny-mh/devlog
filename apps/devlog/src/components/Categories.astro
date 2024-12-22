@@ -21,43 +21,44 @@ const list = [
 ---
 
 <custom-categories
-  class="relative h-8 overflow-hidden text-nowrap font-sg text-sm text-th-text-secondary"
+  class="group relative h-10 w-0 flex-1 text-nowrap font-sg text-sm text-th-text-secondary"
 >
-  <ul
-    class="flex h-8 items-center gap-3 overflow-x-auto overflow-y-hidden overscroll-none"
-  >
+  <div class="_list h-10 overflow-x-auto overflow-y-hidden overscroll-none">
     {
       list.map(({ category, count, slug }) => (
-        <li
+        <div
           class:list={[
-            'h-full rounded-full border border-th-border bg-transparent [&.isActive]:border-th-bg-secondary [&.isActive]:bg-th-bg-secondary [&.isActive]:text-th-text',
+            'mr-2 inline-block h-8 rounded-full border border-th-border bg-transparent last:mr-0 [&.isActive]:border-th-bg-secondary [&.isActive]:bg-th-bg-secondary [&.isActive]:text-th-text',
             current === slug ? 'isActive' : null,
           ]}
         >
           <a
             class="flex h-full items-center px-4"
+            draggable="false"
             href={slug === 'all' ? '/blog' : `/blog/category/${slug}`}
           >
             {category} ({count})
           </a>
-        </li>
+        </div>
       ))
     }
-  </ul>
+  </div>
 </custom-categories>
 
 <script>
+  const CATEGORIES_SCROLL_LEFT_KEY = 'categories_scroll_left'
   class Categories extends HTMLElement {
     onScroll = () => {
-      const { clientWidth, scrollWidth } = this.ul
+      const { ul } = this
+      const { clientWidth, scrollLeft, scrollWidth } = ul
+
+      sessionStorage.setItem(CATEGORIES_SCROLL_LEFT_KEY, String(scrollLeft))
 
       if (scrollWidth <= clientWidth) {
         delete this.dataset.shadowStart
         delete this.dataset.shadowEnd
         return
       }
-
-      const { scrollLeft } = this.ul
 
       if (scrollLeft > 0) {
         this.dataset.shadowStart = ''
@@ -72,9 +73,17 @@ const list = [
       }
     }
 
-    ul = this.querySelector('ul')!
+    ul = this.querySelector<HTMLDivElement>('._list')!
 
     connectedCallback() {
+      const initialScrollLeft = Number(
+        sessionStorage.getItem(CATEGORIES_SCROLL_LEFT_KEY)
+      )
+
+      if (!isNaN(initialScrollLeft)) {
+        this.ul.scrollLeft = initialScrollLeft
+      }
+
       this.onScroll()
       window.addEventListener('resize', this.onScroll)
       this.ul.addEventListener('scroll', this.onScroll)
@@ -91,19 +100,19 @@ const list = [
 <style>
   custom-categories {
     &:before {
-      @apply absolute bottom-0 left-0 top-0 w-3 opacity-0 transition-all content-[''];
+      @apply absolute bottom-0 left-0 top-0 h-8 w-5 opacity-0 transition-all content-[''];
       background: linear-gradient(
         to right,
-        rgb(var(--color-border) / 0.5),
+        rgb(var(--color-border) / 0.7),
         transparent
       );
     }
 
     &:after {
-      @apply absolute bottom-0 right-0 top-0 w-3 opacity-0 content-[''];
+      @apply absolute bottom-0 right-0 top-0 h-8 w-5 opacity-0 content-[''];
       background: linear-gradient(
           to left,
-          rgb(var(--color-border) / 0.5),
+          rgb(var(--color-border) / 0.7),
           transparent
         )
         right center;
@@ -115,6 +124,20 @@ const list = [
 
     &[data-shadow-end]:after {
       @apply opacity-100;
+    }
+  }
+
+  ._list {
+    &::-webkit-scrollbar {
+      @apply h-2;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply rounded-full border border-solid border-transparent bg-transparent bg-clip-padding group-hover:bg-th-border;
+    }
+
+    &::-webkit-scrollbar-track {
+      @apply bg-transparent;
     }
   }
 </style>
