@@ -89,9 +89,9 @@ void main() {
   float I = perlinNoise(p) + 0.1;
 
   if (u_dark < 1.0) {
-    I = I * 0.75;
+    I = I * 0.7;
   } else {
-    I = I * 0.85;
+    I = I * 0.75;
   }
 
   c *= (I * I) * (I * I);
