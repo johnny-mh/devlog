@@ -2,13 +2,13 @@
 import type { GetStaticPaths } from 'astro'
 
 import { getPostCategories, getSortedPosts } from '#/collection'
-import BaseWrapper from '#/components/BaseWrapper.astro'
 import Categories from '#/components/Categories.astro'
 import Pagination from '#/components/Pagination.astro'
 import PostList from '#/components/PostList.astro'
 import SearchButton from '#/components/SearchButton.astro'
 import SearchLayer from '#/components/SearchLayer.astro'
-import Layout from '#/layouts/Layout.astro'
+import Wrapper from '#/components/Wrapper.astro'
+import { getPostImages } from '#/util/image'
 
 const categories = await getPostCategories()
 
@@ -23,28 +23,25 @@ const { page } = Astro.props
 const allPages = [...Array(page.lastPage).keys()].map((num) => {
   return `/blog${num === 0 ? '' : `/${String(num + 1)}`}`
 })
+
+const preloads = (await getPostImages(page.data)).map((img) => ({
+  as: 'image',
+  href: img.src,
+}))
 ---
 
-{
-  page.data.map((post) => (
-    <link as="image" href={post.data.cover?.src} rel="preload" slot="head" />
-  ))
-}
-
-<Layout>
-  <BaseWrapper>
-    <div class="my-4 flex justify-between gap-2">
-      <Categories
-        categories={categories}
-        current={'all'}
-        transition:persist="categories"
-      />
-      <SearchButton />
-    </div>
-    <div class="flex flex-col items-center text-th-text">
-      <PostList list={page.data} />
-      <Pagination allPages={allPages} class="mx-auto my-10" page={page} />
-    </div>
-    <SearchLayer />
-  </BaseWrapper>
-</Layout>
+<Wrapper preloads={preloads}>
+  <div class="my-4 flex justify-between gap-2">
+    <Categories
+      categories={categories}
+      current={'all'}
+      transition:persist="categories"
+    />
+    <SearchButton />
+  </div>
+  <div class="flex flex-col items-center text-th-text">
+    <PostList list={page.data} />
+    <Pagination allPages={allPages} class="mx-auto my-10" page={page} />
+  </div>
+  <SearchLayer />
+</Wrapper>

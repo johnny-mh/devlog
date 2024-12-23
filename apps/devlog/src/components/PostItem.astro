@@ -29,16 +29,24 @@ const { remarkPluginFrontmatter } = await render(post)
         transition:name={`post-image-${post.id}`}
       >
         <BorderedImage
-          alt={data.coverAlt ?? data.title}
           class="aspect-4/3"
-          glow={{
-            blur: '20px',
-            colors: hero ? remarkPluginFrontmatter.coverColors : undefined,
+          glowProps={
+            hero
+              ? {
+                  blur: '20px',
+                  colors: remarkPluginFrontmatter.coverColors,
+                }
+              : undefined
+          }
+          imageProps={{
+            alt: data.coverAlt ?? data.title,
+            fetchpriority: 'high',
+            format: 'webp',
+            loading: 'eager',
+            src: data.cover,
+            style: { objectFit: 'cover' },
+            width: 1080,
           }}
-          image={data.cover}
-          loading={'eager'}
-          objectFit="cover"
-          widths={[860, 1080]}
         />
       </div>
     ) : null

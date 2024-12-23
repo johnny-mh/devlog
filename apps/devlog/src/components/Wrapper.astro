@@ -3,20 +3,20 @@ import '#/base.css'
 
 import type { Frontmatter } from '#/types'
 
-// import BackgroundEffect from '#/components/BackgroundEffect.astro'
-import BackgroundEffect2 from '#/components/BackgroundEffect2.astro'
+import BackgroundEffect from '#/components/BackgroundEffect.astro'
 import Footer from '#/components/Footer.astro'
 import Header from '#/components/Header.astro'
 import { sitemeta } from '#/sitemeta'
 import { SEO } from 'astro-seo'
 import { ClientRouter } from 'astro:transitions'
 
-export interface Props {
+interface Props {
   frontmatter?: Frontmatter
+  preloads?: {as: string, href: string}[]
   title?: string
 }
 
-const { frontmatter, title } = Astro.props
+const { frontmatter, preloads, title } = Astro.props
 
 const openGraph = {
   basic: {
@@ -103,6 +103,7 @@ const openGraph = {
       }
     </style>
     <link href="/favicon.png" rel="icon" type="image/png" />
+    {preloads?.map((props) => <link rel="preload" {...props} />)}
     <ClientRouter fallback="swap" />
     {
       import.meta.env.PROD && (
@@ -129,14 +130,17 @@ const openGraph = {
         }
       })
     </script>
-    <slot name="head" />
   </head>
   <body class="overflow-x-hidden">
     <Header />
     <main class="relative z-10">
-      <slot />
+      <div class="px-3 transition-colors">
+        <div class="container relative pt-20">
+          <slot />
+        </div>
+      </div>
     </main>
     <Footer />
-    <BackgroundEffect2 />
+    <BackgroundEffect />
   </body>
 </html>

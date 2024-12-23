@@ -1,66 +1,30 @@
 ---
-import type { HTMLAttributes } from 'astro/types'
+import type { ComponentProps } from 'astro/types'
 
-import { Picture } from 'astro:assets'
+import { Image } from 'astro:assets'
 
-import Glow from './Glow.astro'
+import AnimatedGlow from './AnimatedGlow.astro'
+
+type ImageProps = Parameters<typeof Image>[0]
 
 interface Props {
-  alt: string
   class?: string
-  glow?: {
-    blur?: string
-    colors?: string[]
-    duration?: string
-    opacity?: number
-  }
-  image: {
-    format: 'avif' | 'gif' | 'jpeg' | 'jpg' | 'png' | 'svg' | 'tiff' | 'webp'
-    height: number
-    src: string
-    width: number
-  }
-  loading?: HTMLAttributes<'img'>['loading']
-  // eslint-disable-next-line no-undef
-  objectFit?: astroHTML.JSX.CSSProperties['objectFit']
-  // eslint-disable-next-line no-undef
-  objectPosition?: astroHTML.JSX.CSSProperties['objectPosition']
-  width?: number
-  widths?: number[]
+  glowProps?: ComponentProps<typeof AnimatedGlow>
+  imageProps: ImageProps
 }
 
-const {
-  alt,
-  class: className,
-  glow: { blur, colors, duration, opacity } = {},
-  image,
-  loading,
-  objectFit,
-  objectPosition,
-  width,
-  widths,
-} = Astro.props
+const { class: className, glowProps, imageProps } = Astro.props
 ---
 
 <div
-  class="relative mb-2 w-full drop-shadow-md transition-all after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:border after:border-white/10 dark:drop-shadow-none"
+  class="relative mb-2 aspect-4/3 w-full drop-shadow-md transition-all after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:border after:border-white/10 dark:drop-shadow-none"
   class:list={[className]}
 >
-  {
-    colors ? (
-      <Glow blur={blur} colors={colors} duration={duration} opacity={opacity} />
-    ) : null
-  }
+  {glowProps ? <AnimatedGlow {...glowProps} /> : null}
   <div class="relative h-full w-full overflow-hidden rounded-lg">
-    <Picture
-      alt={alt}
-      class="aspect-4/3 h-full w-full rounded-lg bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-110 group-hover:contrast-125"
-      formats={['webp', 'avif']}
-      loading={loading}
-      src={image}
-      style={{ objectFit, objectPosition }}
-      width={width}
-      widths={widths}
+    <Image
+      class="h-full w-full rounded-lg transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-110"
+      {...imageProps}
     />
   </div>
 </div>
