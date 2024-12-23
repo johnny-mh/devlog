@@ -21,11 +21,11 @@ const { frontmatter, preloads, title } = Astro.props
 const openGraph = {
   basic: {
     image: `${Astro.url.pathname}/og-image.png`,
-    title: title ??  'JOHNNY DEV',
+    title: frontmatter?.title ?? title ??  'JOHNNY DEV',
     type: frontmatter ? 'article' : 'website',
   },
   image: {
-    alt: title ?? sitemeta.title,
+    alt: frontmatter?.title ?? title ?? sitemeta.title,
   },
 }
 ---
