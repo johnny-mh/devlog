@@ -2,7 +2,7 @@
 import type { Frontmatter } from '#/types'
 import type { GetStaticPaths } from 'astro'
 
-import { getPosts } from '#/collection'
+import { getSortedPosts } from '#/collection'
 import BaseWrapper from '#/components/BaseWrapper.astro'
 import BorderedImage from '#/components/BorderedImage.astro'
 import Comment from '#/components/Comment.astro'
@@ -13,7 +13,7 @@ import { Icon } from 'astro-icon/components'
 import { render } from 'astro:content'
 
 export const getStaticPaths = (async () => {
-  const posts = await getPosts()
+  const posts = await getSortedPosts()
 
   return await Promise.all(
     posts.map(async (post) => {
@@ -47,30 +47,30 @@ const frontmatter = remarkPluginFrontmatter as Frontmatter
     <div class="py-8 text-th-text">
       <div class="relative mb-10">
         <button
-          data-back
           class="absolute -top-8 flex h-4 items-center gap-1 font-sg text-sm text-th-text-secondary"
+          data-back
           type="button"
         >
           <Icon name="octicon:arrow-left-24" /> Back to List
         </button>
         <h1 class="mb-4">
           <span class="text-balance text-3xl font-semibold transition-all">
-            {frontmatter.title}
+            {data.title}
           </span>
         </h1>
         <div class="mb-2">
           <time class="font-sg text-sm text-th-text-secondary"
-            >{dayjs(frontmatter.publishedAt).format('YYYY-MM-DD')}</time
+            >{dayjs(data.publishedAt).format('YYYY-MM-DD')}</time
           >
         </div>
         <div class="flex items-center gap-1">
-          <Tags tags={frontmatter.tags} />
+          <Tags tags={data.tags} />
         </div>
       </div>
 
       <input
-        data-frontmatter
         class="hidden"
+        data-frontmatter
         type="hidden"
         value={JSON.stringify(frontmatter)}
       />

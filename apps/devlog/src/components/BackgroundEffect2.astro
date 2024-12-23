@@ -1,0 +1,44 @@
+<canvas
+  class="pointer-events-none fixed left-0 top-0 z-0 h-screen w-screen opacity-0 transition-opacity duration-1000 data-[initialized]:opacity-100"
+  data-bg-effect
+  transition:persist="bgEffect"></canvas>
+
+<script>
+  import { loadTheme } from '#/theme'
+  import GlslCanvas from 'glslCanvas'
+  import 'requestidlecallback-polyfill'
+
+  window.requestIdleCallback(async () => {
+    const { default: fragmentShader } = await import(
+      '#/assets/shaders/darkLand2.frag.glsl'
+    )
+
+    const canvas = document.querySelector<HTMLCanvasElement>(
+      'canvas[data-bg-effect]'
+    )!
+    resize()
+    canvas.dataset.initialized = ''
+    const sandbox = new GlslCanvas(canvas)
+    sandbox.load(fragmentShader)
+
+    const { preferred, theme } = loadTheme()
+
+    sandbox.setUniform(
+      'u_dark',
+      (theme === 'auto' ? preferred : theme) === 'dark' ? 1.0 : 0
+    )
+
+    window.addEventListener('theme', (e) => {
+      sandbox.setUniform('u_dark', e.detail.actual === 'dark' ? 1.0 : 0)
+    })
+
+    window.addEventListener('resize', () => {
+      resize()
+    })
+
+    function resize() {
+      canvas.width = window.innerWidth * 2
+      canvas.height = window.innerHeight * 2
+    }
+  })
+</script>

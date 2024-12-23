@@ -1,4 +1,6 @@
 ---
+import type { HTMLAttributes } from 'astro/types'
+
 import { Picture } from 'astro:assets'
 
 import Glow from './Glow.astro'
@@ -18,6 +20,7 @@ interface Props {
     src: string
     width: number
   }
+  loading?: HTMLAttributes<'img'>['loading']
   // eslint-disable-next-line no-undef
   objectFit?: astroHTML.JSX.CSSProperties['objectFit']
   // eslint-disable-next-line no-undef
@@ -31,6 +34,7 @@ const {
   class: className,
   glow: { blur, colors, duration, opacity } = {},
   image,
+  loading,
   objectFit,
   objectPosition,
   width,
@@ -51,7 +55,8 @@ const {
     <Picture
       alt={alt}
       class="aspect-4/3 h-full w-full rounded-lg bg-cover bg-center bg-no-repeat transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-110 group-hover:contrast-125"
-      formats={['jpg', 'webp', 'avif']}
+      formats={['webp', 'avif']}
+      loading={loading}
       src={image}
       style={{ objectFit, objectPosition }}
       width={width}

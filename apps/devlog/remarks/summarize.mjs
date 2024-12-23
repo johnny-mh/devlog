@@ -6,8 +6,8 @@ export function remarkSummarize() {
   /**
    * @argument {Nodes} tree
    */
-  return function (tree, post) {
-    post.data.astro.frontmatter.summary = one(tree).slice(0, 150)
+  return function (tree, { data }) {
+    data.astro.frontmatter.summary = one(tree).slice(0, 150)
   }
 }
 

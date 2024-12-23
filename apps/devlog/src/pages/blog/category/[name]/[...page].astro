@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro'
 
-import { getPostCategories, getPosts } from '#/collection'
+import { getPostCategories, getSortedPosts } from '#/collection'
 import BaseWrapper from '#/components/BaseWrapper.astro'
 import Categories from '#/components/Categories.astro'
 import Pagination from '#/components/Pagination.astro'
@@ -13,12 +13,12 @@ import Layout from '#/layouts/Layout.astro'
 const categories = await getPostCategories()
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const posts = await getPosts()
+  const posts = await getSortedPosts()
   const categories = await getPostCategories()
 
   return categories.flatMap(({ category, slug }) => {
     const filteredPosts = posts.filter((post) =>
-      post.rendered.remarkPluginFrontmatter.categories.includes(category)
+      post.data.categories.includes(category)
     )
 
     return paginate(filteredPosts, {
@@ -37,6 +37,12 @@ const allPages = [...Array(page.lastPage).keys()].map((num) => {
   return `/blog/category/${name}${num === 0 ? '' : `/${String(num + 1)}`}`
 })
 ---
+
+{
+  page.data.map((post) => (
+    <link as="image" href={post.data.cover?.src} rel="preload" slot="head" />
+  ))
+}
 
 <Layout>
   <BaseWrapper>

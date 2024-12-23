@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro'
 
-import { getPostCategories, getPosts } from '#/collection'
+import { getPostCategories, getSortedPosts } from '#/collection'
 import BaseWrapper from '#/components/BaseWrapper.astro'
 import Categories from '#/components/Categories.astro'
 import Pagination from '#/components/Pagination.astro'
@@ -13,7 +13,7 @@ import Layout from '#/layouts/Layout.astro'
 const categories = await getPostCategories()
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const posts = await getPosts()
+  const posts = await getSortedPosts()
 
   return paginate(posts, { pageSize: 5 })
 }) satisfies GetStaticPaths
@@ -25,7 +25,13 @@ const allPages = [...Array(page.lastPage).keys()].map((num) => {
 })
 ---
 
-<Layout frontmatter={{ featuredImage: '/og-image.png' }}>
+{
+  page.data.map((post) => (
+    <link as="image" href={post.data.cover?.src} rel="preload" slot="head" />
+  ))
+}
+
+<Layout>
   <BaseWrapper>
     <div class="my-4 flex justify-between gap-2">
       <Categories

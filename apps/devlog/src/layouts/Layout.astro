@@ -1,6 +1,10 @@
 ---
 import '#/base.css'
-import BackgroundEffect from '#/components/BackgroundEffect.astro'
+
+import type { Frontmatter } from '#/types'
+
+// import BackgroundEffect from '#/components/BackgroundEffect.astro'
+import BackgroundEffect2 from '#/components/BackgroundEffect2.astro'
 import Footer from '#/components/Footer.astro'
 import Header from '#/components/Header.astro'
 import { sitemeta } from '#/sitemeta'
@@ -8,8 +12,7 @@ import { SEO } from 'astro-seo'
 import { ClientRouter } from 'astro:transitions'
 
 export interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  frontmatter?: Record<string, any>
+  frontmatter?: Frontmatter
   title?: string
 }
 
@@ -17,12 +20,12 @@ const { frontmatter, title } = Astro.props
 
 const openGraph = {
   basic: {
-    image: frontmatter?.featuredImage ?? `${Astro.url.pathname}/og-image.png`,
-    title: title ?? frontmatter?.title ?? 'JOHNNY DEV',
+    image: `${Astro.url.pathname}/og-image.png`,
+    title: title ??  'JOHNNY DEV',
     type: frontmatter ? 'article' : 'website',
   },
   image: {
-    alt: frontmatter ? frontmatter.title : sitemeta.title,
+    alt: title ?? sitemeta.title,
   },
 }
 ---
@@ -134,6 +137,6 @@ const openGraph = {
       <slot />
     </main>
     <Footer />
-    <BackgroundEffect />
+    <BackgroundEffect2 />
   </body>
 </html>

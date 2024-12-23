@@ -21,9 +21,9 @@ const list = [
 ---
 
 <custom-categories
-  class="group relative h-10 w-0 flex-1 text-nowrap font-sg text-sm text-th-text-secondary"
+  class="group relative h-11 w-0 flex-1 text-nowrap font-sg text-sm text-th-text-secondary"
 >
-  <div class="_list h-10 overflow-x-auto overflow-y-hidden overscroll-none">
+  <div class="_list h-11 overflow-x-auto overflow-y-hidden overscroll-none">
     {
       list.map(({ category, count, slug }) => (
         <div
@@ -129,7 +129,7 @@ const list = [
 
   ._list {
     &::-webkit-scrollbar {
-      @apply h-2;
+      @apply h-2 bg-transparent;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -138,6 +138,15 @@ const list = [
 
     &::-webkit-scrollbar-track {
       @apply bg-transparent;
+    }
+
+    @-moz-document url-prefix() {
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+
+      &:hover {
+        scrollbar-color: rgb(var(--color-border) / 1) transparent;
+      }
     }
   }
 </style>
