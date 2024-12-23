@@ -1,14 +1,14 @@
-import type { RenderedPostEntry } from '#/types'
 import type { APIRoute } from 'astro'
+import type { CollectionEntry } from 'astro:content'
 
-import { getPosts } from '#/collection'
+import { getSortedPosts } from '#/collection'
 import { readFile } from 'fs/promises'
 import satori from 'satori'
 import { html } from 'satori-html'
 import sharp from 'sharp'
 
 export async function getStaticPaths() {
-  const posts = await getPosts()
+  const posts = await getSortedPosts()
 
   return posts.map((post) => ({
     params: { slug: post.id },
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
   }))
 }
 
-export const GET: APIRoute<RenderedPostEntry> = async ({ props }) => {
+export const GET: APIRoute<CollectionEntry<'post'>> = async ({ props }) => {
   const [pretendard, spaceGrotesk] = await Promise.all([
     readFile('./src/assets/fonts/Pretendard-SemiBold.ttf'),
     readFile('./src/assets/fonts/SpaceGrotesk-Medium.ttf'),

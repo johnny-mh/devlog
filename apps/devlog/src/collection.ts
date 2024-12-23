@@ -1,24 +1,14 @@
-import { getCollection, render } from 'astro:content'
+import { getCollection } from 'astro:content'
 import Slugger from 'github-slugger'
-
-import type { RenderedPostEntry } from './types'
 
 import { dayjs } from './dayjs'
 
-export const getPosts = async () => {
+export const getSortedPosts = async () => {
   const posts = await getCollection('post', ({ data }) =>
     import.meta.env.PROD ? data.draft !== true : true
   )
 
-  const list = await Promise.all(
-    posts.map((post) =>
-      render(post).then(
-        (rendered) => ({ ...post, rendered }) as RenderedPostEntry
-      )
-    )
-  )
-
-  return list.toSorted(
+  return posts.toSorted(
     (a, b) =>
       dayjs(b.data.publishedAt).unix() - dayjs(a.data.publishedAt).unix()
   )

@@ -1,79 +1,44 @@
 <canvas
+  class="pointer-events-none fixed left-0 top-0 z-0 h-screen w-screen opacity-0 transition-opacity duration-1000 data-[initialized]:opacity-100"
   data-bg-effect
-  class="pointer-events-none fixed inset-0 z-0 opacity-0 transition-opacity duration-1000 data-[initialized]:opacity-100"
   transition:persist="bgEffect"></canvas>
 
 <script>
   import { loadTheme } from '#/theme'
+  import GlslCanvas from 'glslCanvas'
   import 'requestidlecallback-polyfill'
 
   window.requestIdleCallback(async () => {
-    const [THREE, { default: fragmentShader }, { default: vertexShader }] =
-      await Promise.all([
-        import('#/util/three'),
-        import('#/assets/shaders/darkLand.frag.glsl'),
-        import('#/assets/shaders/darkLand.vert.glsl'),
-      ])
+    const { default: fragmentShader } = await import(
+      '#/assets/shaders/darkLand.frag.glsl'
+    )
 
     const canvas = document.querySelector<HTMLCanvasElement>(
       'canvas[data-bg-effect]'
     )!
-
+    resize()
     canvas.dataset.initialized = ''
-
-    const scene = new THREE.Scene()
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
-
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      canvas,
-      powerPreference: 'low-power',
-    })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setAnimationLoop(animate)
-
-    const geometry = new THREE.PlaneGeometry(2, 2)
-    const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight)
+    const sandbox = new GlslCanvas(canvas)
+    sandbox.load(fragmentShader)
 
     const { preferred, theme } = loadTheme()
-    const iDark = (theme === 'auto' ? preferred : theme) === 'dark' ? 1 : 0
 
-    const material = new THREE.ShaderMaterial({
-      blending: THREE.AdditiveBlending,
-      fragmentShader,
-      side: THREE.DoubleSide,
-      uniforms: {
-        iDark: { value: iDark },
-        iResolution: { value: resolution },
-        iTime: { value: 0 },
-      },
-      vertexShader,
-    })
-    const plane = new THREE.Mesh(geometry, material)
-    scene.add(plane)
-
-    const clock = new THREE.Clock()
-    const obj = { value: iDark }
+    sandbox.setUniform(
+      'u_dark',
+      (theme === 'auto' ? preferred : theme) === 'dark' ? 1.0 : 0
+    )
 
     window.addEventListener('theme', (e) => {
-      obj.value = e.detail.actual === 'dark' ? 1 : 0
+      sandbox.setUniform('u_dark', e.detail.actual === 'dark' ? 1.0 : 0)
     })
 
     window.addEventListener('resize', () => {
-      camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
+      resize()
     })
 
-    function animate() {
-      if (material.uniforms.iTime) {
-        material.uniforms.iTime.value = clock.getElapsedTime()
-      }
-
-      if (material.uniforms.iDark) {
-        material.uniforms.iDark.value = obj.value
-      }
-
-      renderer.render(scene, camera)
+    function resize() {
+      canvas.width = window.innerWidth * 2
+      canvas.height = window.innerHeight * 2
     }
   })
 </script>

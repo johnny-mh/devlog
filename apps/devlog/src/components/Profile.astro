@@ -1,29 +1,24 @@
 ---
 import profileImage from '#/assets/profile.png'
-import Glow from '#/components/Glow.astro'
 import { Icon } from 'astro-icon/components'
-import { Image } from 'astro:assets'
----
+import { getImage } from 'astro:assets'
 
-<link as="image" href={profileImage.src} rel="preload" slot="head" />
+import AnimatedGlow from './AnimatedGlow.astro'
+
+const img = await getImage({ format: 'webp', src: profileImage, width: 750 })
+---
 
 <div class="flex flex-col gap-8 md:flex-row">
   <div
     class="relative z-10 aspect-square w-full flex-none drop-shadow-xl dark:drop-shadow-none md:w-52"
   >
-    <Glow
+    <AnimatedGlow
       blur={'20px'}
       colors={['#eeeefd', '#57d5fc']}
       duration="2s"
       opacity={0.5}
     />
-    <Image
-      alt="JOHNNY DEV"
-      class="absolute inset-0 rounded-3xl"
-      sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${profileImage.width}px`}
-      src={profileImage}
-      widths={[240, 540, 720, profileImage.width]}
-    />
+    <img alt="JOHNNY DEV" class="absolute inset-0 rounded-3xl" src={img.src} />
   </div>
   <div class="flex flex-col justify-center gap-3 px-1 md:px-0">
     <h1 class="text-2xl font-semibold tracking-tight md:text-3xl">

@@ -1,10 +1,10 @@
 ---
-import type { RenderedPostEntry } from '#/types'
+import type { CollectionEntry } from 'astro:content'
 
 import PostItem from './PostItem.astro'
 
 export interface Props {
-  list: RenderedPostEntry[]
+  list: CollectionEntry<'post'>[]
 }
 
 const { list } = Astro.props

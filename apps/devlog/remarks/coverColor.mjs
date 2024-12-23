@@ -3,14 +3,14 @@ import { resolve } from 'node:path'
 import sharp from 'sharp'
 
 export function coverColor() {
-  return async function (tree, vfile) {
-    const cover = vfile.data.astro.frontmatter.cover
+  return async function (tree, { data, dirname }) {
+    const cover = data.astro.frontmatter.cover
 
     if (!cover) {
       return
     }
 
-    const imagePath = resolve(vfile.dirname, cover)
+    const imagePath = resolve(dirname, cover)
 
     const buf = await sharp(imagePath).raw().jpeg().toBuffer()
     const colors = await getColors(buf, 'image/jpeg')
@@ -25,8 +25,6 @@ export function coverColor() {
       return brightnessB - brightnessA
     })
 
-    vfile.data.astro.frontmatter.coverColors = colors.map((color) =>
-      color.hex()
-    )
+    data.astro.frontmatter.coverColors = colors.map((color) => color.hex())
   }
 }

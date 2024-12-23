@@ -1,25 +1,33 @@
 ---
-import BaseWrapper from '#/components/BaseWrapper.astro'
+import profileImage from '#/assets/profile.png'
 import Experience from '#/components/Experience.astro'
 import Profile from '#/components/Profile.astro'
 import ProjectList from '#/components/ProjectList.astro'
-import Layout from '#/layouts/Layout.astro'
+import Wrapper from '#/components/Wrapper.astro'
+import { ASTRO_FUSE_DOWNLOAD, RXJS_SHELL_DOWNLOAD } from '#/consts'
+import { getImage } from 'astro:assets'
+
+const img = await getImage({ format: 'webp', src: profileImage, width: 750 })
 ---
 
-<Layout frontmatter={{ frontmatter: { featuredImage: '/og-image.png' } }}>
-  <BaseWrapper>
-    <div class="text-th-text">
-      <section class="mb-24 mt-12">
-        <Profile />
-      </section>
+<Wrapper
+  preloads={[
+    { as: 'image', href: ASTRO_FUSE_DOWNLOAD },
+    { as: 'image', href: RXJS_SHELL_DOWNLOAD },
+    { as: 'image', href: img.src },
+  ]}
+>
+  <div class="text-th-text">
+    <section class="mb-24 mt-12">
+      <Profile />
+    </section>
 
-      <section class="mb-24 mt-12">
-        <ProjectList />
-      </section>
+    <section class="mb-24 mt-12">
+      <ProjectList />
+    </section>
 
-      <section class="relative mb-24 mt-12">
-        <Experience />
-      </section>
-    </div>
-  </BaseWrapper>
-</Layout>
+    <section class="relative mb-24 mt-12">
+      <Experience />
+    </section>
+  </div>
+</Wrapper>

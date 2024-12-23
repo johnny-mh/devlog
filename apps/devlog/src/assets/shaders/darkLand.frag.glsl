@@ -1,6 +1,12 @@
-uniform float iTime;
-uniform vec2 iResolution;
-uniform int iDark;
+#extension GL_OES_standard_derivatives : enable
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform float u_time;
+uniform vec2 u_resolution;
+
+uniform float u_dark;
 
 const float pi = 3.1415926535;
 
@@ -59,8 +65,8 @@ float bell(float x, float s) {
 }
 
 void main() {
-  squareSize = min(iResolution.x, iResolution.y) * 0.3;
-  float t = iTime * squareSize;
+  squareSize = min(u_resolution.x, u_resolution.y) * 0.3;
+  float t = u_time * squareSize;
   vec3 p = vec3(gl_FragCoord.xy, 0.02 * t);
   float f = perlinNoise(p);
 
@@ -80,12 +86,19 @@ void main() {
   c += 0.2 * bell(f - 0.9, s);
 
   p.z = t * 0.2 + 100.;
-  float I = (perlinNoise(p) + 0.1) * 0.7;
+  float I = perlinNoise(p) + 0.1;
+
+  if (u_dark < 1.0) {
+    I = I * 0.75;
+  } else {
+    I = I * 0.85;
+  }
+
   c *= (I * I) * (I * I);
 
   vec4 result = vec4(vec3(0.0) + vec3(c), 1.);
 
-  if (iDark < 1) {
+  if (u_dark < 1.0) {
     result.xyz = vec3(1.) - result.xyz;
   }
 

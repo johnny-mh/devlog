@@ -1,20 +1,20 @@
 ---
-import type { RenderedPostEntry } from '#/types'
+import type { CollectionEntry } from 'astro:content'
 
 import { dayjs } from '#/dayjs'
+import { render } from 'astro:content'
 
 import BorderedImage from './BorderedImage.astro'
 
 interface Props {
   hero?: boolean
-  post: RenderedPostEntry
+  post: CollectionEntry<'post'>
 }
 
 const { hero, post } = Astro.props
-const {
-  data,
-  rendered: { remarkPluginFrontmatter: frontmatter },
-} = post
+const { data } = post
+
+const { remarkPluginFrontmatter } = await render(post)
 ---
 
 <div
@@ -29,15 +29,24 @@ const {
         transition:name={`post-image-${post.id}`}
       >
         <BorderedImage
-          glow={{
-            blur: '20px',
-            colors: hero ? frontmatter.coverColors : undefined,
-          }}
-          alt={data.coverAlt ?? data.title}
           class="aspect-4/3"
-          image={data.cover}
-          objectFit="cover"
-          widths={[860, 1080]}
+          glowProps={
+            hero
+              ? {
+                  blur: '20px',
+                  colors: remarkPluginFrontmatter.coverColors,
+                }
+              : undefined
+          }
+          imageProps={{
+            alt: data.coverAlt ?? data.title,
+            fetchpriority: 'high',
+            format: 'webp',
+            loading: 'eager',
+            src: data.cover,
+            style: { objectFit: 'cover' },
+            width: 1080,
+          }}
         />
       </div>
     ) : null
@@ -57,7 +66,7 @@ const {
       >
     </div>
     <div class="text-th-text-secondary">
-      {frontmatter.summary}...
+      {remarkPluginFrontmatter.summary}...
     </div>
   </div>
 </div>

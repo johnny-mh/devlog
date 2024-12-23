@@ -14,20 +14,19 @@ import { Icon } from 'astro-icon/components'
           <Icon name="octicon:search-16" />
         </div>
         <input
-          data-search-input
           class="block h-8 w-full rounded-lg border border-th-border bg-th-bg-secondary px-3 ps-8 text-base text-th-text outline-none focus:ring-2 focus:ring-th-highlight/30 focus:ring-offset-2"
+          data-search-input
           placeholder="Search Contents..."
           type="text"
         />
         <button
-          data-search-close-button
           class="flex aspect-square h-8 w-8 flex-none items-center justify-center md:hidden"
-          ><Icon name="octicon:x-16" /></button
+          data-search-close-button><Icon name="octicon:x-16" /></button
         >
       </div>
       <ul
-        data-search-result
         class="min-h-0 flex-1 overflow-y-auto px-2 py-1 text-sm"
+        data-search-result
       >
       </ul>
       <div
