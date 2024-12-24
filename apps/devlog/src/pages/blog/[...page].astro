@@ -25,7 +25,7 @@ const allPages = [...Array(page.lastPage).keys()].map((num) => {
 })
 
 const preloads = (await getPostImages(page.data)).map((img) => ({
-  as: 'image',
+  _as: 'image',
   href: img.src,
 }))
 ---

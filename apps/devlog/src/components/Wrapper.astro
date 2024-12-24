@@ -5,6 +5,7 @@ import type { Frontmatter } from '#/types'
 
 import BackgroundEffect from '#/components/BackgroundEffect.astro'
 import Footer from '#/components/Footer.astro'
+import GoogleTagManager from '#/components/GoogleTagManager.astro'
 import Header from '#/components/Header.astro'
 import { sitemeta } from '#/sitemeta'
 import { SEO } from 'astro-seo'
@@ -12,7 +13,7 @@ import { ClientRouter } from 'astro:transitions'
 
 interface Props {
   frontmatter?: Frontmatter
-  preloads?: {as: string, href: string}[]
+  preloads?: { _as: string; href: string }[]
   title?: string
 }
 
@@ -21,7 +22,7 @@ const { frontmatter, preloads, title } = Astro.props
 const openGraph = {
   basic: {
     image: `${Astro.url.pathname}/og-image.png`,
-    title: frontmatter?.title ?? title ??  'JOHNNY DEV',
+    title: frontmatter?.title ?? title ?? 'JOHNNY DEV',
     type: frontmatter ? 'article' : 'website',
   },
   image: {
@@ -103,26 +104,13 @@ const openGraph = {
       }
     </style>
     <link href="/favicon.png" rel="icon" type="image/png" />
-    {preloads?.map((props) => <link rel="preload" {...props} />)}
-    <ClientRouter fallback="swap" />
     {
-      import.meta.env.PROD && (
-        <>
-          <script
-            is:inline
-            src="https://www.googletagmanager.com/gtag/js?id=G-R9PQNBWGC9"
-            type="text/partytown"
-          />
-          <script is:inline type="text/partytown">
-            window.dataLayer = window.dataLayer || [];
-            // eslint-disable-next-line prefer-rest-params
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-R9PQNBWGC9');
-          </script>
-        </>
-      )
+      preloads?.map((props) => (
+        <link as={props._as} href={props.href} rel="preload" />
+      ))
     }
+    <ClientRouter fallback="swap" />
+    {import.meta.env.PROD && <GoogleTagManager />}
     <script is:inline>
       document.addEventListener('astro:page-load', () => {
         if (navigator.userAgent.indexOf('Win') > -1) {

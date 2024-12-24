@@ -46,7 +46,7 @@ const img = await getPostImage(post)
 
 <Wrapper
   frontmatter={frontmatter}
-  preloads={img ? [{ as: 'image', href: img.src }] : undefined}
+  preloads={img ? [{ _as: 'image', href: img.src }] : undefined}
 >
   <div class="py-8 text-th-text">
     <div class="relative mb-10">

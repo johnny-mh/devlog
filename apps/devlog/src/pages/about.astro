@@ -12,9 +12,9 @@ const img = await getImage({ format: 'webp', src: profileImage, width: 750 })
 
 <Wrapper
   preloads={[
-    { as: 'image', href: ASTRO_FUSE_DOWNLOAD },
-    { as: 'image', href: RXJS_SHELL_DOWNLOAD },
-    { as: 'image', href: img.src },
+    { _as: 'image', href: ASTRO_FUSE_DOWNLOAD },
+    { _as: 'image', href: RXJS_SHELL_DOWNLOAD },
+    { _as: 'image', href: img.src },
   ]}
 >
   <div class="text-th-text">
