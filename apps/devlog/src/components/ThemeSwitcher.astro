@@ -4,7 +4,10 @@ import { Icon } from 'astro-icon/components'
 
 <custom-theme-switcher>
   <button
+    aria-label="auto"
+    aria-live="polite"
     class="relative flex h-8 w-8 place-content-center place-items-center rounded-sm"
+    title="Toggles light & dark"
     type="button"
   >
     <Icon data-light name="octicon:sun-24" />
