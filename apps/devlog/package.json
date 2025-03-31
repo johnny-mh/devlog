@@ -22,7 +22,7 @@
     "@microflash/rehype-figure": "^2.1.0",
     "@shikijs/transformers": "^1.10.0",
     "@tailwindcss/typography": "^0.5.13",
-    "astro": "^5.1.1",
+    "astro": "^5.5.5",
     "astro-fuse": "workspace:*",
     "astro-icon": "^1.1.0",
     "astro-robots-txt": "^0.4.0",
