@@ -1,0 +1,127 @@
+---
+title: Open WebUI - MCP fetch 체험기
+description: Open WebUI 와 MCPO를 활용한 mcp-fetch-server 의 사용 경험과 짦은 소감
+categories: [AI]
+tags:
+  - Open WebUI
+  - MCP
+  - AI Model
+publishedAt: 2025-04-09T03:05+09:00
+cover: '../../assets/postImages/20250409/what-is-mcp.png'
+coverAlt: Image from https://norahsakal.com/blog/mcp-vs-api-model-context-protocol-explained/
+---
+
+MCP는 Anthropic이 24년 11월 공개한 오픈소스 프로토콜이다. AI모델이 외부 도구를 사용하는 개념은 이전에도 있었지만, 개방적인 설계로 커뮤니티 참여를 유도하여 현 시점 꽤 핫한 기술이 되었다.
+
+당장 실무에 도움이 되지 않더라도, 트렌드는 파악해야겠다 싶어 Open WebUI, MCPO, MCP Server를 활용해 외부 html문서를 요약하는 시나리오를 테스트 해 보았다.
+
+현재까지 Youtube등의 활용 사례들은 대부분 claude desktop이나 cursor, vscode를 사용하고 있는데, 로컬 모델을 사용하기 위해 Open WebUI를 사용했다.
+
+## Ollama
+
+[ollama](https://ollama.com) 설치하고 `gemma3:27b`, `mistral-small3.1` 모델을 받는다.
+
+```bash
+ollama run gemma3:27b
+ollama run mistral-small3.1
+```
+
+## Open WebUI
+
+[Installation with Default Configuration](https://github.com/open-webui/open-webui?tab=readme-ov-file#installation-with-default-configuration) 참고. Nvidia GPU Support로 설치.
+
+WSL2 에서 쓰면 성능 감소폭이 크다는 글도 있고 큰 차이가 없다는 글도 있긴 한데 찍먹이므로 스킵.
+
+```bash
+docker run -d -p 3000:8080 --gpus all -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:cuda
+```
+
+## MCPO
+
+MCPO는 Open WebUI에게 사용 가능한 tool목록과 인자, 데이터를 OpenAPI 포멧으로 주고받고. MCP 서버와는 호환되는 데이터 포멧으로 데이터를 주고받는 중계 서버 역할을 한다.
+
+자세한 내용은 [MCPO: Supercharge Open-WebUI /Ollama with MCP Tools](https://mychen76.medium.com/mcpo-supercharge-open-webui-with-mcp-tools-4ee55024c371) 참고.
+
+[Installing UV](https://docs.astral.sh/uv/getting-started/installation/) python 사용해야 하므로 UV설치. python만 쓰면 되므로 필요에 따라 다른 것 써도 무방할 듯.
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+`backend` 라는 폴더 하나 만들고 안에서 프로젝트 설정 및 `mcpo`, mcp server들 설치.
+
+```bash
+cd ~/Projects/
+mkdir backend
+cd backend
+
+uv venv
+uv pip install mcpo mcp-server-fetch mcp-server-time
+```
+
+`run.sh` 파일 만들고 아래 내용 기입.
+
+```bash
+#!/usr/bin/env bash
+
+uvx mcpo --config ./config.json --host localhost --port 8080
+```
+
+`config.json` 파일 만들고 아래 내용 기입.
+
+```json
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    },
+    "time": {
+      "command": "uvx",
+      "args": ["mcp-server-time", "--local-timezone=Asia/Seoul"]
+    }
+  }
+}
+```
+
+그 다음 MCPO 서버 실행
+
+```bash
+./run.sh
+
+Starting MCP OpenAPI Proxy with config file: ./config.json
+INFO:     Started server process [30187]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://localhost:8080 (Press CTRL+C to quit)
+```
+
+## Open WebUI 세팅
+
+1. 좌측 하단 사용자 이름 눌러 `설정` 클릭.
+2. 모달 좌측 중간의 `도구` 클릭.
+3. Manage Tool Servers 우측 `+` 버튼 클릭.
+4. 위 `config.json` 에 2개 등록했으므로 아래 두개 항목 추가. (새로고침 아이콘 눌러서 연결 성공 토스트 노출되면 OK)
+
+   ```
+   1. url: "http://localhost:8080/fetch/openapi.json"
+   2. url: "http://localhost:8080/time/openapi.json"
+   ```
+
+5. 이제 프롬프트 입력창 좌측 하단에 렌치 아이콘과 함께 tool을 사용할 수 있게 됨
+
+![사용가능한 tool 아이콘이 노출됨](#/assets/postImages/20250409/open-webui-tools.png)
+
+![config.json에 추가했던 tool목록이 노출됨. 참고로 fetch 를 다른거 써서 이름이 다름](#/assets/postImages/20250409/open-webui-tools2.png)
+
+## MCP fetch 사용 소감
+
+GPU는 RTX 4090 Founders Edition임 (24GB)
+
+- gemma3 모델은 tool을 활용하던데. mistral-small3.1 모델은 tool을 활용하지 못 했다. 모델별로 사용 가능 여부가 다른 듯.
+- [mcp-server-fetch](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch) 와 [mcp-server-fetch-python](https://github.com/tatn/mcp-server-fetch-python) 두개를 테스트 해 보았는데. MCP 서버가 페이지를 제대로 크롤링 못 하는 경우. url에 포함된 제목으로 내용을 꾸며내거나, 전혀 다른 엉뚱한 소리를 하는 둥 문제가 있었다. MCP 서버 코드를 확인해 보니 tool 4개 중에 일부는 playwright를 활용하는 함수가 존재하긴 했음. 구현이 더 상세한 만큼 그나마 후자가 좀 더 잘 인식했음.
+- [claude desktop 에서도 설정](https://modelcontextprotocol.io/quickstart/user#2-add-the-filesystem-mcp-server)해서 쓸 수 있는데. 어차피 같은 코드라 동작이 비슷할것으로 예상.
+- 아니나 다를까 claude.ai 는 붙여넣은 링크는 인식할 수 없다는 답변을 했다.
+- ChatGPT 도 붙여넣은 링크는 인식을 못 했고. 해당 링크를 **웹 검색**하여 찾은 것을 토대로는 문서 내의 디테일한 내용에 대한 답변이 가능했다.
+
+MCP 서버의 품질에 따라 경험 차이가 클 듯 하다.
