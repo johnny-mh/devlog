@@ -89,7 +89,7 @@ uvx mcpo --config ./config.json --host localhost --port 8080
 ```bash
 ./run.sh
 
-Starting MCP OpenAPI Proxy with config file: ./config.json
+Starting  MCP OpenAPI Proxy with config file: ./config.json
 INFO:     Started server process [30187]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
@@ -110,22 +110,29 @@ INFO:     Uvicorn running on http://localhost:8080 (Press CTRL+C to quit)
 
 5. 이제 프롬프트 입력창 좌측 하단에 렌치 아이콘과 함께 tool을 사용할 수 있게 됨
 
-![사용가능한 tool 아이콘이 노출됨](#/assets/postImages/20250409/open-webui-tools.png)
+![위에서 추가한 두개의 tool에 대한 아이콘이 노출됨](#/assets/postImages/20250409/open-webui-tools.png)
 
-![config.json에 추가했던 tool목록이 노출됨. 참고로 fetch 를 다른거 써서 이름이 다름](#/assets/postImages/20250409/open-webui-tools2.png)
+![config.json에 추가했던 tool목록이 노출됨. 참고로 mcp-server-fetch-python 인 건 mcp-server-fetch 대신 다른 tool추가해서 그럼](#/assets/postImages/20250409/open-webui-tools2.png)
 
 ## MCP fetch 사용 소감
 
-GPU는 RTX 4090 Founders Edition임 (24GB)
+> 블로그 발행 후 다시 테스트 해 보니 gemma3, mistral-small3.1 둘 다 tool을 잘 활용하길래 내용을 수정했다.
 
-- gemma3 모델은 tool을 활용하던데. mistral-small3.1 모델은 tool을 활용하지 못 했다. 모델별로 사용 가능 여부가 다른 듯.
-- [mcp-server-fetch](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch) 와 [mcp-server-fetch-python](https://github.com/tatn/mcp-server-fetch-python) 두개를 테스트 해 보았는데. 잘 답변하는 글도 있었지만, MCP 서버가 페이지를 제대로 크롤링 못 하는 경우. url에 포함된 제목으로 내용을 꾸며내거나, 전혀 다른 엉뚱한 소리를 하는 둥 문제가 있었다. MCP 서버 코드를 확인해 보니 tool 4개 중에 일부는 playwright를 활용하는 함수가 존재하긴 했음. 구현이 더 상세한 만큼 그나마 후자가 좀 더 잘 인식했음.
-- [claude desktop 에서도 설정](https://modelcontextprotocol.io/quickstart/user#2-add-the-filesystem-mcp-server)해서 쓸 수 있는데. 어차피 같은 코드라 동작이 비슷할것으로 예상.
-- 아니나 다를까 claude.ai 는 붙여넣은 링크는 인식할 수 없다는 답변을 했다.
-- ChatGPT 도 붙여넣은 링크는 인식을 못 했고. 해당 링크를 **웹 검색**하여 정답을 맞췄음. tool들을 상호 보완적으로 사용해야 할 듯?
+- 테스트에 사용한 GPU는 RTX 4090 Founders Edition (24GB)
+- 로컬 모델은 `gemma3`, `mistral-small3.1` 두개 돌렸고 추가로 개발자 설정에서 MCP를 사용할 수 있는 `claude desktop`을 사용해 보았다
+- fetch는 [mcp-server-fetch](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch), [mcp-server-fetch-python](https://github.com/tatn/mcp-server-fetch-python) 둘 다 테스트해 보았다
 
-MCP 서버의 품질에 따라 경험 차이가 클 듯 하다.
+---
 
-![tool을 사용하여 인용이 표시되었음. 하지만 엉뚱한 대답임.](#/assets/postImages/20250409/using-tool.png)
+- 일단 ChatGPT는 붙여넣은 링크를 인식하지 못 했다. 다만 해당 주소를 **웹 검색**하여 내용을 찾아내고. 본문에 대한 질문에 답변해주었다. 이런 걸 보면 tool들을 상호 보완하여 사용해야 할 듯.
+- claude.ai 는 아예 붙여넣은 링크는 인식 자체를 하지 못 했다. 웹 검색을 시도하지도 않았다.
+- 로컬 모델 및 claude desktop의 경우 MCP를 잘 활용하여 요약을 해 주었다. 다만 크롤링이 안 되면 요약 불가했음.
+- 당연한 말이지만 MCP서버의 품질에 따른 경험 차이가 클 것으로 보인다. Youtube에서 MCP를 소개할 때 Figma 를 예시로 드는 이유가 있는 듯. MCP는 결국 서드파티이기 때문에 경우에 따라서 희망고문만 당하다 끝날지도 모르겠다.
 
-![다른 글은 decoding하면 정상적으로 나와서 제대로 된 답변을 하는데. 특정 글은 MCP서버 쪽에서 인코딩을 잘못 하는 듯.](#/assets/postImages/20250409/using-tool2.png)
+![`mcp-server-fetch-python`이 제공하는 `tool_get_markdown_post`를 사용하여 블로그 본문을 정확히 요약해주었다.](#/assets/postImages/20250409/using-tool.png)
+
+![네이버 블로그 글은 MCP 서버가 크롤링을 못 해서 내용을 알 수 없다고 안내해 주었다.](#/assets/postImages/20250409/using-tool2.png)
+
+![claude desktop도 `mcp-server-fetch`를 사용해 본문 내용을 요약해 주었다.](#/assets/postImages/20250409/using-tool3.png)
+
+![MCP 서버가 크롤링을 못 하니 claude desktop도 요약이 불가능했다.](#/assets/postImages/20250409/using-tool4.png)
