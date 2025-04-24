@@ -1,5 +1,11 @@
 # astro-fuse
 
+## 1.0.3
+
+### Patch Changes
+
+- support astro v5
+
 ## 1.0.1
 
 ### Patch Changes
