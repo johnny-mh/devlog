@@ -67,7 +67,7 @@
     "vite": "^5.3.4"
   },
   "peerDependencies": {
-    "astro": "^4.8.0",
+    "astro": ">=4.8.0",
     "fuse.js": "^7.0.0"
   },
   "publishConfig": {
