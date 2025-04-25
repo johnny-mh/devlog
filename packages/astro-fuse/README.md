@@ -129,7 +129,7 @@ In 'output' mode, all HTML files generated as a result of the build are subject 
 
 ```js
 // astro.config.mjs
-fuse({
+fuse(['content', 'frontmatter.title'], {
   filter: (path) => /^\/post\/[^/]+\/$/.test(path),
 })
 ```
@@ -140,7 +140,7 @@ In 'source' mode, all markdown files in the `/src/content` folder are subject to
 
 ```js
 // astro.config.mjs
-fuse({
+fuse(['content', 'frontmatter.title'], {
   filter: (path) => path.startsWith('/src/content/post/'),
 })
 ```
@@ -152,10 +152,13 @@ Setting the `basedOn` option to `'output'` will now generate the index file base
 ```js
 // astro.config.mjs
 // ...
-fuse({
-  extractContentFromHTML: 'article' // index text inner <article> element.
-  extractContentFromHTML: $ => $('div#content') // or. you can use cheerio instance.
-})
+fuse(
+  ['content', 'frontmatter.title'],
+  {
+    extractContentFromHTML: 'article' // index text inner <article> element.
+    extractContentFromHTML: $ => $('div#content') // or. you can use cheerio instance.
+  }
+)
 ```
 
 #### extractFrontmatterFromHTML (only for `output` mode)
@@ -175,8 +178,7 @@ In this situation, the `extractFrontmatterFromHTML` option can be helpful. If yo
 ```js
 // astro.config.mjs
 
-fuse({
-  keys: ['content', 'frontmatter.title'],
+fuse(['content', 'frontmatter.title'], {
   extractFrontmatterFromHTML: ($) => {
     // read that element value. $ is cheerio instance.
     const el = $('[data-frontmatter]')
