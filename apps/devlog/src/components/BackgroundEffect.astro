@@ -8,7 +8,7 @@
   import GlslCanvas from 'glslCanvas'
   import 'requestidlecallback-polyfill'
 
-  window.requestIdleCallback(async () => {
+  setTimeout(async () => {
     const { default: fragmentShader } = await import(
       '#/assets/shaders/darkLand.frag.glsl'
     )
@@ -40,5 +40,5 @@
       canvas.width = window.innerWidth * 2
       canvas.height = window.innerHeight * 2
     }
-  })
+  }, 500)
 </script>
