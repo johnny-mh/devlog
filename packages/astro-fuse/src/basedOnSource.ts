@@ -4,12 +4,6 @@ import { AstroConfig } from 'astro'
 import Fuse, { type FuseOptionKey } from 'fuse.js'
 import { load } from 'js-yaml'
 import debounce from 'lodash.debounce'
-import { fromMarkdown } from 'mdast-util-from-markdown'
-import { frontmatterFromMarkdown } from 'mdast-util-frontmatter'
-import { mdxFromMarkdown, mdxToMarkdown } from 'mdast-util-mdx'
-import { toMarkdown } from 'mdast-util-to-markdown'
-import { frontmatter } from 'micromark-extension-frontmatter'
-import { mdxjs } from 'micromark-extension-mdxjs'
 import { createHmac } from 'node:crypto'
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { readFile, writeFile } from 'node:fs/promises'
@@ -110,10 +104,11 @@ export function basedOnSource({
       }
 
       const { fileId, fileUrl } = getFileInfo(id, config)
-      const code = await readFile(fileId, 'utf-8')
-      const hash = createHmac('sha256', code).digest('hex').substring(0, 8)
-      const content = getSearchable(code)
-      buffer.set(fileId, [hash, { ...content, fileUrl }])
+      const content = await readFile(fileId, 'utf-8')
+      const hash = createHmac('sha256', content).digest('hex').substring(0, 8)
+      const frontmatter = getFrontmatter(content)
+
+      buffer.set(fileId, [hash, { content, fileUrl, frontmatter }])
 
       writeFuseIndex()
     },
@@ -160,29 +155,20 @@ export function getFileInfo(id: string, config: AstroConfig): FileInfo {
   return { fileId, fileUrl }
 }
 
-export function getSearchable(
-  source: string
-): Omit<SourceBaseSearchable, 'fileUrl'> {
-  const tree = fromMarkdown(source, 'utf-8', {
-    extensions: [mdxjs(), frontmatter(['yaml'])],
-    mdastExtensions: [
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      mdxFromMarkdown() as any,
-      frontmatterFromMarkdown(['yaml']),
-    ],
-  })
+const FRONTMATTER_REGEX = /^---\s*([\s\S]*?)\s*---/
 
-  const yaml = tree.children.splice(
-    tree.children.findIndex((value) => value.type === 'yaml'),
-    1
-  )
+export function getFrontmatter(source: string): Record<string, string> {
+  const match = FRONTMATTER_REGEX.exec(source)
 
-  return {
-    content: toMarkdown(tree, { extensions: [mdxToMarkdown()] }),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    frontmatter: load((yaml as any)?.[0]?.value ?? '') as Record<
-      string,
-      string
-    >,
+  if (!match) {
+    return {}
   }
+
+  const [, value] = match
+
+  if (!value) {
+    return {}
+  }
+
+  return load(value) as Record<string, string>
 }

@@ -1,5 +1,11 @@
 # astro-fuse
 
+## 1.0.4
+
+### Patch Changes
+
+- Correct frontmatter parsing on source mode
+
 ## 1.0.3
 
 ### Patch Changes
