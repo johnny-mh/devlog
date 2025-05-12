@@ -16,7 +16,7 @@ pnpm astro add astro-fuse
 yarn astro add astro-fuse
 ```
 
-Then, apply this integration to your `astro.config.*` file using the integrations property:
+Then, apply this integration to your `astro.config.*` file using the integrations properly.
 
 ```js ins={3} "fuse(['content'])"
 // astro.config.mjs
