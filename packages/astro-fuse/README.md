@@ -1,5 +1,7 @@
 # astro-fuse
 
+![The search layer of the johnny-dev blog](./search-layer-demo.gif)
+
 This [Astro integration](https://docs.astro.build/en/guides/integrations-guide/) generates the _fuse.json_ index file of [Fuse.js](https://fusejs.io/) when your Astro project during build.
 
 Use this plugin to add content search functionality to your Astro site.
@@ -229,8 +231,6 @@ The option object used when creating a Fuse.js instance.
 See [Fuse.js options](https://www.fusejs.io/api/options.html)
 
 ## Example
-
-![The search layer of the johnny-dev blog](./search-layer-demo.gif)
 
 - [The search layer of the johnny-dev blog](/apps/devlog/src/components/SearchLayer.astro)
 
