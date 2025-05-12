@@ -230,7 +230,7 @@ See [Fuse.js options](https://www.fusejs.io/api/options.html)
 
 ## Example
 
-- [The search component of the johnny-dev blog](/apps/devlog/src/components/SearchComponent.tsx)
+- [The search component of the johnny-dev blog](/apps/devlog/src/components/SearchLayer.tsx)
 
 ## Remarks
 
