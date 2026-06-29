@@ -6,6 +6,20 @@ This [Astro integration](https://docs.astro.build/en/guides/integrations-guide/)
 
 Use this plugin to add content search functionality to your Astro site.
 
+## Compatibility
+
+| `astro-fuse` | Supported Astro | Modes              | Status                                      |
+| ------------ | --------------- | ------------------ | ------------------------------------------- |
+| `2.x`        | Astro `>=5`     | output only        | Active (verified against Astro 5, 6, and 7) |
+| `1.x`        | Astro `4.x`     | output + source    | Maintenance only                            |
+
+`2.x` requires Astro 5 or later. Two things changed in Astro 5 that this major adapts to:
+
+- The `routes` field was removed from the `astro:build:done` hook, so `2.x` reads route data from the `astro:routes:resolved` hook instead.
+- The Content Layer no longer routes content files through Vite's `transform` hook, which the old `basedOn: 'source'` mode depended on. **Source mode was removed**; only output mode remains.
+
+If your project is still on Astro 4, stay on `astro-fuse@1`.
+
 ## Usage
 
 First, install the `astro-fuse` packages using your package manager.
@@ -110,14 +124,13 @@ You can provide the key values of the properties you want to search in addition 
 
 See [Fuse.js keys option](https://www.fusejs.io/api/options.html#keys)
 
-#### basedOn
+The index is generated from the HTML files produced by your build, so you can
+search the static rendering results of components used in your Markdown/MDX
+pages.
 
-- **default** `'output'`: Generate index files based on the HTML files that generated after the build. This mode will allow you to search for the static rendering results of components used in MDX files.
-- `'source'`: Generated index files based on the markdown source in the content folder. This mode will update the index in real time in the development environment. In addition, you can search for frontmatters in markdown immediately by adding it to the keys array without any other process.
-
-Since each mode has its own advantages and disadvantages, please use it appropriately according to the situation.
-
-> If you use the 'basedOn' option as 'source', the search results will include 'fileUrl' instead of 'pathname'. Convert 'fileUrl' to a link path and use it.
+> **Removed in v2:** the `basedOn: 'source'` mode was removed. It relied on
+> Vite transforming content files, which no longer happens with Astro 5's
+> Content Layer. Use the default (output) mode.
 
 #### filename
 
@@ -125,9 +138,7 @@ The file name of the index file to be generated.
 
 #### filter
 
-##### `basedOn: 'output'` mode
-
-In 'output' mode, all HTML files generated as a result of the build are subject to search index generation. If you want to restrict this, use the filter option.
+All HTML files generated as a result of the build are subject to search index generation. If you want to restrict this, use the filter option.
 
 ```js
 // astro.config.mjs
@@ -136,20 +147,9 @@ fuse(['content', 'frontmatter.title'], {
 })
 ```
 
-##### `basedOn: 'source'` mode
+#### extractContentFromHTML
 
-In 'source' mode, all markdown files in the `/src/content` folder are subject to search index generation. If you want to restrict this to a specific file, use the filter option.
-
-```js
-// astro.config.mjs
-fuse(['content', 'frontmatter.title'], {
-  filter: (path) => path.startsWith('/src/content/post/'),
-})
-```
-
-#### extractContentFromHTML (only for `output` mode)
-
-Setting the `basedOn` option to `'output'` will now generate the index file based on the HTML files generated after the build. This may include unnecessary content such as text in the header area. You can use the extractContentFromHTML option to select the elements that need to be searched.
+The index is generated from the HTML files produced by the build. This may include unnecessary content such as text in the header area. You can use the extractContentFromHTML option to select the elements that need to be searched.
 
 ```js
 // astro.config.mjs
@@ -163,9 +163,9 @@ fuse(
 )
 ```
 
-#### extractFrontmatterFromHTML (only for `output` mode)
+#### extractFrontmatterFromHTML
 
-In `'output'` mode, the index is generated based on the rendered HTML files, so frontmatter cannot be extracted. If frontmatter is required, you can use the extractFrontmatterFromHTML option to make frontmatter searchable as well.
+The index is generated from the rendered HTML files, so frontmatter cannot be extracted directly. If frontmatter is required, you can use the extractFrontmatterFromHTML option to make frontmatter searchable as well.
 
 For example, if you need the original title value because the pathname is sluggified, the following MDX file can be bundled into various path HTML files like /content/2023-08-14-a-page-title.mdx => blog/2023/08/a-page-title.html.
 

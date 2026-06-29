@@ -25,6 +25,10 @@
     },
     "typecheck": {
       "cache": false
+    },
+    "lint": {},
+    "test": {
+      "cache": false
     }
   }
 }

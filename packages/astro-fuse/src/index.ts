@@ -1,27 +1,15 @@
 import type { AstroConfig, AstroIntegration } from 'astro'
 import type { FuseOptionKey } from 'fuse.js'
 
-import { existsSync } from 'node:fs'
-import { join, relative } from 'node:path'
+import type { AstroFuseOptions, Searchable } from './types'
 
-import type {
-  AstroFuseOptions,
-  OutputBaseAstroFuseOptions,
-  Searchable,
-  SourceBaseAstroFuseOptions,
-} from './types'
+import {
+  basedOnOutput,
+  type ResolvedRouteLike,
+  writeFuseIndex,
+} from './basedOnOutput'
 
-import { basedOnOutput, writeFuseIndex } from './basedOnOutput'
-import { basedOnSource } from './basedOnSource'
-
-export {
-  AstroFuseOptions,
-  OutputBaseAstroFuseOptions,
-  OutputBaseSearchable,
-  Searchable,
-  SourceBaseAstroFuseOptions,
-  SourceBaseSearchable,
-} from './types'
+export { AstroFuseOptions, OutputBaseSearchable, Searchable } from './types'
 
 export const PLUGIN_NAME = 'astro-fuse'
 
@@ -29,36 +17,31 @@ export default function astroFuse(
   keys: FuseOptionKey<Searchable>[],
   options?: AstroFuseOptions
 ): AstroIntegration {
+  // `basedOn: 'source'` was removed in v2. It relied on Vite's `transform`
+  // hook firing for content files, which no longer happens with Astro 5's
+  // Content Layer. Output mode is now the only mode.
+  if ((options as { basedOn?: string } | undefined)?.basedOn === 'source') {
+    throw new Error(
+      "[astro-fuse] `basedOn: 'source'` was removed in v2 and no longer works on Astro 5+. Remove the `basedOn` option to use output mode."
+    )
+  }
+
   let config: AstroConfig
-  let outDir = ''
+  let resolvedRoutes: ResolvedRouteLike[] = []
 
   const _keys = keys ?? ['content']
-  const basedOn = options?.basedOn ?? 'output'
   const filename = options?.filename ?? 'fuse.json'
 
   return {
     hooks: {
       'astro:build:done': (buildDoneEvent) => {
-        if (basedOn === 'source') {
-          if (existsSync(join(outDir, filename))) {
-            buildDoneEvent.logger.info(
-              `\`${filename}\` created at \`${relative(process.cwd(), outDir)}\``
-            )
-          }
-
-          return
-        }
-
-        if (basedOn !== 'output') {
-          return
-        }
-
         writeFuseIndex({
           buildDoneEvent,
           config,
           filename,
           keys: _keys,
-          options: options as OutputBaseAstroFuseOptions,
+          options,
+          routes: resolvedRoutes,
         })
       },
 
@@ -67,28 +50,17 @@ export default function astroFuse(
       },
 
       'astro:config:setup': ({ config, updateConfig }) => {
-        outDir = config.outDir.pathname
+        updateConfig({
+          // The Vite plugin type comes from a different `vite` resolution
+          // than Astro's bundled one, so cast to Astro's config shape.
+          vite: {
+            plugins: [basedOnOutput({ config, filename })],
+          },
+        } as Parameters<typeof updateConfig>[0])
+      },
 
-        if (basedOn === 'source') {
-          updateConfig({
-            vite: {
-              plugins: [
-                basedOnSource({
-                  config,
-                  filename,
-                  keys: _keys,
-                  options: options as SourceBaseAstroFuseOptions,
-                }),
-              ],
-            },
-          })
-        } else if (basedOn === 'output') {
-          updateConfig({
-            vite: {
-              plugins: [basedOnOutput({ config, filename })],
-            },
-          })
-        }
+      'astro:routes:resolved': ({ routes }) => {
+        resolvedRoutes = routes
       },
     },
     name: PLUGIN_NAME,

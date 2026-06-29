@@ -5,6 +5,8 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default [
+  // Generated test-fixture artifacts (Astro types, build output).
+  { ignores: ['**/.astro/**', '**/dist/**'] },
   { files: ['**/*.{js,mjs,cjs,ts}'] },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,

@@ -1,3 +1,4 @@
+import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import partytown from '@astrojs/partytown'
 import sitemap from '@astrojs/sitemap'
@@ -64,9 +65,10 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    extendDefaultPlugins: true,
-    rehypePlugins: [rehypeFigure],
-    remarkPlugins: [remarkReadingTime, remarkSummarize, coverColor],
+    processor: unified({
+      rehypePlugins: [rehypeFigure],
+      remarkPlugins: [remarkReadingTime, remarkSummarize, coverColor],
+    }),
     shikiConfig: {
       theme: 'catppuccin-mocha',
       transformers: [
