@@ -1,8 +1,5 @@
 ---
 import ThemeSwitcher from '#/components/ThemeSwitcher.astro'
-const logo = await import('#/icons/logo.svg?raw')
-
-const innerHTML = logo.default.replace(/^<svg/, '<svg width="135" height="38"')
 
 const current = (() => {
   const {
@@ -22,9 +19,11 @@ const current = (() => {
   data-header
 >
   <div class="container flex h-full place-content-between place-items-center">
-    <a aria-label="Go to Home" class="logo" href="/blog">
-      <Fragment set:html={innerHTML} />
-    </a>
+    <a
+      aria-label="Go to Home"
+      class="font-sg text-lg font-bold tracking-tight text-th-text transition-colors hover:text-yellow-400"
+      href="/blog">JOHNNYDEV</a
+    >
     <nav class="flex h-8 items-stretch font-sg text-sm text-th-text">
       <a
         class="relative flex items-center px-3 data-[active=true]:font-semibold"
@@ -74,32 +73,3 @@ const current = (() => {
   bindScrollEvent()
   document.addEventListener('astro:after-swap', bindScrollEvent)
 </script>
-
-<style>
-  .logo {
-    :global(svg) {
-      overflow: visible;
-    }
-
-    :global(rect, path:nth-of-type(2)) {
-      transition-property: fill, transform;
-      transition-duration: 0.4s;
-      transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    :global(rect) {
-      transform-origin: center;
-      transform-box: fill-box;
-    }
-  }
-
-  :global(html.dark) .logo {
-    :global(path) {
-      fill: #fff;
-    }
-
-    :global(path:nth-of-type(2)) {
-      fill: #000;
-    }
-  }
-</style>
