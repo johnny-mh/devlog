@@ -2,7 +2,7 @@
 
 React hook to search a [Fuse.js](https://fusejs.io/) index
 
-> If you have plan to using this with `gatsby-plugin-fusejs`. please see [gatsby-plugin-fusejs](https://github.com/johnny-mh/blog2/tree/main/libs/gatsby-plugin-fusejs#readme)
+> If you have plan to using this with `gatsby-plugin-fusejs`. please see [gatsby-plugin-fusejs](https://github.com/johnny-mh/devlog/tree/main/packages/gatsby-plugin-fusejs#readme)
 
 ## Install
 
@@ -74,7 +74,7 @@ export function Search() {
 
 React hook for index data from `gatsby-plugin-fusejs`
 
-> Please see [gatsby-plugin-fusejs](https://github.com/johnny-mh/blog2/tree/main/libs/gatsby-plugin-fusejs#readme) to read more details
+> Please see [gatsby-plugin-fusejs](https://github.com/johnny-mh/devlog/tree/main/packages/gatsby-plugin-fusejs#readme) to read more details
 
 ```jsx
 import { useStaticQuery, graphql } from 'gatsby'
