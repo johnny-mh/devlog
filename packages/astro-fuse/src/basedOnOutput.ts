@@ -45,27 +45,39 @@ type AstroBuildDoneEvent = Parameters<
   NonNullable<AstroIntegration['hooks']['astro:build:done']>
 >[0]
 
+/**
+ * Minimal structural subset of Astro's `IntegrationResolvedRoute` (passed to
+ * the `astro:routes:resolved` hook) that this integration relies on. Kept
+ * decoupled from Astro's exported type so it stays valid across Astro 5+.
+ */
+export interface ResolvedRouteLike {
+  pathname?: null | string
+  type: string
+}
+
 export function writeFuseIndex({
   buildDoneEvent,
   config,
   filename,
   keys,
   options,
+  routes,
 }: {
   buildDoneEvent: AstroBuildDoneEvent
   config: AstroConfig
   filename: string
   keys: FuseOptionKey<Searchable>[]
   options?: OutputBaseAstroFuseOptions
+  routes?: ResolvedRouteLike[]
 }) {
-  const { logger, pages, routes } = buildDoneEvent
+  const { logger, pages } = buildDoneEvent
   let finalSiteBasePath: string
 
   if (config.site) {
     finalSiteBasePath = new URL(config.base, config.site).pathname
   } else {
     console.warn(
-      'The astro-fuse integration requires the `site` astro.config option when source mode. Skipping.'
+      'The astro-fuse integration requires the `site` astro.config option. Skipping.'
     )
     return
   }
@@ -78,7 +90,7 @@ export function writeFuseIndex({
     return finalSiteBasePath + pathname
   })
 
-  const routePaths = routes.reduce<string[]>((urls, r) => {
+  const routePaths = (routes ?? []).reduce<string[]>((urls, r) => {
     if (r.type !== 'page') {
       return urls
     }
@@ -87,7 +99,7 @@ export function writeFuseIndex({
      * Dynamic URLs have entries with `undefined` pathnames
      */
     if (r.pathname) {
-      if (isStatusCodePage(r.pathname ?? r.route)) {
+      if (isStatusCodePage(r.pathname)) {
         return urls
       }
 
@@ -95,7 +107,7 @@ export function writeFuseIndex({
        * remove the initial slash from relative pathname
        * because `finalSiteUrl` always has trailing slash
        */
-      const path = finalSiteBasePath + r.generate(r.pathname).substring(1)
+      const path = finalSiteBasePath + r.pathname.replace(/^\//, '')
 
       if (config.trailingSlash === 'never') {
         urls.push(path)

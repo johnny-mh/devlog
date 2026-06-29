@@ -11,8 +11,6 @@ export default {
       center: true,
       screens: {
         lg: '1000px',
-        md: '100%',
-        sm: '100%',
       },
     },
 
