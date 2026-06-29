@@ -6,13 +6,13 @@
     "astro-integration",
     "astro-component"
   ],
-  "homepage": "https://github.com/johnny-mh/blog2/tree/main/packages/astro-fuse",
+  "homepage": "https://github.com/johnny-mh/devlog/tree/main/packages/astro-fuse",
   "bugs": {
-    "url": "https://github.com/johnny-mh/blog2/issues"
+    "url": "https://github.com/johnny-mh/devlog/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/johnny-mh/blog2.git",
+    "url": "https://github.com/johnny-mh/devlog.git",
     "directory": "packages/astro-fuse"
   },
   "license": "MIT",
