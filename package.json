@@ -8,6 +8,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "publish-packages": "turbo run build lint && changeset version && changeset publish",
+    "publish-legacy": "turbo run build && changeset version && changeset publish --tag legacy",
     "sort-deps": "sort-package-json apps/*/package.json packages/*/package.json",
     "preinstall": "npx only-allow pnpm"
   },
