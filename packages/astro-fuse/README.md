@@ -8,17 +8,17 @@ Use this plugin to add content search functionality to your Astro site.
 
 ## Compatibility
 
-| `astro-fuse` | Supported Astro | Modes              | Status                                      |
-| ------------ | --------------- | ------------------ | ------------------------------------------- |
-| `2.x`        | Astro `>=5`     | output only        | Active (verified against Astro 5, 6, and 7) |
-| `1.x`        | Astro `4.x`     | output + source    | Maintenance only                            |
+| `astro-fuse` | Supported Astro     | Modes                          | Status                                      |
+| ------------ | ------------------- | ------------------------------ | ------------------------------------------- |
+| `2.x`        | Astro `>=5`         | output only                    | Active (tested on Astro 7)                  |
+| `1.x`        | Astro `4` – `5`     | output (`4`–`5`), source (`4`) | Maintenance only                            |
 
-`2.x` requires Astro 5 or later. Two things changed in Astro 5 that this major adapts to:
+`2.x` requires Astro 5 or later. It adapts to two changes in the Astro 5/6 cycle:
 
-- The `routes` field was removed from the `astro:build:done` hook, so `2.x` reads route data from the `astro:routes:resolved` hook instead.
-- The Content Layer no longer routes content files through Vite's `transform` hook, which the old `basedOn: 'source'` mode depended on. **Source mode was removed**; only output mode remains.
+- Astro 5 **deprecated** the `routes` field on the `astro:build:done` hook and Astro 6 **removed** it. `2.x` reads route data from the `astro:routes:resolved` hook (added in Astro 5) instead. This is why `1.x` keeps working through Astro 5 but breaks on Astro 6+ — those users need `2.x`.
+- Astro 5's Content Layer no longer routes content files through Vite's `transform` hook, which the old `basedOn: 'source'` mode depended on. **Source mode was removed** in `2.x` (it only ever worked on Astro 4); output mode is the only mode.
 
-If your project is still on Astro 4, stay on `astro-fuse@1`.
+On Astro 4 use `astro-fuse@1`. On Astro 5 either line works (`2.x` recommended). On Astro 6+ use `astro-fuse@2`.
 
 ## Usage
 
