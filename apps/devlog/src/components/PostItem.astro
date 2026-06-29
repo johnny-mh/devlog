@@ -29,7 +29,7 @@ const { remarkPluginFrontmatter } = await render(post)
         transition:name={`post-image-${post.id}`}
       >
         <BorderedImage
-          class="aspect-4/3"
+          class="aspect-[4/3]"
           imageProps={{
             alt: data.coverAlt ?? data.title,
             fetchpriority: 'high',
