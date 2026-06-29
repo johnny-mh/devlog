@@ -3,8 +3,6 @@ import profileImage from '#/assets/profile.png'
 import { Icon } from 'astro-icon/components'
 import { getImage } from 'astro:assets'
 
-import AnimatedGlow from './AnimatedGlow.astro'
-
 const img = await getImage({ format: 'webp', src: profileImage, width: 750 })
 ---
 
@@ -12,12 +10,6 @@ const img = await getImage({ format: 'webp', src: profileImage, width: 750 })
   <div
     class="relative z-10 aspect-square w-full flex-none drop-shadow-xl dark:drop-shadow-none md:w-52"
   >
-    <AnimatedGlow
-      blur={'20px'}
-      colors={['#eeeefd', '#57d5fc']}
-      duration="2s"
-      opacity={0.5}
-    />
     <img alt="JOHNNY DEV" class="absolute inset-0 rounded-3xl" src={img.src} />
   </div>
   <div class="flex flex-col justify-center gap-3 px-1 md:px-0">

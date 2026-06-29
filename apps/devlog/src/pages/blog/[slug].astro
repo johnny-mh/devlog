@@ -84,11 +84,6 @@ const img = await getPostImage(post)
         <div class="mb-10" transition:name={`post-image-${slug}`}>
           <BorderedImage
             class="aspect-video"
-            glowProps={
-              frontmatter.coverColors
-                ? { colors: frontmatter.coverColors }
-                : undefined
-            }
             imageProps={{
               alt: data.coverAlt ?? data.title,
               fetchpriority: 'high',

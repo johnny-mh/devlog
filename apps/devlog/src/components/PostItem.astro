@@ -30,14 +30,6 @@ const { remarkPluginFrontmatter } = await render(post)
       >
         <BorderedImage
           class="aspect-4/3"
-          glowProps={
-            hero
-              ? {
-                  blur: '20px',
-                  colors: remarkPluginFrontmatter.coverColors,
-                }
-              : undefined
-          }
           imageProps={{
             alt: data.coverAlt ?? data.title,
             fetchpriority: 'high',
