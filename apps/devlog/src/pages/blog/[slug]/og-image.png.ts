@@ -34,13 +34,9 @@ export const GET: APIRoute<CollectionEntry<'post'>> = async ({ props }) => {
         ${props.data.title}
       </h1>
       <div
-        style="font-family:SpaceGrotesk;font-size:3rem;position:absolute;right:28;bottom:20;display:flex"
+        style="font-family:SpaceGrotesk;font-size:3rem;letter-spacing:-1px;position:absolute;right:28;bottom:20;display:flex"
       >
-        <div
-          style="background:#F5DA55;width:100;height:52;position:absolute;right:-5;bottom:5;display:flex;border-radius:4px;"
-        />
-        <span style="color:#fff;margin-right:12px">JOHNNY</span
-        ><span style="color:#000">DEV</span>
+        <span style="color:#fff">JOHNNYDEV</span>
       </div>
     </div>
   </div>`)
