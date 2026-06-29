@@ -77,9 +77,6 @@ importers:
       fuse.js:
         specifier: ^7.0.0
         version: 7.0.0
-      get-image-colors:
-        specifier: ^4.0.1
-        version: 4.0.1
       get-pixels:
         specifier: ^3.3.3
         version: 3.3.3
@@ -126,9 +123,6 @@ importers:
       '@eslint/js':
         specifier: ^9.7.0
         version: 9.23.0
-      '@types/get-image-colors':
-        specifier: ^4.0.5
-        version: 4.0.5
       '@types/get-pixels':
         specifier: ^3.3.4
         version: 3.3.4
@@ -2772,9 +2766,6 @@ packages:
   '@types/cheerio@0.22.35':
     resolution: {integrity: sha512-yD57BchKRvTV+JD53UZ6PD8KWY5g5rvvMLRnZR3EQBCZXiDT/HR+pKpMzFGlWNhFrXlo7VPZXtKvIEwZkAWOIA==}
 
-  '@types/chroma-js@2.4.4':
-    resolution: {integrity: sha512-/DTccpHTaKomqussrn+ciEvfW4k6NAHzNzs/sts1TCqg333qNxOhy8TNIoQCmbGG3Tl8KdEhkGAssb1n3mTXiQ==}
-
   '@types/common-tags@1.8.4':
     resolution: {integrity: sha512-S+1hLDJPjWNDhcGxsxEbepzaxWqURP/o+3cP4aa2w7yBXgdcmKGQtZzP8JbyfOd0m+33nh+8+kvxYE2UJtBDkg==}
 
@@ -2813,9 +2804,6 @@ packages:
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
-
-  '@types/get-image-colors@4.0.5':
-    resolution: {integrity: sha512-4d3eLaB8Hz+KpGwkqZx/AO2Omvp5lFbAV5z6MqLV3bUQR1tHLsIbbLgESOS+/APrtad8oDg7BzQbE/hAzrOUHA==}
 
   '@types/get-pixels@3.3.4':
     resolution: {integrity: sha512-kKf3gEwwOmhCqWTvF5tW2VccjEji5tvh8CnoEkvCTrRMRj+QHyBOVbZqINjDVhU+gxroHe6CdP53+XCEbxxbLA==}
@@ -3857,9 +3845,6 @@ packages:
   chownr@2.0.0:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
-
-  chroma-js@2.4.2:
-    resolution: {integrity: sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==}
 
   chrome-trace-event@1.0.4:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
@@ -5125,10 +5110,6 @@ packages:
   fast-xml-builder@1.2.0:
     resolution: {integrity: sha512-00aAWieqff+ZJhsXA4g1g7M8k+7AYoMUUHF+/zFb5U6Uv/P0Vl4QZo84/IcufzYalLuEj9928bXN9PbbFzMF0Q==}
 
-  fast-xml-parser@4.5.0:
-    resolution: {integrity: sha512-/PlTQCI96+fZMAOLMZK4CWG1ItCbfZ/0jx7UIJFChPNrx7tcEgerUgWbeieCM9MfHInUDyK8DWYZ+YrywDJuTg==}
-    hasBin: true
-
   fast-xml-parser@5.9.3:
     resolution: {integrity: sha512-brCNCeScma/kqa54J4PIDriSSSLssRkuYaUCpvHJulGc3HGI/xxKUCTDcYkAdqJsyb//ydpbxecjC3hB9+tb/g==}
     hasBin: true
@@ -5470,9 +5451,6 @@ packages:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
 
-  get-image-colors@4.0.1:
-    resolution: {integrity: sha512-UVw9LdFemitTVCpwZY33JUkedmY1kNt0UGoneVMzbD12GkBja67/jX2AJFsJOCDefea0oCFFf9z9pa5fjKhAQw==}
-
   get-intrinsic@1.2.4:
     resolution: {integrity: sha512-5uYhsJH8VJBTv7oslg4BznJYhDoRI6waYCxMmCdnTrcCrHA/fCFKoTFz2JKKE0HdDFUF7/oQuhzumXJK7paBRQ==}
     engines: {node: '>= 0.4'}
@@ -5483,9 +5461,6 @@ packages:
   get-port@3.2.0:
     resolution: {integrity: sha512-x5UJKlgeUiNT8nyo/AcnwLnZuZNcSjSw0kogRB+Whd1fjjFq4B1hySFxSFWWSn4mIBzg3sRNUDFYc4g5gjPoLg==}
     engines: {node: '>=4'}
-
-  get-rgba-palette@2.0.1:
-    resolution: {integrity: sha512-rYbQg/u2tGnRYWuYHNMcF/nDg0WakAbQRiYLM86AE96d2MA0oYPaphsuywSoYajG0PImMZEEjKbtY4UuL/620A==}
 
   get-stdin@9.0.0:
     resolution: {integrity: sha512-dVKBjfWisLAicarI2Sf+JuBE/DghV4UzNAVe9yhEJuzeREd3JhOTE9cUaJTeSa77fsbQUK3pcOpJfM59+VKZaA==}
@@ -5502,9 +5477,6 @@ packages:
   get-stream@8.0.1:
     resolution: {integrity: sha512-VaUJspBffn/LMCJVoMvSAdmscJyS1auj5Zulnn5UoYcY531UWmdwhRWkcGKnGU93m5HSXP9LP2usOryrBtQowA==}
     engines: {node: '>=16'}
-
-  get-svg-colors@2.0.1:
-    resolution: {integrity: sha512-h1CWd6EO9hs5WOiwSqA1fb2WKoYVxnTlIYIxiZCFndMKN5iE4FXHmb6+U1o6yUbURl+IPcgZEojSQdayXDatsw==}
 
   get-symbol-description@1.0.2:
     resolution: {integrity: sha512-g0QYk1dZBxGwk+Ngc+ltRH2IBp2f7zBkBMBJZCDerh6EhlhSR6+9irMCuT/09zD6qkarHUSn529sK/yL4S27mg==}
@@ -6083,10 +6055,6 @@ packages:
     resolution: {integrity: sha512-2AT6j+gXe/1ueqbW6fLZJiIw3F8iXGJtt0yDrZaBhAZEG1raiTxKWU+IPqMCzQAXOUCKdA4UDMgacKH25XG2Cw==}
     engines: {node: '>=4'}
 
-  is-svg@4.4.0:
-    resolution: {integrity: sha512-v+AgVwiK5DsGtT9ng+m4mClp6zDAmwrW8nZi6Gg15qzvBnRWWdfWA1TGaXyCDnWq5g5asofIgMVl3PjKxvk1ug==}
-    engines: {node: '>=6'}
-
   is-symbol@1.0.4:
     resolution: {integrity: sha512-C/CPBqKWnvdcxqIARxyOh4v1UUEOCHpgDa0WYgpKDFMszcrPcffg5uhwSgPCLD2WWxmq6isisz87tzT01tuGhg==}
     engines: {node: '>= 0.4'}
@@ -6461,9 +6429,6 @@ packages:
 
   lodash.clonedeep@4.5.0:
     resolution: {integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==}
-
-  lodash.compact@3.0.1:
-    resolution: {integrity: sha512-2ozeiPi+5eBXW1CLtzjk8XQFhQOEMwwfxblqeq6EGyTxZJ1bPATqilY0e6g2SLQpP4KuMeuioBhEnWz5Pr7ICQ==}
 
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
@@ -7406,10 +7371,6 @@ packages:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
 
-  pify@5.0.0:
-    resolution: {integrity: sha512-eW/gHNMlxdSP6dmG6uJip6FXN0EQBwm2clYYd8Wul42Cwu/DK8HEftzsapcNdYe2MfLiIwZqsDk2RDEsTE79hA==}
-    engines: {node: '>=10'}
-
   pinkie-promise@2.0.1:
     resolution: {integrity: sha512-0Gni6D4UcLTbv9c57DfxDGdr41XfgUjqWZu492f0cIGr16zDU06BWP/RAEvOuo7CQ0CNjHaLlM59YJJFm3NWlw==}
     engines: {node: '>=0.10.0'}
@@ -7873,10 +7834,6 @@ packages:
   qs@6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}
     engines: {node: '>=0.6'}
-
-  quantize@1.0.2:
-    resolution: {integrity: sha512-25P7wI2UoDbIQsQp50ARkt+5pwPsOq7G/BqvT5xAbapnRoNWMN8/p55H9TXd5MuENiJnm5XICB2H2aDZGwts7w==}
-    engines: {node: '>=0.10.21'}
 
   query-string@6.14.1:
     resolution: {integrity: sha512-XDxAeVmpfu1/6IjyT/gXHOl+S0vQ9owggJ30hhWKdHAsNPOcasn5o9BW0eejZqL2e4vMjhAxoW3jVHcD6mbcYw==}
@@ -8653,9 +8610,6 @@ packages:
   strip-outer@1.0.1:
     resolution: {integrity: sha512-k55yxKHwaXnpYGsOzg4Vl8+tDrWylxDEpknGjhTiZB8dFRU5rTo9CAzeycivxV3s+zlTKwrs6WxMxR95n26kwg==}
     engines: {node: '>=0.10.0'}
-
-  strnum@1.0.5:
-    resolution: {integrity: sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==}
 
   strnum@2.4.1:
     resolution: {integrity: sha512-M9eUSMT2dCB2cTNPG7UYj6KuK7RJR2SN2+yCV/fTW3xzTCS6EaGZ5pSMgDIjB7r8zSfTGk+dvvn9rTjpVS9Mwg==}
@@ -12574,8 +12528,6 @@ snapshots:
     dependencies:
       '@types/node': 18.19.41
 
-  '@types/chroma-js@2.4.4': {}
-
   '@types/common-tags@1.8.4': {}
 
   '@types/configstore@2.1.1': {}
@@ -12616,11 +12568,6 @@ snapshots:
   '@types/estree@1.0.7': {}
 
   '@types/estree@1.0.9': {}
-
-  '@types/get-image-colors@4.0.5':
-    dependencies:
-      '@types/chroma-js': 2.4.4
-      '@types/node': 18.19.41
 
   '@types/get-pixels@3.3.4':
     dependencies:
@@ -14134,8 +14081,6 @@ snapshots:
 
   chownr@2.0.0: {}
 
-  chroma-js@2.4.2: {}
-
   chrome-trace-event@1.0.4: {}
 
   ci-info@2.0.0: {}
@@ -15646,10 +15591,6 @@ snapshots:
       path-expression-matcher: 1.6.1
       xml-naming: 0.1.0
 
-  fast-xml-parser@4.5.0:
-    dependencies:
-      strnum: 1.0.5
-
   fast-xml-parser@5.9.3:
     dependencies:
       '@nodable/entities': 2.2.0
@@ -16311,14 +16252,6 @@ snapshots:
 
   get-caller-file@2.0.5: {}
 
-  get-image-colors@4.0.1:
-    dependencies:
-      chroma-js: 2.4.2
-      get-pixels: 3.3.3
-      get-rgba-palette: 2.0.1
-      get-svg-colors: 2.0.1
-      pify: 5.0.0
-
   get-intrinsic@1.2.4:
     dependencies:
       es-errors: 1.3.0
@@ -16343,10 +16276,6 @@ snapshots:
 
   get-port@3.2.0: {}
 
-  get-rgba-palette@2.0.1:
-    dependencies:
-      quantize: 1.0.2
-
   get-stdin@9.0.0: {}
 
   get-stream@5.2.0:
@@ -16356,14 +16285,6 @@ snapshots:
   get-stream@6.0.1: {}
 
   get-stream@8.0.1: {}
-
-  get-svg-colors@2.0.1:
-    dependencies:
-      cheerio: 1.0.0-rc.12
-      chroma-js: 2.4.2
-      is-svg: 4.4.0
-      lodash.compact: 3.0.1
-      lodash.uniq: 4.5.0
 
   get-symbol-description@1.0.2:
     dependencies:
@@ -17045,10 +16966,6 @@ snapshots:
     dependencies:
       better-path-resolve: 1.0.0
 
-  is-svg@4.4.0:
-    dependencies:
-      fast-xml-parser: 4.5.0
-
   is-symbol@1.0.4:
     dependencies:
       has-symbols: 1.0.3
@@ -17401,8 +17318,6 @@ snapshots:
   lodash.castarray@4.4.0: {}
 
   lodash.clonedeep@4.5.0: {}
-
-  lodash.compact@3.0.1: {}
 
   lodash.debounce@4.0.8: {}
 
@@ -18540,8 +18455,6 @@ snapshots:
 
   pify@4.0.1: {}
 
-  pify@5.0.0: {}
-
   pinkie-promise@2.0.1:
     dependencies:
       pinkie: 2.0.4
@@ -18931,8 +18844,6 @@ snapshots:
       side-channel: 1.0.6
 
   qs@6.5.3: {}
-
-  quantize@1.0.2: {}
 
   query-string@6.14.1:
     dependencies:
@@ -20034,8 +19945,6 @@ snapshots:
   strip-outer@1.0.1:
     dependencies:
       escape-string-regexp: 1.0.5
-
-  strnum@1.0.5: {}
 
   strnum@2.4.1:
     dependencies:
