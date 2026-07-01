@@ -1,9 +1,34 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* darkMode: 'class' equivalent — toggled via <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Only sm/md/lg existed in the v3 config; clear v4 defaults then redefine */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 390px;
+  --breakpoint-md: 810px;
+  --breakpoint-lg: 1200px;
+
+  --font-sans: 'Pretendard', ui-sans-serif, system-ui, sans-serif;
+  --font-sg: 'Space Grotesk', sans-serif;
+
+  /* Theme colors reference runtime channel vars below, so opacity
+     modifiers (e.g. text-th-text/80) resolve via color-mix and the
+     values still react to the html.dark cascade. */
+  --color-th-bg: rgb(var(--color-bg));
+  --color-th-bg-highlight: rgb(var(--color-bg-highlight));
+  --color-th-bg-secondary: rgb(var(--color-bg-secondary));
+  --color-th-border: rgb(var(--color-border));
+  --color-th-highlight: rgb(var(--color-highlight));
+  --color-th-text: rgb(var(--color-text));
+  --color-th-text-secondary: rgb(var(--color-text-secondary));
+}
 
 @layer base {
-  html, body {
+  html,
+  body {
     @apply antialiased;
   }
 

@@ -2,7 +2,6 @@ import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import partytown from '@astrojs/partytown'
 import sitemap from '@astrojs/sitemap'
-import tailwind from '@astrojs/tailwind'
 import rehypeFigure from '@microflash/rehype-figure'
 import {
   transformerMetaHighlight,
@@ -10,6 +9,7 @@ import {
 } from '@shikijs/transformers'
 import fuse from 'astro-fuse'
 import icon from 'astro-icon'
+import tailwindcss from '@tailwindcss/vite'
 import robotsTxt from 'astro-robots-txt'
 import { defineConfig } from 'astro/config'
 import glsl from 'vite-plugin-glsl'
@@ -27,7 +27,6 @@ export default defineConfig({
         plugins: [{ name: 'prefixIds', params: { prefix: 'uwu' } }],
       },
     }),
-    tailwind({ applyBaseStyles: false, nesting: true }),
     partytown({ config: { forward: ['dataLayer.push'] } }),
     robotsTxt({
       host: 'johnny-mh.github.io',
@@ -80,6 +79,6 @@ export default defineConfig({
   redirects: { '/': '/blog', '/post/[slug]': '/blog/[slug]' },
   site: 'https://johnny-mh.github.io',
   vite: {
-    plugins: [glsl()],
+    plugins: [tailwindcss(), glsl()],
   },
 })
